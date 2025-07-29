@@ -21,6 +21,9 @@ public abstract record class ToolUnion
     public static implicit operator ToolUnion(ToolUnionProperties::TextEditor20250429 value) =>
         new ToolUnionVariants::TextEditor20250429(value);
 
+    public static implicit operator ToolUnion(ToolTextEditor20250728 value) =>
+        new ToolUnionVariants::ToolTextEditor20250728(value);
+
     public static implicit operator ToolUnion(WebSearchTool20250305 value) =>
         new ToolUnionVariants::WebSearchTool20250305(value);
 

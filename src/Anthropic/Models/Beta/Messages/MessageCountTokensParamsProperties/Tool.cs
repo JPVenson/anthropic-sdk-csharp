@@ -37,6 +37,9 @@ public abstract record class Tool
     public static implicit operator Tool(Messages::BetaToolTextEditor20250429 value) =>
         new ToolVariants::BetaToolTextEditor20250429(value);
 
+    public static implicit operator Tool(Messages::BetaToolTextEditor20250728 value) =>
+        new ToolVariants::BetaToolTextEditor20250728(value);
+
     public static implicit operator Tool(Messages::BetaWebSearchTool20250305 value) =>
         new ToolVariants::BetaWebSearchTool20250305(value);
 

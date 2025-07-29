@@ -73,6 +73,21 @@ public sealed record class CitationContentBlockLocation
         set { this.Properties["end_block_index"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
+    public required string? FileID
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("file_id", out Json::JsonElement element))
+                throw new System::ArgumentOutOfRangeException(
+                    "file_id",
+                    "Missing required argument"
+                );
+
+            return Json::JsonSerializer.Deserialize<string?>(element);
+        }
+        set { this.Properties["file_id"] = Json::JsonSerializer.SerializeToElement(value); }
+    }
+
     public required long StartBlockIndex
     {
         get
@@ -109,6 +124,7 @@ public sealed record class CitationContentBlockLocation
         _ = this.DocumentIndex;
         _ = this.DocumentTitle;
         _ = this.EndBlockIndex;
+        _ = this.FileID;
         _ = this.StartBlockIndex;
     }
 

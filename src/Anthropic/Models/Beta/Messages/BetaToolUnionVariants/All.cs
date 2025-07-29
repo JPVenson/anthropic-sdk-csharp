@@ -186,6 +186,27 @@ public sealed record class BetaToolTextEditor20250429(Messages::BetaToolTextEdit
 
 [Serialization::JsonConverter(
     typeof(Anthropic::VariantConverter<
+        BetaToolTextEditor20250728,
+        Messages::BetaToolTextEditor20250728
+    >)
+)]
+public sealed record class BetaToolTextEditor20250728(Messages::BetaToolTextEditor20250728 Value)
+    : Messages::BetaToolUnion,
+        Anthropic::IVariant<BetaToolTextEditor20250728, Messages::BetaToolTextEditor20250728>
+{
+    public static BetaToolTextEditor20250728 From(Messages::BetaToolTextEditor20250728 value)
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}
+
+[Serialization::JsonConverter(
+    typeof(Anthropic::VariantConverter<
         BetaWebSearchTool20250305,
         Messages::BetaWebSearchTool20250305
     >)

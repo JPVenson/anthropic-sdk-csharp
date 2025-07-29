@@ -23,6 +23,9 @@ public abstract record class MessageCountTokensTool
         MessageCountTokensToolProperties::TextEditor20250429 value
     ) => new MessageCountTokensToolVariants::TextEditor20250429(value);
 
+    public static implicit operator MessageCountTokensTool(ToolTextEditor20250728 value) =>
+        new MessageCountTokensToolVariants::ToolTextEditor20250728(value);
+
     public static implicit operator MessageCountTokensTool(WebSearchTool20250305 value) =>
         new MessageCountTokensToolVariants::WebSearchTool20250305(value);
 

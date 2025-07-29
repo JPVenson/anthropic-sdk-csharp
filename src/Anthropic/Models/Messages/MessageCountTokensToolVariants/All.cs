@@ -86,6 +86,24 @@ public sealed record class TextEditor20250429(
 }
 
 [Serialization::JsonConverter(
+    typeof(Anthropic::VariantConverter<ToolTextEditor20250728, Messages::ToolTextEditor20250728>)
+)]
+public sealed record class ToolTextEditor20250728(Messages::ToolTextEditor20250728 Value)
+    : Messages::MessageCountTokensTool,
+        Anthropic::IVariant<ToolTextEditor20250728, Messages::ToolTextEditor20250728>
+{
+    public static ToolTextEditor20250728 From(Messages::ToolTextEditor20250728 value)
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}
+
+[Serialization::JsonConverter(
     typeof(Anthropic::VariantConverter<WebSearchTool20250305, Messages::WebSearchTool20250305>)
 )]
 public sealed record class WebSearchTool20250305(Messages::WebSearchTool20250305 Value)

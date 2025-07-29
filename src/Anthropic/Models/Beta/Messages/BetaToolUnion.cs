@@ -36,6 +36,9 @@ public abstract record class BetaToolUnion
     public static implicit operator BetaToolUnion(BetaToolTextEditor20250429 value) =>
         new BetaToolUnionVariants::BetaToolTextEditor20250429(value);
 
+    public static implicit operator BetaToolUnion(BetaToolTextEditor20250728 value) =>
+        new BetaToolUnionVariants::BetaToolTextEditor20250728(value);
+
     public static implicit operator BetaToolUnion(BetaWebSearchTool20250305 value) =>
         new BetaToolUnionVariants::BetaWebSearchTool20250305(value);
 
