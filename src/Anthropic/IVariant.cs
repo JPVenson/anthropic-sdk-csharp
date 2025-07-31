@@ -1,8 +1,8 @@
 namespace Anthropic;
 
-public interface IVariant<IV, T>
-    where IV : IVariant<IV, T>
+public interface IVariant<TVariant, TValue>
+    where TVariant : IVariant<TVariant, TValue>
 {
-    static abstract IV From(T value);
-    T Value { get; }
+    static abstract TVariant From(TValue value);
+    TValue Value { get; }
 }

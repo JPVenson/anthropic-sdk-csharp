@@ -1,8 +1,8 @@
 namespace Anthropic;
 
-public interface IEnum<IE, T>
-    where IE : IEnum<IE, T>
+public interface IEnum<TEnum, TValue>
+    where TEnum : IEnum<TEnum, TValue>
 {
-    static abstract IE FromRaw(T value);
-    T Raw();
+    static abstract TEnum FromRaw(TValue value);
+    TValue Raw();
 }
