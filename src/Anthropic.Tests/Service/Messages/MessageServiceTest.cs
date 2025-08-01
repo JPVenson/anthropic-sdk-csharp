@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Anthropic.Models.Messages;
@@ -22,9 +23,9 @@ public class MessageServiceTest : TestBase
                 ServiceTier = ServiceTier.Auto,
                 StopSequences = ["string"],
                 Stream = true,
-                System =
-                [
-                    new TextBlockParam()
+                System = new List<TextBlockParam>()
+                {
+                    new()
                     {
                         Text = "Today's date is 2024-06-01.",
                         CacheControl = new() { },
@@ -40,7 +41,7 @@ public class MessageServiceTest : TestBase
                             },
                         ],
                     },
-                ],
+                },
                 Temperature = 1,
                 Thinking = new ThinkingConfigEnabled() { BudgetTokens = 1024 },
                 ToolChoice = new ToolChoiceAuto() { DisableParallelToolUse = true },
@@ -76,9 +77,9 @@ public class MessageServiceTest : TestBase
             {
                 Messages = [new() { Content = "string", Role = Role.User }],
                 Model = Model.Claude3_7SonnetLatest,
-                System =
-                [
-                    new TextBlockParam()
+                System = new List<TextBlockParam>()
+                {
+                    new()
                     {
                         Text = "Today's date is 2024-06-01.",
                         CacheControl = new() { },
@@ -94,7 +95,7 @@ public class MessageServiceTest : TestBase
                             },
                         ],
                     },
-                ],
+                },
                 Thinking = new ThinkingConfigEnabled() { BudgetTokens = 1024 },
                 ToolChoice = new ToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Anthropic.Models.Beta;
@@ -47,9 +48,9 @@ public class BatchServiceTest : TestBase
                             ServiceTier = ServiceTier.Auto,
                             StopSequences = ["string"],
                             Stream = true,
-                            System =
-                            [
-                                new Messages::BetaTextBlockParam()
+                            System = new List<Messages::BetaTextBlockParam>()
+                            {
+                                new()
                                 {
                                     Text = "Today's date is 2024-06-01.",
                                     CacheControl = new() { TTL = TTL.TTL5m },
@@ -65,7 +66,7 @@ public class BatchServiceTest : TestBase
                                         },
                                     ],
                                 },
-                            ],
+                            },
                             Temperature = 1,
                             Thinking = new Messages::BetaThinkingConfigEnabled()
                             {
