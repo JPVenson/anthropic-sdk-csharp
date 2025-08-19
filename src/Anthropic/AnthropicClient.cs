@@ -1,7 +1,6 @@
 using System;
 using System.Net.Http;
 using Anthropic.Services.Beta;
-using Anthropic.Services.Completions;
 using Anthropic.Services.Messages;
 using Anthropic.Services.Models;
 
@@ -37,12 +36,6 @@ public sealed class AnthropicClient : IAnthropicClient
         init { _authToken = new(() => value); }
     }
 
-    readonly Lazy<ICompletionService> _completions;
-    public ICompletionService Completions
-    {
-        get { return _completions.Value; }
-    }
-
     readonly Lazy<IMessageService> _messages;
     public IMessageService Messages
     {
@@ -63,7 +56,6 @@ public sealed class AnthropicClient : IAnthropicClient
 
     public AnthropicClient()
     {
-        _completions = new(() => new CompletionService(this));
         _messages = new(() => new MessageService(this));
         _models = new(() => new ModelService(this));
         _beta = new(() => new BetaService(this));

@@ -1,7 +1,6 @@
 using System;
 using System.Net.Http;
 using Anthropic.Services.Beta;
-using Anthropic.Services.Completions;
 using Anthropic.Services.Messages;
 using Anthropic.Services.Models;
 
@@ -16,8 +15,6 @@ public interface IAnthropicClient
     string? APIKey { get; init; }
 
     string? AuthToken { get; init; }
-
-    ICompletionService Completions { get; }
 
     IMessageService Messages { get; }
 
