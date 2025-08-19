@@ -26,6 +26,85 @@ public abstract record class BetaRawContentBlockDelta
     public static implicit operator BetaRawContentBlockDelta(BetaSignatureDelta value) =>
         new BetaSignatureDeltaVariant(value);
 
+    public bool TryPickBetaTextDeltaVariant(out BetaTextDelta? value)
+    {
+        value = (this as BetaTextDeltaVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaInputJSONDeltaVariant(out BetaInputJSONDelta? value)
+    {
+        value = (this as BetaInputJSONDeltaVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaCitationsDeltaVariant(out BetaCitationsDelta? value)
+    {
+        value = (this as BetaCitationsDeltaVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaThinkingDeltaVariant(out BetaThinkingDelta? value)
+    {
+        value = (this as BetaThinkingDeltaVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaSignatureDeltaVariant(out BetaSignatureDelta? value)
+    {
+        value = (this as BetaSignatureDeltaVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<BetaTextDeltaVariant> betaTextDelta,
+        Action<BetaInputJSONDeltaVariant> betaInputJSONDelta,
+        Action<BetaCitationsDeltaVariant> betaCitationsDelta,
+        Action<BetaThinkingDeltaVariant> betaThinkingDelta,
+        Action<BetaSignatureDeltaVariant> betaSignatureDelta
+    )
+    {
+        switch (this)
+        {
+            case BetaTextDeltaVariant inner:
+                betaTextDelta(inner);
+                break;
+            case BetaInputJSONDeltaVariant inner:
+                betaInputJSONDelta(inner);
+                break;
+            case BetaCitationsDeltaVariant inner:
+                betaCitationsDelta(inner);
+                break;
+            case BetaThinkingDeltaVariant inner:
+                betaThinkingDelta(inner);
+                break;
+            case BetaSignatureDeltaVariant inner:
+                betaSignatureDelta(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<BetaTextDeltaVariant, T> betaTextDelta,
+        Func<BetaInputJSONDeltaVariant, T> betaInputJSONDelta,
+        Func<BetaCitationsDeltaVariant, T> betaCitationsDelta,
+        Func<BetaThinkingDeltaVariant, T> betaThinkingDelta,
+        Func<BetaSignatureDeltaVariant, T> betaSignatureDelta
+    )
+    {
+        return this switch
+        {
+            BetaTextDeltaVariant inner => betaTextDelta(inner),
+            BetaInputJSONDeltaVariant inner => betaInputJSONDelta(inner),
+            BetaCitationsDeltaVariant inner => betaCitationsDelta(inner),
+            BetaThinkingDeltaVariant inner => betaThinkingDelta(inner),
+            BetaSignatureDeltaVariant inner => betaSignatureDelta(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

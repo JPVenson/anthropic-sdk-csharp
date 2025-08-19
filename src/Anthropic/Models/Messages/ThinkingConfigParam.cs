@@ -27,6 +27,49 @@ public abstract record class ThinkingConfigParam
     public static implicit operator ThinkingConfigParam(ThinkingConfigDisabled value) =>
         new ThinkingConfigDisabledVariant(value);
 
+    public bool TryPickThinkingConfigEnabledVariant(out ThinkingConfigEnabled? value)
+    {
+        value = (this as ThinkingConfigEnabledVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickThinkingConfigDisabledVariant(out ThinkingConfigDisabled? value)
+    {
+        value = (this as ThinkingConfigDisabledVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<ThinkingConfigEnabledVariant> thinkingConfigEnabled,
+        Action<ThinkingConfigDisabledVariant> thinkingConfigDisabled
+    )
+    {
+        switch (this)
+        {
+            case ThinkingConfigEnabledVariant inner:
+                thinkingConfigEnabled(inner);
+                break;
+            case ThinkingConfigDisabledVariant inner:
+                thinkingConfigDisabled(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<ThinkingConfigEnabledVariant, T> thinkingConfigEnabled,
+        Func<ThinkingConfigDisabledVariant, T> thinkingConfigDisabled
+    )
+    {
+        return this switch
+        {
+            ThinkingConfigEnabledVariant inner => thinkingConfigEnabled(inner),
+            ThinkingConfigDisabledVariant inner => thinkingConfigDisabled(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

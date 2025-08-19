@@ -38,6 +38,133 @@ public abstract record class ErrorObject
     public static implicit operator ErrorObject(OverloadedError value) =>
         new OverloadedErrorVariant(value);
 
+    public bool TryPickInvalidRequestErrorVariant(out InvalidRequestError? value)
+    {
+        value = (this as InvalidRequestErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickAuthenticationErrorVariant(out AuthenticationError? value)
+    {
+        value = (this as AuthenticationErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBillingErrorVariant(out BillingError? value)
+    {
+        value = (this as BillingErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickPermissionErrorVariant(out PermissionError? value)
+    {
+        value = (this as PermissionErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickNotFoundErrorVariant(out NotFoundError? value)
+    {
+        value = (this as NotFoundErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickRateLimitErrorVariant(out RateLimitError? value)
+    {
+        value = (this as RateLimitErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickGatewayTimeoutErrorVariant(out GatewayTimeoutError? value)
+    {
+        value = (this as GatewayTimeoutErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickAPIErrorObjectVariant(out APIErrorObject? value)
+    {
+        value = (this as APIErrorObjectVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickOverloadedErrorVariant(out OverloadedError? value)
+    {
+        value = (this as OverloadedErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<InvalidRequestErrorVariant> invalidRequestError,
+        Action<AuthenticationErrorVariant> authenticationError,
+        Action<BillingErrorVariant> billingError,
+        Action<PermissionErrorVariant> permissionError,
+        Action<NotFoundErrorVariant> notFoundError,
+        Action<RateLimitErrorVariant> rateLimitError,
+        Action<GatewayTimeoutErrorVariant> gatewayTimeoutError,
+        Action<APIErrorObjectVariant> apiErrorObject,
+        Action<OverloadedErrorVariant> overloadedError
+    )
+    {
+        switch (this)
+        {
+            case InvalidRequestErrorVariant inner:
+                invalidRequestError(inner);
+                break;
+            case AuthenticationErrorVariant inner:
+                authenticationError(inner);
+                break;
+            case BillingErrorVariant inner:
+                billingError(inner);
+                break;
+            case PermissionErrorVariant inner:
+                permissionError(inner);
+                break;
+            case NotFoundErrorVariant inner:
+                notFoundError(inner);
+                break;
+            case RateLimitErrorVariant inner:
+                rateLimitError(inner);
+                break;
+            case GatewayTimeoutErrorVariant inner:
+                gatewayTimeoutError(inner);
+                break;
+            case APIErrorObjectVariant inner:
+                apiErrorObject(inner);
+                break;
+            case OverloadedErrorVariant inner:
+                overloadedError(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<InvalidRequestErrorVariant, T> invalidRequestError,
+        Func<AuthenticationErrorVariant, T> authenticationError,
+        Func<BillingErrorVariant, T> billingError,
+        Func<PermissionErrorVariant, T> permissionError,
+        Func<NotFoundErrorVariant, T> notFoundError,
+        Func<RateLimitErrorVariant, T> rateLimitError,
+        Func<GatewayTimeoutErrorVariant, T> gatewayTimeoutError,
+        Func<APIErrorObjectVariant, T> apiErrorObject,
+        Func<OverloadedErrorVariant, T> overloadedError
+    )
+    {
+        return this switch
+        {
+            InvalidRequestErrorVariant inner => invalidRequestError(inner),
+            AuthenticationErrorVariant inner => authenticationError(inner),
+            BillingErrorVariant inner => billingError(inner),
+            PermissionErrorVariant inner => permissionError(inner),
+            NotFoundErrorVariant inner => notFoundError(inner),
+            RateLimitErrorVariant inner => rateLimitError(inner),
+            GatewayTimeoutErrorVariant inner => gatewayTimeoutError(inner),
+            APIErrorObjectVariant inner => apiErrorObject(inner),
+            OverloadedErrorVariant inner => overloadedError(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

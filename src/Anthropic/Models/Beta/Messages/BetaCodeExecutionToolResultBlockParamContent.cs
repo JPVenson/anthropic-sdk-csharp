@@ -19,6 +19,56 @@ public abstract record class BetaCodeExecutionToolResultBlockParamContent
         BetaCodeExecutionResultBlockParam value
     ) => new BetaCodeExecutionResultBlockParamVariant(value);
 
+    public bool TryPickBetaCodeExecutionToolResultErrorParamVariant(
+        out BetaCodeExecutionToolResultErrorParam? value
+    )
+    {
+        value = (this as BetaCodeExecutionToolResultErrorParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaCodeExecutionResultBlockParamVariant(
+        out BetaCodeExecutionResultBlockParam? value
+    )
+    {
+        value = (this as BetaCodeExecutionResultBlockParamVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<BetaCodeExecutionToolResultErrorParamVariant> betaCodeExecutionToolResultErrorParam,
+        Action<BetaCodeExecutionResultBlockParamVariant> betaCodeExecutionResultBlockParam
+    )
+    {
+        switch (this)
+        {
+            case BetaCodeExecutionToolResultErrorParamVariant inner:
+                betaCodeExecutionToolResultErrorParam(inner);
+                break;
+            case BetaCodeExecutionResultBlockParamVariant inner:
+                betaCodeExecutionResultBlockParam(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<BetaCodeExecutionToolResultErrorParamVariant, T> betaCodeExecutionToolResultErrorParam,
+        Func<BetaCodeExecutionResultBlockParamVariant, T> betaCodeExecutionResultBlockParam
+    )
+    {
+        return this switch
+        {
+            BetaCodeExecutionToolResultErrorParamVariant inner =>
+                betaCodeExecutionToolResultErrorParam(inner),
+            BetaCodeExecutionResultBlockParamVariant inner => betaCodeExecutionResultBlockParam(
+                inner
+            ),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

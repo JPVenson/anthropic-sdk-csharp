@@ -16,6 +16,52 @@ public abstract record class Content
     public static implicit operator Content(List<BetaContentBlockSourceContent> value) =>
         new ContentVariants::BetaContentBlockSourceContentVariant(value);
 
+    public bool TryPickString(out string? value)
+    {
+        value = (this as ContentVariants::String)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaContentBlockSourceContentVariant(
+        out List<BetaContentBlockSourceContent>? value
+    )
+    {
+        value = (this as ContentVariants::BetaContentBlockSourceContentVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<ContentVariants::String> @string,
+        Action<ContentVariants::BetaContentBlockSourceContentVariant> betaContentBlockSourceContent
+    )
+    {
+        switch (this)
+        {
+            case ContentVariants::String inner:
+                @string(inner);
+                break;
+            case ContentVariants::BetaContentBlockSourceContentVariant inner:
+                betaContentBlockSourceContent(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<ContentVariants::String, T> @string,
+        Func<ContentVariants::BetaContentBlockSourceContentVariant, T> betaContentBlockSourceContent
+    )
+    {
+        return this switch
+        {
+            ContentVariants::String inner => @string(inner),
+            ContentVariants::BetaContentBlockSourceContentVariant inner =>
+                betaContentBlockSourceContent(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 
@@ -65,7 +111,7 @@ sealed class ContentConverter : JsonConverter<Content>
     {
         object variant = value switch
         {
-            ContentVariants::String(var string1) => string1,
+            ContentVariants::String(var @string) => @string,
             ContentVariants::BetaContentBlockSourceContentVariant(
                 var betaContentBlockSourceContent
             ) => betaContentBlockSourceContent,

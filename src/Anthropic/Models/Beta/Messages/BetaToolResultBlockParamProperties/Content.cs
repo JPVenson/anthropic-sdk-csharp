@@ -17,6 +17,49 @@ public abstract record class Content
     public static implicit operator Content(List<Block> value) =>
         new ContentVariants::Blocks(value);
 
+    public bool TryPickString(out string? value)
+    {
+        value = (this as ContentVariants::String)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBlocks(out List<Block>? value)
+    {
+        value = (this as ContentVariants::Blocks)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<ContentVariants::String> @string,
+        Action<ContentVariants::Blocks> blocks
+    )
+    {
+        switch (this)
+        {
+            case ContentVariants::String inner:
+                @string(inner);
+                break;
+            case ContentVariants::Blocks inner:
+                blocks(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<ContentVariants::String, T> @string,
+        Func<ContentVariants::Blocks, T> blocks
+    )
+    {
+        return this switch
+        {
+            ContentVariants::String inner => @string(inner),
+            ContentVariants::Blocks inner => blocks(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 
@@ -63,7 +106,7 @@ sealed class ContentConverter : JsonConverter<Content>
     {
         object variant = value switch
         {
-            ContentVariants::String(var string1) => string1,
+            ContentVariants::String(var @string) => @string,
             ContentVariants::Blocks(var blocks) => blocks,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };

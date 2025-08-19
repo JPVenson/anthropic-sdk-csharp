@@ -22,6 +22,49 @@ public abstract record class SystemModel
     public static implicit operator SystemModel(List<TextBlockParam> value) =>
         new SystemVariants::TextBlockParams(value);
 
+    public bool TryPickString(out string? value)
+    {
+        value = (this as SystemVariants::String)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickTextBlockParams(out List<TextBlockParam>? value)
+    {
+        value = (this as SystemVariants::TextBlockParams)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<SystemVariants::String> @string,
+        Action<SystemVariants::TextBlockParams> textBlockParams
+    )
+    {
+        switch (this)
+        {
+            case SystemVariants::String inner:
+                @string(inner);
+                break;
+            case SystemVariants::TextBlockParams inner:
+                textBlockParams(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<SystemVariants::String, T> @string,
+        Func<SystemVariants::TextBlockParams, T> textBlockParams
+    )
+    {
+        return this switch
+        {
+            SystemVariants::String inner => @string(inner),
+            SystemVariants::TextBlockParams inner => textBlockParams(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 
@@ -75,7 +118,7 @@ sealed class SystemModelConverter : JsonConverter<SystemModel>
     {
         object variant = value switch
         {
-            SystemVariants::String(var string1) => string1,
+            SystemVariants::String(var @string) => @string,
             SystemVariants::TextBlockParams(var textBlockParams) => textBlockParams,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };

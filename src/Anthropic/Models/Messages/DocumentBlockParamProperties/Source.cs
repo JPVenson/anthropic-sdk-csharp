@@ -22,6 +22,73 @@ public abstract record class Source
 
     public static implicit operator Source(URLPDFSource value) => new URLPDFSourceVariant(value);
 
+    public bool TryPickBase64PDFSourceVariant(out Base64PDFSource? value)
+    {
+        value = (this as Base64PDFSourceVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickPlainTextSourceVariant(out PlainTextSource? value)
+    {
+        value = (this as PlainTextSourceVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickContentBlockSourceVariant(out ContentBlockSource? value)
+    {
+        value = (this as ContentBlockSourceVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickURLPDFSourceVariant(out URLPDFSource? value)
+    {
+        value = (this as URLPDFSourceVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<Base64PDFSourceVariant> base64PDFSource,
+        Action<PlainTextSourceVariant> plainTextSource,
+        Action<ContentBlockSourceVariant> contentBlockSource,
+        Action<URLPDFSourceVariant> urlpdfSource
+    )
+    {
+        switch (this)
+        {
+            case Base64PDFSourceVariant inner:
+                base64PDFSource(inner);
+                break;
+            case PlainTextSourceVariant inner:
+                plainTextSource(inner);
+                break;
+            case ContentBlockSourceVariant inner:
+                contentBlockSource(inner);
+                break;
+            case URLPDFSourceVariant inner:
+                urlpdfSource(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<Base64PDFSourceVariant, T> base64PDFSource,
+        Func<PlainTextSourceVariant, T> plainTextSource,
+        Func<ContentBlockSourceVariant, T> contentBlockSource,
+        Func<URLPDFSourceVariant, T> urlpdfSource
+    )
+    {
+        return this switch
+        {
+            Base64PDFSourceVariant inner => base64PDFSource(inner),
+            PlainTextSourceVariant inner => plainTextSource(inner),
+            ContentBlockSourceVariant inner => contentBlockSource(inner),
+            URLPDFSourceVariant inner => urlpdfSource(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

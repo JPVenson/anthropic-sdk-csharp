@@ -27,6 +27,73 @@ public abstract record class ToolChoice
     public static implicit operator ToolChoice(ToolChoiceNone value) =>
         new ToolChoiceNoneVariant(value);
 
+    public bool TryPickToolChoiceAutoVariant(out ToolChoiceAuto? value)
+    {
+        value = (this as ToolChoiceAutoVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickToolChoiceAnyVariant(out ToolChoiceAny? value)
+    {
+        value = (this as ToolChoiceAnyVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickToolChoiceToolVariant(out ToolChoiceTool? value)
+    {
+        value = (this as ToolChoiceToolVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickToolChoiceNoneVariant(out ToolChoiceNone? value)
+    {
+        value = (this as ToolChoiceNoneVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<ToolChoiceAutoVariant> toolChoiceAuto,
+        Action<ToolChoiceAnyVariant> toolChoiceAny,
+        Action<ToolChoiceToolVariant> toolChoiceTool,
+        Action<ToolChoiceNoneVariant> toolChoiceNone
+    )
+    {
+        switch (this)
+        {
+            case ToolChoiceAutoVariant inner:
+                toolChoiceAuto(inner);
+                break;
+            case ToolChoiceAnyVariant inner:
+                toolChoiceAny(inner);
+                break;
+            case ToolChoiceToolVariant inner:
+                toolChoiceTool(inner);
+                break;
+            case ToolChoiceNoneVariant inner:
+                toolChoiceNone(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<ToolChoiceAutoVariant, T> toolChoiceAuto,
+        Func<ToolChoiceAnyVariant, T> toolChoiceAny,
+        Func<ToolChoiceToolVariant, T> toolChoiceTool,
+        Func<ToolChoiceNoneVariant, T> toolChoiceNone
+    )
+    {
+        return this switch
+        {
+            ToolChoiceAutoVariant inner => toolChoiceAuto(inner),
+            ToolChoiceAnyVariant inner => toolChoiceAny(inner),
+            ToolChoiceToolVariant inner => toolChoiceTool(inner),
+            ToolChoiceNoneVariant inner => toolChoiceNone(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

@@ -29,6 +29,101 @@ public abstract record class BetaTextCitationParam
         BetaCitationSearchResultLocationParam value
     ) => new BetaCitationSearchResultLocationParamVariant(value);
 
+    public bool TryPickBetaCitationCharLocationParamVariant(
+        out BetaCitationCharLocationParam? value
+    )
+    {
+        value = (this as BetaCitationCharLocationParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaCitationPageLocationParamVariant(
+        out BetaCitationPageLocationParam? value
+    )
+    {
+        value = (this as BetaCitationPageLocationParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaCitationContentBlockLocationParamVariant(
+        out BetaCitationContentBlockLocationParam? value
+    )
+    {
+        value = (this as BetaCitationContentBlockLocationParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaCitationWebSearchResultLocationParamVariant(
+        out BetaCitationWebSearchResultLocationParam? value
+    )
+    {
+        value = (this as BetaCitationWebSearchResultLocationParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaCitationSearchResultLocationParamVariant(
+        out BetaCitationSearchResultLocationParam? value
+    )
+    {
+        value = (this as BetaCitationSearchResultLocationParamVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<BetaCitationCharLocationParamVariant> betaCitationCharLocationParam,
+        Action<BetaCitationPageLocationParamVariant> betaCitationPageLocationParam,
+        Action<BetaCitationContentBlockLocationParamVariant> betaCitationContentBlockLocationParam,
+        Action<BetaCitationWebSearchResultLocationParamVariant> betaCitationWebSearchResultLocationParam,
+        Action<BetaCitationSearchResultLocationParamVariant> betaCitationSearchResultLocationParam
+    )
+    {
+        switch (this)
+        {
+            case BetaCitationCharLocationParamVariant inner:
+                betaCitationCharLocationParam(inner);
+                break;
+            case BetaCitationPageLocationParamVariant inner:
+                betaCitationPageLocationParam(inner);
+                break;
+            case BetaCitationContentBlockLocationParamVariant inner:
+                betaCitationContentBlockLocationParam(inner);
+                break;
+            case BetaCitationWebSearchResultLocationParamVariant inner:
+                betaCitationWebSearchResultLocationParam(inner);
+                break;
+            case BetaCitationSearchResultLocationParamVariant inner:
+                betaCitationSearchResultLocationParam(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<BetaCitationCharLocationParamVariant, T> betaCitationCharLocationParam,
+        Func<BetaCitationPageLocationParamVariant, T> betaCitationPageLocationParam,
+        Func<BetaCitationContentBlockLocationParamVariant, T> betaCitationContentBlockLocationParam,
+        Func<
+            BetaCitationWebSearchResultLocationParamVariant,
+            T
+        > betaCitationWebSearchResultLocationParam,
+        Func<BetaCitationSearchResultLocationParamVariant, T> betaCitationSearchResultLocationParam
+    )
+    {
+        return this switch
+        {
+            BetaCitationCharLocationParamVariant inner => betaCitationCharLocationParam(inner),
+            BetaCitationPageLocationParamVariant inner => betaCitationPageLocationParam(inner),
+            BetaCitationContentBlockLocationParamVariant inner =>
+                betaCitationContentBlockLocationParam(inner),
+            BetaCitationWebSearchResultLocationParamVariant inner =>
+                betaCitationWebSearchResultLocationParam(inner),
+            BetaCitationSearchResultLocationParamVariant inner =>
+                betaCitationSearchResultLocationParam(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

@@ -31,6 +31,101 @@ public abstract record class BetaRawMessageStreamEvent
     public static implicit operator BetaRawMessageStreamEvent(BetaRawContentBlockStopEvent value) =>
         new BetaRawContentBlockStopEventVariant(value);
 
+    public bool TryPickBetaRawMessageStartEventVariant(out BetaRawMessageStartEvent? value)
+    {
+        value = (this as BetaRawMessageStartEventVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaRawMessageDeltaEventVariant(out BetaRawMessageDeltaEvent? value)
+    {
+        value = (this as BetaRawMessageDeltaEventVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaRawMessageStopEventVariant(out BetaRawMessageStopEvent? value)
+    {
+        value = (this as BetaRawMessageStopEventVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaRawContentBlockStartEventVariant(
+        out BetaRawContentBlockStartEvent? value
+    )
+    {
+        value = (this as BetaRawContentBlockStartEventVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaRawContentBlockDeltaEventVariant(
+        out BetaRawContentBlockDeltaEvent? value
+    )
+    {
+        value = (this as BetaRawContentBlockDeltaEventVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaRawContentBlockStopEventVariant(out BetaRawContentBlockStopEvent? value)
+    {
+        value = (this as BetaRawContentBlockStopEventVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<BetaRawMessageStartEventVariant> betaRawMessageStartEvent,
+        Action<BetaRawMessageDeltaEventVariant> betaRawMessageDeltaEvent,
+        Action<BetaRawMessageStopEventVariant> betaRawMessageStopEvent,
+        Action<BetaRawContentBlockStartEventVariant> betaRawContentBlockStartEvent,
+        Action<BetaRawContentBlockDeltaEventVariant> betaRawContentBlockDeltaEvent,
+        Action<BetaRawContentBlockStopEventVariant> betaRawContentBlockStopEvent
+    )
+    {
+        switch (this)
+        {
+            case BetaRawMessageStartEventVariant inner:
+                betaRawMessageStartEvent(inner);
+                break;
+            case BetaRawMessageDeltaEventVariant inner:
+                betaRawMessageDeltaEvent(inner);
+                break;
+            case BetaRawMessageStopEventVariant inner:
+                betaRawMessageStopEvent(inner);
+                break;
+            case BetaRawContentBlockStartEventVariant inner:
+                betaRawContentBlockStartEvent(inner);
+                break;
+            case BetaRawContentBlockDeltaEventVariant inner:
+                betaRawContentBlockDeltaEvent(inner);
+                break;
+            case BetaRawContentBlockStopEventVariant inner:
+                betaRawContentBlockStopEvent(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<BetaRawMessageStartEventVariant, T> betaRawMessageStartEvent,
+        Func<BetaRawMessageDeltaEventVariant, T> betaRawMessageDeltaEvent,
+        Func<BetaRawMessageStopEventVariant, T> betaRawMessageStopEvent,
+        Func<BetaRawContentBlockStartEventVariant, T> betaRawContentBlockStartEvent,
+        Func<BetaRawContentBlockDeltaEventVariant, T> betaRawContentBlockDeltaEvent,
+        Func<BetaRawContentBlockStopEventVariant, T> betaRawContentBlockStopEvent
+    )
+    {
+        return this switch
+        {
+            BetaRawMessageStartEventVariant inner => betaRawMessageStartEvent(inner),
+            BetaRawMessageDeltaEventVariant inner => betaRawMessageDeltaEvent(inner),
+            BetaRawMessageStopEventVariant inner => betaRawMessageStopEvent(inner),
+            BetaRawContentBlockStartEventVariant inner => betaRawContentBlockStartEvent(inner),
+            BetaRawContentBlockDeltaEventVariant inner => betaRawContentBlockDeltaEvent(inner),
+            BetaRawContentBlockStopEventVariant inner => betaRawContentBlockStopEvent(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

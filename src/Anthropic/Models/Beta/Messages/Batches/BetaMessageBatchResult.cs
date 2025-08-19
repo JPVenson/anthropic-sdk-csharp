@@ -30,6 +30,81 @@ public abstract record class BetaMessageBatchResult
     public static implicit operator BetaMessageBatchResult(BetaMessageBatchExpiredResult value) =>
         new BetaMessageBatchExpiredResultVariant(value);
 
+    public bool TryPickBetaMessageBatchSucceededResultVariant(
+        out BetaMessageBatchSucceededResult? value
+    )
+    {
+        value = (this as BetaMessageBatchSucceededResultVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaMessageBatchErroredResultVariant(
+        out BetaMessageBatchErroredResult? value
+    )
+    {
+        value = (this as BetaMessageBatchErroredResultVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaMessageBatchCanceledResultVariant(
+        out BetaMessageBatchCanceledResult? value
+    )
+    {
+        value = (this as BetaMessageBatchCanceledResultVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaMessageBatchExpiredResultVariant(
+        out BetaMessageBatchExpiredResult? value
+    )
+    {
+        value = (this as BetaMessageBatchExpiredResultVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<BetaMessageBatchSucceededResultVariant> betaMessageBatchSucceededResult,
+        Action<BetaMessageBatchErroredResultVariant> betaMessageBatchErroredResult,
+        Action<BetaMessageBatchCanceledResultVariant> betaMessageBatchCanceledResult,
+        Action<BetaMessageBatchExpiredResultVariant> betaMessageBatchExpiredResult
+    )
+    {
+        switch (this)
+        {
+            case BetaMessageBatchSucceededResultVariant inner:
+                betaMessageBatchSucceededResult(inner);
+                break;
+            case BetaMessageBatchErroredResultVariant inner:
+                betaMessageBatchErroredResult(inner);
+                break;
+            case BetaMessageBatchCanceledResultVariant inner:
+                betaMessageBatchCanceledResult(inner);
+                break;
+            case BetaMessageBatchExpiredResultVariant inner:
+                betaMessageBatchExpiredResult(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<BetaMessageBatchSucceededResultVariant, T> betaMessageBatchSucceededResult,
+        Func<BetaMessageBatchErroredResultVariant, T> betaMessageBatchErroredResult,
+        Func<BetaMessageBatchCanceledResultVariant, T> betaMessageBatchCanceledResult,
+        Func<BetaMessageBatchExpiredResultVariant, T> betaMessageBatchExpiredResult
+    )
+    {
+        return this switch
+        {
+            BetaMessageBatchSucceededResultVariant inner => betaMessageBatchSucceededResult(inner),
+            BetaMessageBatchErroredResultVariant inner => betaMessageBatchErroredResult(inner),
+            BetaMessageBatchCanceledResultVariant inner => betaMessageBatchCanceledResult(inner),
+            BetaMessageBatchExpiredResultVariant inner => betaMessageBatchExpiredResult(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

@@ -26,6 +26,85 @@ public abstract record class Source
     public static implicit operator Source(BetaFileDocumentSource value) =>
         new BetaFileDocumentSourceVariant(value);
 
+    public bool TryPickBetaBase64PDFSourceVariant(out BetaBase64PDFSource? value)
+    {
+        value = (this as BetaBase64PDFSourceVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaPlainTextSourceVariant(out BetaPlainTextSource? value)
+    {
+        value = (this as BetaPlainTextSourceVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaContentBlockSourceVariant(out BetaContentBlockSource? value)
+    {
+        value = (this as BetaContentBlockSourceVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaURLPDFSourceVariant(out BetaURLPDFSource? value)
+    {
+        value = (this as BetaURLPDFSourceVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaFileDocumentSourceVariant(out BetaFileDocumentSource? value)
+    {
+        value = (this as BetaFileDocumentSourceVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<BetaBase64PDFSourceVariant> betaBase64PDFSource,
+        Action<BetaPlainTextSourceVariant> betaPlainTextSource,
+        Action<BetaContentBlockSourceVariant> betaContentBlockSource,
+        Action<BetaURLPDFSourceVariant> betaUrlpdfSource,
+        Action<BetaFileDocumentSourceVariant> betaFileDocumentSource
+    )
+    {
+        switch (this)
+        {
+            case BetaBase64PDFSourceVariant inner:
+                betaBase64PDFSource(inner);
+                break;
+            case BetaPlainTextSourceVariant inner:
+                betaPlainTextSource(inner);
+                break;
+            case BetaContentBlockSourceVariant inner:
+                betaContentBlockSource(inner);
+                break;
+            case BetaURLPDFSourceVariant inner:
+                betaUrlpdfSource(inner);
+                break;
+            case BetaFileDocumentSourceVariant inner:
+                betaFileDocumentSource(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<BetaBase64PDFSourceVariant, T> betaBase64PDFSource,
+        Func<BetaPlainTextSourceVariant, T> betaPlainTextSource,
+        Func<BetaContentBlockSourceVariant, T> betaContentBlockSource,
+        Func<BetaURLPDFSourceVariant, T> betaUrlpdfSource,
+        Func<BetaFileDocumentSourceVariant, T> betaFileDocumentSource
+    )
+    {
+        return this switch
+        {
+            BetaBase64PDFSourceVariant inner => betaBase64PDFSource(inner),
+            BetaPlainTextSourceVariant inner => betaPlainTextSource(inner),
+            BetaContentBlockSourceVariant inner => betaContentBlockSource(inner),
+            BetaURLPDFSourceVariant inner => betaUrlpdfSource(inner),
+            BetaFileDocumentSourceVariant inner => betaFileDocumentSource(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

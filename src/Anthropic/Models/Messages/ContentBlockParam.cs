@@ -44,6 +44,147 @@ public abstract record class ContentBlockParam
     public static implicit operator ContentBlockParam(WebSearchToolResultBlockParam value) =>
         new WebSearchToolResultBlockParamVariant(value);
 
+    public bool TryPickTextBlockParamVariant(out TextBlockParam? value)
+    {
+        value = (this as TextBlockParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickImageBlockParamVariant(out ImageBlockParam? value)
+    {
+        value = (this as ImageBlockParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickDocumentBlockParamVariant(out DocumentBlockParam? value)
+    {
+        value = (this as DocumentBlockParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickSearchResultBlockParamVariant(out SearchResultBlockParam? value)
+    {
+        value = (this as SearchResultBlockParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickThinkingBlockParamVariant(out ThinkingBlockParam? value)
+    {
+        value = (this as ThinkingBlockParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickRedactedThinkingBlockParamVariant(out RedactedThinkingBlockParam? value)
+    {
+        value = (this as RedactedThinkingBlockParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickToolUseBlockParamVariant(out ToolUseBlockParam? value)
+    {
+        value = (this as ToolUseBlockParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickToolResultBlockParamVariant(out ToolResultBlockParam? value)
+    {
+        value = (this as ToolResultBlockParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickServerToolUseBlockParamVariant(out ServerToolUseBlockParam? value)
+    {
+        value = (this as ServerToolUseBlockParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickWebSearchToolResultBlockParamVariant(
+        out WebSearchToolResultBlockParam? value
+    )
+    {
+        value = (this as WebSearchToolResultBlockParamVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<TextBlockParamVariant> textBlockParam,
+        Action<ImageBlockParamVariant> imageBlockParam,
+        Action<DocumentBlockParamVariant> documentBlockParam,
+        Action<SearchResultBlockParamVariant> searchResultBlockParam,
+        Action<ThinkingBlockParamVariant> thinkingBlockParam,
+        Action<RedactedThinkingBlockParamVariant> redactedThinkingBlockParam,
+        Action<ToolUseBlockParamVariant> toolUseBlockParam,
+        Action<ToolResultBlockParamVariant> toolResultBlockParam,
+        Action<ServerToolUseBlockParamVariant> serverToolUseBlockParam,
+        Action<WebSearchToolResultBlockParamVariant> webSearchToolResultBlockParam
+    )
+    {
+        switch (this)
+        {
+            case TextBlockParamVariant inner:
+                textBlockParam(inner);
+                break;
+            case ImageBlockParamVariant inner:
+                imageBlockParam(inner);
+                break;
+            case DocumentBlockParamVariant inner:
+                documentBlockParam(inner);
+                break;
+            case SearchResultBlockParamVariant inner:
+                searchResultBlockParam(inner);
+                break;
+            case ThinkingBlockParamVariant inner:
+                thinkingBlockParam(inner);
+                break;
+            case RedactedThinkingBlockParamVariant inner:
+                redactedThinkingBlockParam(inner);
+                break;
+            case ToolUseBlockParamVariant inner:
+                toolUseBlockParam(inner);
+                break;
+            case ToolResultBlockParamVariant inner:
+                toolResultBlockParam(inner);
+                break;
+            case ServerToolUseBlockParamVariant inner:
+                serverToolUseBlockParam(inner);
+                break;
+            case WebSearchToolResultBlockParamVariant inner:
+                webSearchToolResultBlockParam(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<TextBlockParamVariant, T> textBlockParam,
+        Func<ImageBlockParamVariant, T> imageBlockParam,
+        Func<DocumentBlockParamVariant, T> documentBlockParam,
+        Func<SearchResultBlockParamVariant, T> searchResultBlockParam,
+        Func<ThinkingBlockParamVariant, T> thinkingBlockParam,
+        Func<RedactedThinkingBlockParamVariant, T> redactedThinkingBlockParam,
+        Func<ToolUseBlockParamVariant, T> toolUseBlockParam,
+        Func<ToolResultBlockParamVariant, T> toolResultBlockParam,
+        Func<ServerToolUseBlockParamVariant, T> serverToolUseBlockParam,
+        Func<WebSearchToolResultBlockParamVariant, T> webSearchToolResultBlockParam
+    )
+    {
+        return this switch
+        {
+            TextBlockParamVariant inner => textBlockParam(inner),
+            ImageBlockParamVariant inner => imageBlockParam(inner),
+            DocumentBlockParamVariant inner => documentBlockParam(inner),
+            SearchResultBlockParamVariant inner => searchResultBlockParam(inner),
+            ThinkingBlockParamVariant inner => thinkingBlockParam(inner),
+            RedactedThinkingBlockParamVariant inner => redactedThinkingBlockParam(inner),
+            ToolUseBlockParamVariant inner => toolUseBlockParam(inner),
+            ToolResultBlockParamVariant inner => toolResultBlockParam(inner),
+            ServerToolUseBlockParamVariant inner => serverToolUseBlockParam(inner),
+            WebSearchToolResultBlockParamVariant inner => webSearchToolResultBlockParam(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

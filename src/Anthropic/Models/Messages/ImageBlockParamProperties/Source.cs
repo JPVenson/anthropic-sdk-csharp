@@ -17,6 +17,49 @@ public abstract record class Source
     public static implicit operator Source(URLImageSource value) =>
         new URLImageSourceVariant(value);
 
+    public bool TryPickBase64ImageSourceVariant(out Base64ImageSource? value)
+    {
+        value = (this as Base64ImageSourceVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickURLImageSourceVariant(out URLImageSource? value)
+    {
+        value = (this as URLImageSourceVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<Base64ImageSourceVariant> base64ImageSource,
+        Action<URLImageSourceVariant> urlImageSource
+    )
+    {
+        switch (this)
+        {
+            case Base64ImageSourceVariant inner:
+                base64ImageSource(inner);
+                break;
+            case URLImageSourceVariant inner:
+                urlImageSource(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<Base64ImageSourceVariant, T> base64ImageSource,
+        Func<URLImageSourceVariant, T> urlImageSource
+    )
+    {
+        return this switch
+        {
+            Base64ImageSourceVariant inner => base64ImageSource(inner),
+            URLImageSourceVariant inner => urlImageSource(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

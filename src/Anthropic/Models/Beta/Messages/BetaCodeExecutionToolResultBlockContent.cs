@@ -19,6 +19,53 @@ public abstract record class BetaCodeExecutionToolResultBlockContent
         BetaCodeExecutionResultBlock value
     ) => new BetaCodeExecutionResultBlockVariant(value);
 
+    public bool TryPickBetaCodeExecutionToolResultErrorVariant(
+        out BetaCodeExecutionToolResultError? value
+    )
+    {
+        value = (this as BetaCodeExecutionToolResultErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaCodeExecutionResultBlockVariant(out BetaCodeExecutionResultBlock? value)
+    {
+        value = (this as BetaCodeExecutionResultBlockVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<BetaCodeExecutionToolResultErrorVariant> betaCodeExecutionToolResultError,
+        Action<BetaCodeExecutionResultBlockVariant> betaCodeExecutionResultBlock
+    )
+    {
+        switch (this)
+        {
+            case BetaCodeExecutionToolResultErrorVariant inner:
+                betaCodeExecutionToolResultError(inner);
+                break;
+            case BetaCodeExecutionResultBlockVariant inner:
+                betaCodeExecutionResultBlock(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<BetaCodeExecutionToolResultErrorVariant, T> betaCodeExecutionToolResultError,
+        Func<BetaCodeExecutionResultBlockVariant, T> betaCodeExecutionResultBlock
+    )
+    {
+        return this switch
+        {
+            BetaCodeExecutionToolResultErrorVariant inner => betaCodeExecutionToolResultError(
+                inner
+            ),
+            BetaCodeExecutionResultBlockVariant inner => betaCodeExecutionResultBlock(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

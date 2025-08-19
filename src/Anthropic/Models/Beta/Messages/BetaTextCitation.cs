@@ -26,6 +26,96 @@ public abstract record class BetaTextCitation
     public static implicit operator BetaTextCitation(BetaCitationSearchResultLocation value) =>
         new BetaCitationSearchResultLocationVariant(value);
 
+    public bool TryPickBetaCitationCharLocationVariant(out BetaCitationCharLocation? value)
+    {
+        value = (this as BetaCitationCharLocationVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaCitationPageLocationVariant(out BetaCitationPageLocation? value)
+    {
+        value = (this as BetaCitationPageLocationVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaCitationContentBlockLocationVariant(
+        out BetaCitationContentBlockLocation? value
+    )
+    {
+        value = (this as BetaCitationContentBlockLocationVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaCitationsWebSearchResultLocationVariant(
+        out BetaCitationsWebSearchResultLocation? value
+    )
+    {
+        value = (this as BetaCitationsWebSearchResultLocationVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaCitationSearchResultLocationVariant(
+        out BetaCitationSearchResultLocation? value
+    )
+    {
+        value = (this as BetaCitationSearchResultLocationVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<BetaCitationCharLocationVariant> betaCitationCharLocation,
+        Action<BetaCitationPageLocationVariant> betaCitationPageLocation,
+        Action<BetaCitationContentBlockLocationVariant> betaCitationContentBlockLocation,
+        Action<BetaCitationsWebSearchResultLocationVariant> betaCitationsWebSearchResultLocation,
+        Action<BetaCitationSearchResultLocationVariant> betaCitationSearchResultLocation
+    )
+    {
+        switch (this)
+        {
+            case BetaCitationCharLocationVariant inner:
+                betaCitationCharLocation(inner);
+                break;
+            case BetaCitationPageLocationVariant inner:
+                betaCitationPageLocation(inner);
+                break;
+            case BetaCitationContentBlockLocationVariant inner:
+                betaCitationContentBlockLocation(inner);
+                break;
+            case BetaCitationsWebSearchResultLocationVariant inner:
+                betaCitationsWebSearchResultLocation(inner);
+                break;
+            case BetaCitationSearchResultLocationVariant inner:
+                betaCitationSearchResultLocation(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<BetaCitationCharLocationVariant, T> betaCitationCharLocation,
+        Func<BetaCitationPageLocationVariant, T> betaCitationPageLocation,
+        Func<BetaCitationContentBlockLocationVariant, T> betaCitationContentBlockLocation,
+        Func<BetaCitationsWebSearchResultLocationVariant, T> betaCitationsWebSearchResultLocation,
+        Func<BetaCitationSearchResultLocationVariant, T> betaCitationSearchResultLocation
+    )
+    {
+        return this switch
+        {
+            BetaCitationCharLocationVariant inner => betaCitationCharLocation(inner),
+            BetaCitationPageLocationVariant inner => betaCitationPageLocation(inner),
+            BetaCitationContentBlockLocationVariant inner => betaCitationContentBlockLocation(
+                inner
+            ),
+            BetaCitationsWebSearchResultLocationVariant inner =>
+                betaCitationsWebSearchResultLocation(inner),
+            BetaCitationSearchResultLocationVariant inner => betaCitationSearchResultLocation(
+                inner
+            ),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

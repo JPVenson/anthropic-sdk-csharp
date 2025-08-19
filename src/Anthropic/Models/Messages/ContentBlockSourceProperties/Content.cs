@@ -16,6 +16,51 @@ public abstract record class Content
     public static implicit operator Content(List<ContentBlockSourceContent> value) =>
         new ContentVariants::ContentBlockSourceContentVariant(value);
 
+    public bool TryPickString(out string? value)
+    {
+        value = (this as ContentVariants::String)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickContentBlockSourceContentVariant(out List<ContentBlockSourceContent>? value)
+    {
+        value = (this as ContentVariants::ContentBlockSourceContentVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<ContentVariants::String> @string,
+        Action<ContentVariants::ContentBlockSourceContentVariant> contentBlockSourceContent
+    )
+    {
+        switch (this)
+        {
+            case ContentVariants::String inner:
+                @string(inner);
+                break;
+            case ContentVariants::ContentBlockSourceContentVariant inner:
+                contentBlockSourceContent(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<ContentVariants::String, T> @string,
+        Func<ContentVariants::ContentBlockSourceContentVariant, T> contentBlockSourceContent
+    )
+    {
+        return this switch
+        {
+            ContentVariants::String inner => @string(inner),
+            ContentVariants::ContentBlockSourceContentVariant inner => contentBlockSourceContent(
+                inner
+            ),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 
@@ -65,7 +110,7 @@ sealed class ContentConverter : JsonConverter<Content>
     {
         object variant = value switch
         {
-            ContentVariants::String(var string1) => string1,
+            ContentVariants::String(var @string) => @string,
             ContentVariants::ContentBlockSourceContentVariant(var contentBlockSourceContent) =>
                 contentBlockSourceContent,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),

@@ -27,6 +27,73 @@ public abstract record class BetaToolChoice
     public static implicit operator BetaToolChoice(BetaToolChoiceNone value) =>
         new BetaToolChoiceNoneVariant(value);
 
+    public bool TryPickBetaToolChoiceAutoVariant(out BetaToolChoiceAuto? value)
+    {
+        value = (this as BetaToolChoiceAutoVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaToolChoiceAnyVariant(out BetaToolChoiceAny? value)
+    {
+        value = (this as BetaToolChoiceAnyVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaToolChoiceToolVariant(out BetaToolChoiceTool? value)
+    {
+        value = (this as BetaToolChoiceToolVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaToolChoiceNoneVariant(out BetaToolChoiceNone? value)
+    {
+        value = (this as BetaToolChoiceNoneVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<BetaToolChoiceAutoVariant> betaToolChoiceAuto,
+        Action<BetaToolChoiceAnyVariant> betaToolChoiceAny,
+        Action<BetaToolChoiceToolVariant> betaToolChoiceTool,
+        Action<BetaToolChoiceNoneVariant> betaToolChoiceNone
+    )
+    {
+        switch (this)
+        {
+            case BetaToolChoiceAutoVariant inner:
+                betaToolChoiceAuto(inner);
+                break;
+            case BetaToolChoiceAnyVariant inner:
+                betaToolChoiceAny(inner);
+                break;
+            case BetaToolChoiceToolVariant inner:
+                betaToolChoiceTool(inner);
+                break;
+            case BetaToolChoiceNoneVariant inner:
+                betaToolChoiceNone(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<BetaToolChoiceAutoVariant, T> betaToolChoiceAuto,
+        Func<BetaToolChoiceAnyVariant, T> betaToolChoiceAny,
+        Func<BetaToolChoiceToolVariant, T> betaToolChoiceTool,
+        Func<BetaToolChoiceNoneVariant, T> betaToolChoiceNone
+    )
+    {
+        return this switch
+        {
+            BetaToolChoiceAutoVariant inner => betaToolChoiceAuto(inner),
+            BetaToolChoiceAnyVariant inner => betaToolChoiceAny(inner),
+            BetaToolChoiceToolVariant inner => betaToolChoiceTool(inner),
+            BetaToolChoiceNoneVariant inner => betaToolChoiceNone(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

@@ -19,6 +19,49 @@ public abstract record class WebSearchToolResultBlockParamContent
         WebSearchToolRequestError value
     ) => new WebSearchToolRequestErrorVariant(value);
 
+    public bool TryPickWebSearchToolResultBlockItem(out List<WebSearchResultBlockParam>? value)
+    {
+        value = (this as WebSearchToolResultBlockItem)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickWebSearchToolRequestErrorVariant(out WebSearchToolRequestError? value)
+    {
+        value = (this as WebSearchToolRequestErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<WebSearchToolResultBlockItem> webSearchToolResultBlockItem,
+        Action<WebSearchToolRequestErrorVariant> webSearchToolRequestError
+    )
+    {
+        switch (this)
+        {
+            case WebSearchToolResultBlockItem inner:
+                webSearchToolResultBlockItem(inner);
+                break;
+            case WebSearchToolRequestErrorVariant inner:
+                webSearchToolRequestError(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<WebSearchToolResultBlockItem, T> webSearchToolResultBlockItem,
+        Func<WebSearchToolRequestErrorVariant, T> webSearchToolRequestError
+    )
+    {
+        return this switch
+        {
+            WebSearchToolResultBlockItem inner => webSearchToolResultBlockItem(inner),
+            WebSearchToolRequestErrorVariant inner => webSearchToolRequestError(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

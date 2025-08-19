@@ -26,6 +26,85 @@ public abstract record class RawContentBlockDelta
     public static implicit operator RawContentBlockDelta(SignatureDelta value) =>
         new SignatureDeltaVariant(value);
 
+    public bool TryPickTextDeltaVariant(out TextDelta? value)
+    {
+        value = (this as TextDeltaVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickInputJSONDeltaVariant(out InputJSONDelta? value)
+    {
+        value = (this as InputJSONDeltaVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickCitationsDeltaVariant(out CitationsDelta? value)
+    {
+        value = (this as CitationsDeltaVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickThinkingDeltaVariant(out ThinkingDelta? value)
+    {
+        value = (this as ThinkingDeltaVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickSignatureDeltaVariant(out SignatureDelta? value)
+    {
+        value = (this as SignatureDeltaVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<TextDeltaVariant> textDelta,
+        Action<InputJSONDeltaVariant> inputJSONDelta,
+        Action<CitationsDeltaVariant> citationsDelta,
+        Action<ThinkingDeltaVariant> thinkingDelta,
+        Action<SignatureDeltaVariant> signatureDelta
+    )
+    {
+        switch (this)
+        {
+            case TextDeltaVariant inner:
+                textDelta(inner);
+                break;
+            case InputJSONDeltaVariant inner:
+                inputJSONDelta(inner);
+                break;
+            case CitationsDeltaVariant inner:
+                citationsDelta(inner);
+                break;
+            case ThinkingDeltaVariant inner:
+                thinkingDelta(inner);
+                break;
+            case SignatureDeltaVariant inner:
+                signatureDelta(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<TextDeltaVariant, T> textDelta,
+        Func<InputJSONDeltaVariant, T> inputJSONDelta,
+        Func<CitationsDeltaVariant, T> citationsDelta,
+        Func<ThinkingDeltaVariant, T> thinkingDelta,
+        Func<SignatureDeltaVariant, T> signatureDelta
+    )
+    {
+        return this switch
+        {
+            TextDeltaVariant inner => textDelta(inner),
+            InputJSONDeltaVariant inner => inputJSONDelta(inner),
+            CitationsDeltaVariant inner => citationsDelta(inner),
+            ThinkingDeltaVariant inner => thinkingDelta(inner),
+            SignatureDeltaVariant inner => signatureDelta(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

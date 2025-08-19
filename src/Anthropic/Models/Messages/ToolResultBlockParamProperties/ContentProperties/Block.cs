@@ -19,6 +19,61 @@ public abstract record class Block
     public static implicit operator Block(SearchResultBlockParam value) =>
         new SearchResultBlockParamVariant(value);
 
+    public bool TryPickTextBlockParamVariant(out TextBlockParam? value)
+    {
+        value = (this as TextBlockParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickImageBlockParamVariant(out ImageBlockParam? value)
+    {
+        value = (this as ImageBlockParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickSearchResultBlockParamVariant(out SearchResultBlockParam? value)
+    {
+        value = (this as SearchResultBlockParamVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<TextBlockParamVariant> textBlockParam,
+        Action<ImageBlockParamVariant> imageBlockParam,
+        Action<SearchResultBlockParamVariant> searchResultBlockParam
+    )
+    {
+        switch (this)
+        {
+            case TextBlockParamVariant inner:
+                textBlockParam(inner);
+                break;
+            case ImageBlockParamVariant inner:
+                imageBlockParam(inner);
+                break;
+            case SearchResultBlockParamVariant inner:
+                searchResultBlockParam(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<TextBlockParamVariant, T> textBlockParam,
+        Func<ImageBlockParamVariant, T> imageBlockParam,
+        Func<SearchResultBlockParamVariant, T> searchResultBlockParam
+    )
+    {
+        return this switch
+        {
+            TextBlockParamVariant inner => textBlockParam(inner),
+            ImageBlockParamVariant inner => imageBlockParam(inner),
+            SearchResultBlockParamVariant inner => searchResultBlockParam(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

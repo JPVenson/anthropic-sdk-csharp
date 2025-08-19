@@ -37,6 +37,133 @@ public abstract record class BetaError
     public static implicit operator BetaError(BetaOverloadedError value) =>
         new BetaOverloadedErrorVariant(value);
 
+    public bool TryPickBetaInvalidRequestErrorVariant(out BetaInvalidRequestError? value)
+    {
+        value = (this as BetaInvalidRequestErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaAuthenticationErrorVariant(out BetaAuthenticationError? value)
+    {
+        value = (this as BetaAuthenticationErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaBillingErrorVariant(out BetaBillingError? value)
+    {
+        value = (this as BetaBillingErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaPermissionErrorVariant(out BetaPermissionError? value)
+    {
+        value = (this as BetaPermissionErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaNotFoundErrorVariant(out BetaNotFoundError? value)
+    {
+        value = (this as BetaNotFoundErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaRateLimitErrorVariant(out BetaRateLimitError? value)
+    {
+        value = (this as BetaRateLimitErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaGatewayTimeoutErrorVariant(out BetaGatewayTimeoutError? value)
+    {
+        value = (this as BetaGatewayTimeoutErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaAPIErrorVariant(out BetaAPIError? value)
+    {
+        value = (this as BetaAPIErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaOverloadedErrorVariant(out BetaOverloadedError? value)
+    {
+        value = (this as BetaOverloadedErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<BetaInvalidRequestErrorVariant> betaInvalidRequestError,
+        Action<BetaAuthenticationErrorVariant> betaAuthenticationError,
+        Action<BetaBillingErrorVariant> betaBillingError,
+        Action<BetaPermissionErrorVariant> betaPermissionError,
+        Action<BetaNotFoundErrorVariant> betaNotFoundError,
+        Action<BetaRateLimitErrorVariant> betaRateLimitError,
+        Action<BetaGatewayTimeoutErrorVariant> betaGatewayTimeoutError,
+        Action<BetaAPIErrorVariant> betaAPIError,
+        Action<BetaOverloadedErrorVariant> betaOverloadedError
+    )
+    {
+        switch (this)
+        {
+            case BetaInvalidRequestErrorVariant inner:
+                betaInvalidRequestError(inner);
+                break;
+            case BetaAuthenticationErrorVariant inner:
+                betaAuthenticationError(inner);
+                break;
+            case BetaBillingErrorVariant inner:
+                betaBillingError(inner);
+                break;
+            case BetaPermissionErrorVariant inner:
+                betaPermissionError(inner);
+                break;
+            case BetaNotFoundErrorVariant inner:
+                betaNotFoundError(inner);
+                break;
+            case BetaRateLimitErrorVariant inner:
+                betaRateLimitError(inner);
+                break;
+            case BetaGatewayTimeoutErrorVariant inner:
+                betaGatewayTimeoutError(inner);
+                break;
+            case BetaAPIErrorVariant inner:
+                betaAPIError(inner);
+                break;
+            case BetaOverloadedErrorVariant inner:
+                betaOverloadedError(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<BetaInvalidRequestErrorVariant, T> betaInvalidRequestError,
+        Func<BetaAuthenticationErrorVariant, T> betaAuthenticationError,
+        Func<BetaBillingErrorVariant, T> betaBillingError,
+        Func<BetaPermissionErrorVariant, T> betaPermissionError,
+        Func<BetaNotFoundErrorVariant, T> betaNotFoundError,
+        Func<BetaRateLimitErrorVariant, T> betaRateLimitError,
+        Func<BetaGatewayTimeoutErrorVariant, T> betaGatewayTimeoutError,
+        Func<BetaAPIErrorVariant, T> betaAPIError,
+        Func<BetaOverloadedErrorVariant, T> betaOverloadedError
+    )
+    {
+        return this switch
+        {
+            BetaInvalidRequestErrorVariant inner => betaInvalidRequestError(inner),
+            BetaAuthenticationErrorVariant inner => betaAuthenticationError(inner),
+            BetaBillingErrorVariant inner => betaBillingError(inner),
+            BetaPermissionErrorVariant inner => betaPermissionError(inner),
+            BetaNotFoundErrorVariant inner => betaNotFoundError(inner),
+            BetaRateLimitErrorVariant inner => betaRateLimitError(inner),
+            BetaGatewayTimeoutErrorVariant inner => betaGatewayTimeoutError(inner),
+            BetaAPIErrorVariant inner => betaAPIError(inner),
+            BetaOverloadedErrorVariant inner => betaOverloadedError(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

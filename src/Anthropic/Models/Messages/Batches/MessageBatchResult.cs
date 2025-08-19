@@ -30,6 +30,73 @@ public abstract record class MessageBatchResult
     public static implicit operator MessageBatchResult(MessageBatchExpiredResult value) =>
         new MessageBatchExpiredResultVariant(value);
 
+    public bool TryPickMessageBatchSucceededResultVariant(out MessageBatchSucceededResult? value)
+    {
+        value = (this as MessageBatchSucceededResultVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickMessageBatchErroredResultVariant(out MessageBatchErroredResult? value)
+    {
+        value = (this as MessageBatchErroredResultVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickMessageBatchCanceledResultVariant(out MessageBatchCanceledResult? value)
+    {
+        value = (this as MessageBatchCanceledResultVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickMessageBatchExpiredResultVariant(out MessageBatchExpiredResult? value)
+    {
+        value = (this as MessageBatchExpiredResultVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<MessageBatchSucceededResultVariant> messageBatchSucceededResult,
+        Action<MessageBatchErroredResultVariant> messageBatchErroredResult,
+        Action<MessageBatchCanceledResultVariant> messageBatchCanceledResult,
+        Action<MessageBatchExpiredResultVariant> messageBatchExpiredResult
+    )
+    {
+        switch (this)
+        {
+            case MessageBatchSucceededResultVariant inner:
+                messageBatchSucceededResult(inner);
+                break;
+            case MessageBatchErroredResultVariant inner:
+                messageBatchErroredResult(inner);
+                break;
+            case MessageBatchCanceledResultVariant inner:
+                messageBatchCanceledResult(inner);
+                break;
+            case MessageBatchExpiredResultVariant inner:
+                messageBatchExpiredResult(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<MessageBatchSucceededResultVariant, T> messageBatchSucceededResult,
+        Func<MessageBatchErroredResultVariant, T> messageBatchErroredResult,
+        Func<MessageBatchCanceledResultVariant, T> messageBatchCanceledResult,
+        Func<MessageBatchExpiredResultVariant, T> messageBatchExpiredResult
+    )
+    {
+        return this switch
+        {
+            MessageBatchSucceededResultVariant inner => messageBatchSucceededResult(inner),
+            MessageBatchErroredResultVariant inner => messageBatchErroredResult(inner),
+            MessageBatchCanceledResultVariant inner => messageBatchCanceledResult(inner),
+            MessageBatchExpiredResultVariant inner => messageBatchExpiredResult(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

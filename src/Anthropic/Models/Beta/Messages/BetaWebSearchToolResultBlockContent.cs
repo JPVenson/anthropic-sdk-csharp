@@ -19,6 +19,49 @@ public abstract record class BetaWebSearchToolResultBlockContent
         List<BetaWebSearchResultBlock> value
     ) => new BetaWebSearchResultBlocks(value);
 
+    public bool TryPickBetaWebSearchToolResultErrorVariant(out BetaWebSearchToolResultError? value)
+    {
+        value = (this as BetaWebSearchToolResultErrorVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaWebSearchResultBlocks(out List<BetaWebSearchResultBlock>? value)
+    {
+        value = (this as BetaWebSearchResultBlocks)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<BetaWebSearchToolResultErrorVariant> betaWebSearchToolResultError,
+        Action<BetaWebSearchResultBlocks> betaWebSearchResultBlocks
+    )
+    {
+        switch (this)
+        {
+            case BetaWebSearchToolResultErrorVariant inner:
+                betaWebSearchToolResultError(inner);
+                break;
+            case BetaWebSearchResultBlocks inner:
+                betaWebSearchResultBlocks(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<BetaWebSearchToolResultErrorVariant, T> betaWebSearchToolResultError,
+        Func<BetaWebSearchResultBlocks, T> betaWebSearchResultBlocks
+    )
+    {
+        return this switch
+        {
+            BetaWebSearchToolResultErrorVariant inner => betaWebSearchToolResultError(inner),
+            BetaWebSearchResultBlocks inner => betaWebSearchResultBlocks(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

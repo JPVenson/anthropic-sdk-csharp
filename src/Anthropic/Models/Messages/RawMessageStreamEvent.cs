@@ -29,6 +29,97 @@ public abstract record class RawMessageStreamEvent
     public static implicit operator RawMessageStreamEvent(RawContentBlockStopEvent value) =>
         new RawContentBlockStopEventVariant(value);
 
+    public bool TryPickRawMessageStartEventVariant(out RawMessageStartEvent? value)
+    {
+        value = (this as RawMessageStartEventVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickRawMessageDeltaEventVariant(out RawMessageDeltaEvent? value)
+    {
+        value = (this as RawMessageDeltaEventVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickRawMessageStopEventVariant(out RawMessageStopEvent? value)
+    {
+        value = (this as RawMessageStopEventVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickRawContentBlockStartEventVariant(out RawContentBlockStartEvent? value)
+    {
+        value = (this as RawContentBlockStartEventVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickRawContentBlockDeltaEventVariant(out RawContentBlockDeltaEvent? value)
+    {
+        value = (this as RawContentBlockDeltaEventVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickRawContentBlockStopEventVariant(out RawContentBlockStopEvent? value)
+    {
+        value = (this as RawContentBlockStopEventVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<RawMessageStartEventVariant> rawMessageStartEvent,
+        Action<RawMessageDeltaEventVariant> rawMessageDeltaEvent,
+        Action<RawMessageStopEventVariant> rawMessageStopEvent,
+        Action<RawContentBlockStartEventVariant> rawContentBlockStartEvent,
+        Action<RawContentBlockDeltaEventVariant> rawContentBlockDeltaEvent,
+        Action<RawContentBlockStopEventVariant> rawContentBlockStopEvent
+    )
+    {
+        switch (this)
+        {
+            case RawMessageStartEventVariant inner:
+                rawMessageStartEvent(inner);
+                break;
+            case RawMessageDeltaEventVariant inner:
+                rawMessageDeltaEvent(inner);
+                break;
+            case RawMessageStopEventVariant inner:
+                rawMessageStopEvent(inner);
+                break;
+            case RawContentBlockStartEventVariant inner:
+                rawContentBlockStartEvent(inner);
+                break;
+            case RawContentBlockDeltaEventVariant inner:
+                rawContentBlockDeltaEvent(inner);
+                break;
+            case RawContentBlockStopEventVariant inner:
+                rawContentBlockStopEvent(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<RawMessageStartEventVariant, T> rawMessageStartEvent,
+        Func<RawMessageDeltaEventVariant, T> rawMessageDeltaEvent,
+        Func<RawMessageStopEventVariant, T> rawMessageStopEvent,
+        Func<RawContentBlockStartEventVariant, T> rawContentBlockStartEvent,
+        Func<RawContentBlockDeltaEventVariant, T> rawContentBlockDeltaEvent,
+        Func<RawContentBlockStopEventVariant, T> rawContentBlockStopEvent
+    )
+    {
+        return this switch
+        {
+            RawMessageStartEventVariant inner => rawMessageStartEvent(inner),
+            RawMessageDeltaEventVariant inner => rawMessageDeltaEvent(inner),
+            RawMessageStopEventVariant inner => rawMessageStopEvent(inner),
+            RawContentBlockStartEventVariant inner => rawContentBlockStartEvent(inner),
+            RawContentBlockDeltaEventVariant inner => rawContentBlockDeltaEvent(inner),
+            RawContentBlockStopEventVariant inner => rawContentBlockStopEvent(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

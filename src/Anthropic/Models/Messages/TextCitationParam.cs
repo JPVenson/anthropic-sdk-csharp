@@ -26,6 +26,96 @@ public abstract record class TextCitationParam
     public static implicit operator TextCitationParam(CitationSearchResultLocationParam value) =>
         new CitationSearchResultLocationParamVariant(value);
 
+    public bool TryPickCitationCharLocationParamVariant(out CitationCharLocationParam? value)
+    {
+        value = (this as CitationCharLocationParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickCitationPageLocationParamVariant(out CitationPageLocationParam? value)
+    {
+        value = (this as CitationPageLocationParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickCitationContentBlockLocationParamVariant(
+        out CitationContentBlockLocationParam? value
+    )
+    {
+        value = (this as CitationContentBlockLocationParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickCitationWebSearchResultLocationParamVariant(
+        out CitationWebSearchResultLocationParam? value
+    )
+    {
+        value = (this as CitationWebSearchResultLocationParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickCitationSearchResultLocationParamVariant(
+        out CitationSearchResultLocationParam? value
+    )
+    {
+        value = (this as CitationSearchResultLocationParamVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<CitationCharLocationParamVariant> citationCharLocationParam,
+        Action<CitationPageLocationParamVariant> citationPageLocationParam,
+        Action<CitationContentBlockLocationParamVariant> citationContentBlockLocationParam,
+        Action<CitationWebSearchResultLocationParamVariant> citationWebSearchResultLocationParam,
+        Action<CitationSearchResultLocationParamVariant> citationSearchResultLocationParam
+    )
+    {
+        switch (this)
+        {
+            case CitationCharLocationParamVariant inner:
+                citationCharLocationParam(inner);
+                break;
+            case CitationPageLocationParamVariant inner:
+                citationPageLocationParam(inner);
+                break;
+            case CitationContentBlockLocationParamVariant inner:
+                citationContentBlockLocationParam(inner);
+                break;
+            case CitationWebSearchResultLocationParamVariant inner:
+                citationWebSearchResultLocationParam(inner);
+                break;
+            case CitationSearchResultLocationParamVariant inner:
+                citationSearchResultLocationParam(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<CitationCharLocationParamVariant, T> citationCharLocationParam,
+        Func<CitationPageLocationParamVariant, T> citationPageLocationParam,
+        Func<CitationContentBlockLocationParamVariant, T> citationContentBlockLocationParam,
+        Func<CitationWebSearchResultLocationParamVariant, T> citationWebSearchResultLocationParam,
+        Func<CitationSearchResultLocationParamVariant, T> citationSearchResultLocationParam
+    )
+    {
+        return this switch
+        {
+            CitationCharLocationParamVariant inner => citationCharLocationParam(inner),
+            CitationPageLocationParamVariant inner => citationPageLocationParam(inner),
+            CitationContentBlockLocationParamVariant inner => citationContentBlockLocationParam(
+                inner
+            ),
+            CitationWebSearchResultLocationParamVariant inner =>
+                citationWebSearchResultLocationParam(inner),
+            CitationSearchResultLocationParamVariant inner => citationSearchResultLocationParam(
+                inner
+            ),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

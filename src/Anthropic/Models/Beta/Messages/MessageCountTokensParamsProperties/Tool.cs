@@ -43,6 +43,159 @@ public abstract record class Tool
     public static implicit operator Tool(BetaWebSearchTool20250305 value) =>
         new BetaWebSearchTool20250305Variant(value);
 
+    public bool TryPickBetaToolVariant(out BetaTool? value)
+    {
+        value = (this as BetaToolVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaToolBash20241022Variant(out BetaToolBash20241022? value)
+    {
+        value = (this as BetaToolBash20241022Variant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaToolBash20250124Variant(out BetaToolBash20250124? value)
+    {
+        value = (this as BetaToolBash20250124Variant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaCodeExecutionTool20250522Variant(
+        out BetaCodeExecutionTool20250522? value
+    )
+    {
+        value = (this as BetaCodeExecutionTool20250522Variant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaToolComputerUse20241022Variant(out BetaToolComputerUse20241022? value)
+    {
+        value = (this as BetaToolComputerUse20241022Variant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaToolComputerUse20250124Variant(out BetaToolComputerUse20250124? value)
+    {
+        value = (this as BetaToolComputerUse20250124Variant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaToolTextEditor20241022Variant(out BetaToolTextEditor20241022? value)
+    {
+        value = (this as BetaToolTextEditor20241022Variant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaToolTextEditor20250124Variant(out BetaToolTextEditor20250124? value)
+    {
+        value = (this as BetaToolTextEditor20250124Variant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaToolTextEditor20250429Variant(out BetaToolTextEditor20250429? value)
+    {
+        value = (this as BetaToolTextEditor20250429Variant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaToolTextEditor20250728Variant(out BetaToolTextEditor20250728? value)
+    {
+        value = (this as BetaToolTextEditor20250728Variant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaWebSearchTool20250305Variant(out BetaWebSearchTool20250305? value)
+    {
+        value = (this as BetaWebSearchTool20250305Variant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<BetaToolVariant> betaTool,
+        Action<BetaToolBash20241022Variant> betaToolBash20241022,
+        Action<BetaToolBash20250124Variant> betaToolBash20250124,
+        Action<BetaCodeExecutionTool20250522Variant> betaCodeExecutionTool20250522,
+        Action<BetaToolComputerUse20241022Variant> betaToolComputerUse20241022,
+        Action<BetaToolComputerUse20250124Variant> betaToolComputerUse20250124,
+        Action<BetaToolTextEditor20241022Variant> betaToolTextEditor20241022,
+        Action<BetaToolTextEditor20250124Variant> betaToolTextEditor20250124,
+        Action<BetaToolTextEditor20250429Variant> betaToolTextEditor20250429,
+        Action<BetaToolTextEditor20250728Variant> betaToolTextEditor20250728,
+        Action<BetaWebSearchTool20250305Variant> betaWebSearchTool20250305
+    )
+    {
+        switch (this)
+        {
+            case BetaToolVariant inner:
+                betaTool(inner);
+                break;
+            case BetaToolBash20241022Variant inner:
+                betaToolBash20241022(inner);
+                break;
+            case BetaToolBash20250124Variant inner:
+                betaToolBash20250124(inner);
+                break;
+            case BetaCodeExecutionTool20250522Variant inner:
+                betaCodeExecutionTool20250522(inner);
+                break;
+            case BetaToolComputerUse20241022Variant inner:
+                betaToolComputerUse20241022(inner);
+                break;
+            case BetaToolComputerUse20250124Variant inner:
+                betaToolComputerUse20250124(inner);
+                break;
+            case BetaToolTextEditor20241022Variant inner:
+                betaToolTextEditor20241022(inner);
+                break;
+            case BetaToolTextEditor20250124Variant inner:
+                betaToolTextEditor20250124(inner);
+                break;
+            case BetaToolTextEditor20250429Variant inner:
+                betaToolTextEditor20250429(inner);
+                break;
+            case BetaToolTextEditor20250728Variant inner:
+                betaToolTextEditor20250728(inner);
+                break;
+            case BetaWebSearchTool20250305Variant inner:
+                betaWebSearchTool20250305(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<BetaToolVariant, T> betaTool,
+        Func<BetaToolBash20241022Variant, T> betaToolBash20241022,
+        Func<BetaToolBash20250124Variant, T> betaToolBash20250124,
+        Func<BetaCodeExecutionTool20250522Variant, T> betaCodeExecutionTool20250522,
+        Func<BetaToolComputerUse20241022Variant, T> betaToolComputerUse20241022,
+        Func<BetaToolComputerUse20250124Variant, T> betaToolComputerUse20250124,
+        Func<BetaToolTextEditor20241022Variant, T> betaToolTextEditor20241022,
+        Func<BetaToolTextEditor20250124Variant, T> betaToolTextEditor20250124,
+        Func<BetaToolTextEditor20250429Variant, T> betaToolTextEditor20250429,
+        Func<BetaToolTextEditor20250728Variant, T> betaToolTextEditor20250728,
+        Func<BetaWebSearchTool20250305Variant, T> betaWebSearchTool20250305
+    )
+    {
+        return this switch
+        {
+            BetaToolVariant inner => betaTool(inner),
+            BetaToolBash20241022Variant inner => betaToolBash20241022(inner),
+            BetaToolBash20250124Variant inner => betaToolBash20250124(inner),
+            BetaCodeExecutionTool20250522Variant inner => betaCodeExecutionTool20250522(inner),
+            BetaToolComputerUse20241022Variant inner => betaToolComputerUse20241022(inner),
+            BetaToolComputerUse20250124Variant inner => betaToolComputerUse20250124(inner),
+            BetaToolTextEditor20241022Variant inner => betaToolTextEditor20241022(inner),
+            BetaToolTextEditor20250124Variant inner => betaToolTextEditor20250124(inner),
+            BetaToolTextEditor20250429Variant inner => betaToolTextEditor20250429(inner),
+            BetaToolTextEditor20250728Variant inner => betaToolTextEditor20250728(inner),
+            BetaWebSearchTool20250305Variant inner => betaWebSearchTool20250305(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

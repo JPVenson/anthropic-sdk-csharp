@@ -17,6 +17,49 @@ public abstract record class BetaContentBlockSourceContent
     public static implicit operator BetaContentBlockSourceContent(BetaImageBlockParam value) =>
         new BetaImageBlockParamVariant(value);
 
+    public bool TryPickBetaTextBlockParamVariant(out BetaTextBlockParam? value)
+    {
+        value = (this as BetaTextBlockParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaImageBlockParamVariant(out BetaImageBlockParam? value)
+    {
+        value = (this as BetaImageBlockParamVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<BetaTextBlockParamVariant> betaTextBlockParam,
+        Action<BetaImageBlockParamVariant> betaImageBlockParam
+    )
+    {
+        switch (this)
+        {
+            case BetaTextBlockParamVariant inner:
+                betaTextBlockParam(inner);
+                break;
+            case BetaImageBlockParamVariant inner:
+                betaImageBlockParam(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<BetaTextBlockParamVariant, T> betaTextBlockParam,
+        Func<BetaImageBlockParamVariant, T> betaImageBlockParam
+    )
+    {
+        return this switch
+        {
+            BetaTextBlockParamVariant inner => betaTextBlockParam(inner),
+            BetaImageBlockParamVariant inner => betaImageBlockParam(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

@@ -27,6 +27,49 @@ public abstract record class BetaThinkingConfigParam
     public static implicit operator BetaThinkingConfigParam(BetaThinkingConfigDisabled value) =>
         new BetaThinkingConfigDisabledVariant(value);
 
+    public bool TryPickBetaThinkingConfigEnabledVariant(out BetaThinkingConfigEnabled? value)
+    {
+        value = (this as BetaThinkingConfigEnabledVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaThinkingConfigDisabledVariant(out BetaThinkingConfigDisabled? value)
+    {
+        value = (this as BetaThinkingConfigDisabledVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<BetaThinkingConfigEnabledVariant> betaThinkingConfigEnabled,
+        Action<BetaThinkingConfigDisabledVariant> betaThinkingConfigDisabled
+    )
+    {
+        switch (this)
+        {
+            case BetaThinkingConfigEnabledVariant inner:
+                betaThinkingConfigEnabled(inner);
+                break;
+            case BetaThinkingConfigDisabledVariant inner:
+                betaThinkingConfigDisabled(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<BetaThinkingConfigEnabledVariant, T> betaThinkingConfigEnabled,
+        Func<BetaThinkingConfigDisabledVariant, T> betaThinkingConfigDisabled
+    )
+    {
+        return this switch
+        {
+            BetaThinkingConfigEnabledVariant inner => betaThinkingConfigEnabled(inner),
+            BetaThinkingConfigDisabledVariant inner => betaThinkingConfigDisabled(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

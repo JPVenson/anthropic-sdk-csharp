@@ -17,6 +17,49 @@ public abstract record class ContentBlockSourceContent
     public static implicit operator ContentBlockSourceContent(ImageBlockParam value) =>
         new ImageBlockParamVariant(value);
 
+    public bool TryPickTextBlockParamVariant(out TextBlockParam? value)
+    {
+        value = (this as TextBlockParamVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickImageBlockParamVariant(out ImageBlockParam? value)
+    {
+        value = (this as ImageBlockParamVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<TextBlockParamVariant> textBlockParam,
+        Action<ImageBlockParamVariant> imageBlockParam
+    )
+    {
+        switch (this)
+        {
+            case TextBlockParamVariant inner:
+                textBlockParam(inner);
+                break;
+            case ImageBlockParamVariant inner:
+                imageBlockParam(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<TextBlockParamVariant, T> textBlockParam,
+        Func<ImageBlockParamVariant, T> imageBlockParam
+    )
+    {
+        return this switch
+        {
+            TextBlockParamVariant inner => textBlockParam(inner),
+            ImageBlockParamVariant inner => imageBlockParam(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

@@ -29,6 +29,97 @@ public abstract record class ContentBlockModel
     public static implicit operator ContentBlockModel(WebSearchToolResultBlock value) =>
         new WebSearchToolResultBlockVariant(value);
 
+    public bool TryPickTextBlockVariant(out TextBlock? value)
+    {
+        value = (this as TextBlockVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickThinkingBlockVariant(out ThinkingBlock? value)
+    {
+        value = (this as ThinkingBlockVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickRedactedThinkingBlockVariant(out RedactedThinkingBlock? value)
+    {
+        value = (this as RedactedThinkingBlockVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickToolUseBlockVariant(out ToolUseBlock? value)
+    {
+        value = (this as ToolUseBlockVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickServerToolUseBlockVariant(out ServerToolUseBlock? value)
+    {
+        value = (this as ServerToolUseBlockVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickWebSearchToolResultBlockVariant(out WebSearchToolResultBlock? value)
+    {
+        value = (this as WebSearchToolResultBlockVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<TextBlockVariant> textBlock,
+        Action<ThinkingBlockVariant> thinkingBlock,
+        Action<RedactedThinkingBlockVariant> redactedThinkingBlock,
+        Action<ToolUseBlockVariant> toolUseBlock,
+        Action<ServerToolUseBlockVariant> serverToolUseBlock,
+        Action<WebSearchToolResultBlockVariant> webSearchToolResultBlock
+    )
+    {
+        switch (this)
+        {
+            case TextBlockVariant inner:
+                textBlock(inner);
+                break;
+            case ThinkingBlockVariant inner:
+                thinkingBlock(inner);
+                break;
+            case RedactedThinkingBlockVariant inner:
+                redactedThinkingBlock(inner);
+                break;
+            case ToolUseBlockVariant inner:
+                toolUseBlock(inner);
+                break;
+            case ServerToolUseBlockVariant inner:
+                serverToolUseBlock(inner);
+                break;
+            case WebSearchToolResultBlockVariant inner:
+                webSearchToolResultBlock(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<TextBlockVariant, T> textBlock,
+        Func<ThinkingBlockVariant, T> thinkingBlock,
+        Func<RedactedThinkingBlockVariant, T> redactedThinkingBlock,
+        Func<ToolUseBlockVariant, T> toolUseBlock,
+        Func<ServerToolUseBlockVariant, T> serverToolUseBlock,
+        Func<WebSearchToolResultBlockVariant, T> webSearchToolResultBlock
+    )
+    {
+        return this switch
+        {
+            TextBlockVariant inner => textBlock(inner),
+            ThinkingBlockVariant inner => thinkingBlock(inner),
+            RedactedThinkingBlockVariant inner => redactedThinkingBlock(inner),
+            ToolUseBlockVariant inner => toolUseBlock(inner),
+            ServerToolUseBlockVariant inner => serverToolUseBlock(inner),
+            WebSearchToolResultBlockVariant inner => webSearchToolResultBlock(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

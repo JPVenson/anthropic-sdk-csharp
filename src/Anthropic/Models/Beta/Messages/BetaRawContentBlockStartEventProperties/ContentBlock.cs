@@ -44,6 +44,149 @@ public abstract record class ContentBlock
     public static implicit operator ContentBlock(BetaContainerUploadBlock value) =>
         new BetaContainerUploadBlockVariant(value);
 
+    public bool TryPickBetaTextBlockVariant(out BetaTextBlock? value)
+    {
+        value = (this as BetaTextBlockVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaThinkingBlockVariant(out BetaThinkingBlock? value)
+    {
+        value = (this as BetaThinkingBlockVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaRedactedThinkingBlockVariant(out BetaRedactedThinkingBlock? value)
+    {
+        value = (this as BetaRedactedThinkingBlockVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaToolUseBlockVariant(out BetaToolUseBlock? value)
+    {
+        value = (this as BetaToolUseBlockVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaServerToolUseBlockVariant(out BetaServerToolUseBlock? value)
+    {
+        value = (this as BetaServerToolUseBlockVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaWebSearchToolResultBlockVariant(out BetaWebSearchToolResultBlock? value)
+    {
+        value = (this as BetaWebSearchToolResultBlockVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaCodeExecutionToolResultBlockVariant(
+        out BetaCodeExecutionToolResultBlock? value
+    )
+    {
+        value = (this as BetaCodeExecutionToolResultBlockVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaMCPToolUseBlockVariant(out BetaMCPToolUseBlock? value)
+    {
+        value = (this as BetaMCPToolUseBlockVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaMCPToolResultBlockVariant(out BetaMCPToolResultBlock? value)
+    {
+        value = (this as BetaMCPToolResultBlockVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaContainerUploadBlockVariant(out BetaContainerUploadBlock? value)
+    {
+        value = (this as BetaContainerUploadBlockVariant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<BetaTextBlockVariant> betaTextBlock,
+        Action<BetaThinkingBlockVariant> betaThinkingBlock,
+        Action<BetaRedactedThinkingBlockVariant> betaRedactedThinkingBlock,
+        Action<BetaToolUseBlockVariant> betaToolUseBlock,
+        Action<BetaServerToolUseBlockVariant> betaServerToolUseBlock,
+        Action<BetaWebSearchToolResultBlockVariant> betaWebSearchToolResultBlock,
+        Action<BetaCodeExecutionToolResultBlockVariant> betaCodeExecutionToolResultBlock,
+        Action<BetaMCPToolUseBlockVariant> betaMCPToolUseBlock,
+        Action<BetaMCPToolResultBlockVariant> betaMCPToolResultBlock,
+        Action<BetaContainerUploadBlockVariant> betaContainerUploadBlock
+    )
+    {
+        switch (this)
+        {
+            case BetaTextBlockVariant inner:
+                betaTextBlock(inner);
+                break;
+            case BetaThinkingBlockVariant inner:
+                betaThinkingBlock(inner);
+                break;
+            case BetaRedactedThinkingBlockVariant inner:
+                betaRedactedThinkingBlock(inner);
+                break;
+            case BetaToolUseBlockVariant inner:
+                betaToolUseBlock(inner);
+                break;
+            case BetaServerToolUseBlockVariant inner:
+                betaServerToolUseBlock(inner);
+                break;
+            case BetaWebSearchToolResultBlockVariant inner:
+                betaWebSearchToolResultBlock(inner);
+                break;
+            case BetaCodeExecutionToolResultBlockVariant inner:
+                betaCodeExecutionToolResultBlock(inner);
+                break;
+            case BetaMCPToolUseBlockVariant inner:
+                betaMCPToolUseBlock(inner);
+                break;
+            case BetaMCPToolResultBlockVariant inner:
+                betaMCPToolResultBlock(inner);
+                break;
+            case BetaContainerUploadBlockVariant inner:
+                betaContainerUploadBlock(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<BetaTextBlockVariant, T> betaTextBlock,
+        Func<BetaThinkingBlockVariant, T> betaThinkingBlock,
+        Func<BetaRedactedThinkingBlockVariant, T> betaRedactedThinkingBlock,
+        Func<BetaToolUseBlockVariant, T> betaToolUseBlock,
+        Func<BetaServerToolUseBlockVariant, T> betaServerToolUseBlock,
+        Func<BetaWebSearchToolResultBlockVariant, T> betaWebSearchToolResultBlock,
+        Func<BetaCodeExecutionToolResultBlockVariant, T> betaCodeExecutionToolResultBlock,
+        Func<BetaMCPToolUseBlockVariant, T> betaMCPToolUseBlock,
+        Func<BetaMCPToolResultBlockVariant, T> betaMCPToolResultBlock,
+        Func<BetaContainerUploadBlockVariant, T> betaContainerUploadBlock
+    )
+    {
+        return this switch
+        {
+            BetaTextBlockVariant inner => betaTextBlock(inner),
+            BetaThinkingBlockVariant inner => betaThinkingBlock(inner),
+            BetaRedactedThinkingBlockVariant inner => betaRedactedThinkingBlock(inner),
+            BetaToolUseBlockVariant inner => betaToolUseBlock(inner),
+            BetaServerToolUseBlockVariant inner => betaServerToolUseBlock(inner),
+            BetaWebSearchToolResultBlockVariant inner => betaWebSearchToolResultBlock(inner),
+            BetaCodeExecutionToolResultBlockVariant inner => betaCodeExecutionToolResultBlock(
+                inner
+            ),
+            BetaMCPToolUseBlockVariant inner => betaMCPToolUseBlock(inner),
+            BetaMCPToolResultBlockVariant inner => betaMCPToolResultBlock(inner),
+            BetaContainerUploadBlockVariant inner => betaContainerUploadBlock(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 

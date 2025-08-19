@@ -28,6 +28,97 @@ public abstract record class MessageCountTokensTool
     public static implicit operator MessageCountTokensTool(WebSearchTool20250305 value) =>
         new WebSearchTool20250305Variant(value);
 
+    public bool TryPickToolVariant(out Tool? value)
+    {
+        value = (this as ToolVariant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickToolBash20250124Variant(out ToolBash20250124? value)
+    {
+        value = (this as ToolBash20250124Variant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickToolTextEditor20250124Variant(out ToolTextEditor20250124? value)
+    {
+        value = (this as ToolTextEditor20250124Variant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickToolTextEditor20250429Variant(out ToolTextEditor20250429? value)
+    {
+        value = (this as ToolTextEditor20250429Variant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickToolTextEditor20250728Variant(out ToolTextEditor20250728? value)
+    {
+        value = (this as ToolTextEditor20250728Variant)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickWebSearchTool20250305Variant(out WebSearchTool20250305? value)
+    {
+        value = (this as WebSearchTool20250305Variant)?.Value;
+        return value != null;
+    }
+
+    public void Switch(
+        Action<ToolVariant> tool,
+        Action<ToolBash20250124Variant> toolBash20250124,
+        Action<ToolTextEditor20250124Variant> toolTextEditor20250124,
+        Action<ToolTextEditor20250429Variant> toolTextEditor20250429,
+        Action<ToolTextEditor20250728Variant> toolTextEditor20250728,
+        Action<WebSearchTool20250305Variant> webSearchTool20250305
+    )
+    {
+        switch (this)
+        {
+            case ToolVariant inner:
+                tool(inner);
+                break;
+            case ToolBash20250124Variant inner:
+                toolBash20250124(inner);
+                break;
+            case ToolTextEditor20250124Variant inner:
+                toolTextEditor20250124(inner);
+                break;
+            case ToolTextEditor20250429Variant inner:
+                toolTextEditor20250429(inner);
+                break;
+            case ToolTextEditor20250728Variant inner:
+                toolTextEditor20250728(inner);
+                break;
+            case WebSearchTool20250305Variant inner:
+                webSearchTool20250305(inner);
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }
+
+    public T Match<T>(
+        Func<ToolVariant, T> tool,
+        Func<ToolBash20250124Variant, T> toolBash20250124,
+        Func<ToolTextEditor20250124Variant, T> toolTextEditor20250124,
+        Func<ToolTextEditor20250429Variant, T> toolTextEditor20250429,
+        Func<ToolTextEditor20250728Variant, T> toolTextEditor20250728,
+        Func<WebSearchTool20250305Variant, T> webSearchTool20250305
+    )
+    {
+        return this switch
+        {
+            ToolVariant inner => tool(inner),
+            ToolBash20250124Variant inner => toolBash20250124(inner),
+            ToolTextEditor20250124Variant inner => toolTextEditor20250124(inner),
+            ToolTextEditor20250429Variant inner => toolTextEditor20250429(inner),
+            ToolTextEditor20250728Variant inner => toolTextEditor20250728(inner),
+            WebSearchTool20250305Variant inner => webSearchTool20250305(inner),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
     public abstract void Validate();
 }
 
