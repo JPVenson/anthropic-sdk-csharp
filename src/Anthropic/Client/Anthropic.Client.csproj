@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
+
+ <PropertyGroup>
     <Description>
       The official .NET library for the Anthropic C# service API.
     </Description>
@@ -12,7 +13,7 @@
     <!-- Generate an XML documentation file for the project. -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://www.github.com/stainless-sdks/anthropic-csharp</RepositoryUrl>
+    <RepositoryUrl>https://www.github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <!-- Embed source files that are not tracked by the source control manager in the PDB -->
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -35,4 +36,5 @@
   <ItemGroup>
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
+
 </Project>
