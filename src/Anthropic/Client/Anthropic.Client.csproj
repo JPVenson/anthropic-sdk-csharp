@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
+
+ <PropertyGroup>
     <Description>
       The official .NET library for the Anthropic C# service API.
     </Description>
@@ -32,4 +33,5 @@
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="9.0.9"/>
   </ItemGroup>
+
 </Project>
