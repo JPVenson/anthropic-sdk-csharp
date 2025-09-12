@@ -1,6 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
- <PropertyGroup>
+  <PropertyGroup>
     <Description>
       The official .NET library for the Anthropic C# service API.
     </Description>
@@ -23,8 +22,12 @@
     <!-- Disable JSON warnings (beta) -->
     <NoWarn>$(NoWarn),IL2026,IL3050</NoWarn>
     <Configurations>Debug;Release</Configurations>
-    <IsTrimmable Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">true</IsTrimmable>
-    <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
+    <IsTrimmable
+      Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))"
+    >true</IsTrimmable>
+    <IsAotCompatible
+      Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))"
+    >true</IsAotCompatible>
     <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
@@ -33,5 +36,4 @@
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="9.0.9"/>
   </ItemGroup>
-
 </Project>
