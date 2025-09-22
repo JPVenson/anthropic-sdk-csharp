@@ -17,7 +17,7 @@ public class MessageServiceTest : TestBase
             new()
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = "string", Role = Role.User }],
+                Messages = [new() { Content = "Hello, world", Role = Role.User }],
                 Model = Model.Claude3_7SonnetLatest,
             }
         );
@@ -31,7 +31,7 @@ public class MessageServiceTest : TestBase
             new()
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = "string", Role = Role.User }],
+                Messages = [new() { Content = "Hello, world", Role = Role.User }],
                 Model = Model.Claude3_7SonnetLatest,
             }
         );
