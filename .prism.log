@@ -1,0 +1,132 @@
+[9:18:49 PM] › [CLI] …  awaiting  Starting Prism…
+[9:18:52 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/v1/messages
+[9:18:52 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/v1/complete
+[9:18:52 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/v1/models
+[9:18:52 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/v1/models/sunt
+[9:18:52 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/v1/messages/batches
+[9:18:52 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/v1/messages/batches
+[9:18:52 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/v1/messages/batches/qui
+[9:18:52 PM] › [CLI] ℹ  info      DELETE     http://127.0.0.1:4010/v1/messages/batches/dignissimos
+[9:18:52 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/v1/messages/batches/tempore/cancel
+[9:18:52 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/v1/messages/batches/necessitatibus/results
+[9:18:52 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/v1/messages/count_tokens
+[9:18:52 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/v1/files
+[9:18:52 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/v1/files
+[9:18:52 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/v1/files/laudantium
+[9:18:52 PM] › [CLI] ℹ  info      DELETE     http://127.0.0.1:4010/v1/files/eligendi
+[9:18:52 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/v1/files/temporibus/content
+[9:18:52 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/v1/messages?beta=true
+[9:18:52 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/v1/models?beta=true
+[9:18:52 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/v1/models/consequatur?beta=true
+[9:18:52 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/v1/messages/batches?beta=true
+[9:18:52 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/v1/messages/batches?beta=true
+[9:18:52 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/v1/messages/batches/adipisci?beta=true
+[9:18:52 PM] › [CLI] ℹ  info      DELETE     http://127.0.0.1:4010/v1/messages/batches/ea?beta=true
+[9:18:52 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/v1/messages/batches/odit/cancel?beta=true
+[9:18:52 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/v1/messages/batches/voluptatem/results?beta=true
+[9:18:52 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/v1/messages/count_tokens?beta=true
+[9:18:52 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/v1/files?beta=true
+[9:18:52 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/v1/files?beta=true
+[9:18:52 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/v1/files/laborum?beta=true
+[9:18:52 PM] › [CLI] ℹ  info      DELETE     http://127.0.0.1:4010/v1/files/commodi?beta=true
+[9:18:52 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/v1/files/id/content?beta=true
+[9:18:52 PM] › [CLI] ▶  start     Prism is listening on http://127.0.0.1:4010
+[9:18:52 PM] › [HTTP SERVER] get / ℹ  info      Request received
+[9:18:52 PM] › [HTTP SERVER] get / ✖  error     Request terminated with error: https://stoplight.io/prism/errors#NO_PATH_MATCHED_ERROR: Route not resolved, no path matched
+[9:19:03 PM] › [HTTP SERVER] get /v1/models ℹ  info      Request received
+[9:19:03 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:03 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:03 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] get /v1/models/model_id ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] get /v1/messages/batches ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] delete /v1/files/file_id ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] post /v1/messages ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] post /v1/messages ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] post /v1/messages/batches ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] get /v1/models ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] get /v1/models/model_id ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] delete /v1/messages/batches/message_batch_id ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] get /v1/files ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] post /v1/messages ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] post /v1/messages ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] get /v1/messages/batches ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] get /v1/files/file_id ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] post /v1/messages/batches ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] post /v1/messages/count_tokens ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] post /v1/messages/batches/message_batch_id/cancel ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] post /v1/messages/count_tokens ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] post /v1/messages/batches/message_batch_id/cancel ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] post /v1/messages ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] get /v1/messages/batches/message_batch_id ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] get /v1/messages/batches/message_batch_id ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[9:19:04 PM] › [HTTP SERVER] delete /v1/messages/batches/message_batch_id ℹ  info      Request received
+[9:19:04 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[9:19:04 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[9:19:04 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+Terminated
