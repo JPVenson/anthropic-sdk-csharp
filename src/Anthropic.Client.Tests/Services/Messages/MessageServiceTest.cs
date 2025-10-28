@@ -39,6 +39,27 @@ public class MessageServiceTest : TestBase
     }
 
     [Fact]
+    public async Task CreateStreamingAggregation_Works()
+    {
+        var stream = await this.client.Messages.CreateStreaming(
+            new()
+            {
+                MaxTokens = 1024,
+                Messages = [new() { Content = "string", Role = Role.User }],
+                Model = Model.Claude3_7SonnetLatest,
+            }
+        ).Aggregate();
+
+        Assert.NotNull(stream);
+        Assert.NotNull(stream.Text);
+        Assert.NotNull(stream.Thinking);
+        Assert.NotNull(stream.Citations);
+        Assert.NotEmpty(stream.Citations);
+        Assert.NotNull(stream.Thinking);
+        Assert.NotEmpty(stream.Thinking);
+    }
+
+    [Fact]
     public async Task CountTokens_Works()
     {
         var messageTokensCount = await this.client.Messages.CountTokens(
