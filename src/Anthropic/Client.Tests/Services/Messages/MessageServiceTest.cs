@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Anthropic.Client.Models.Messages;
 using Anthropic.Client.Models.Messages.MessageParamProperties;
+using Anthropic.Client.Services.Messages;
+using Moq;
 
 namespace Anthropic.Client.Tests.Services.Messages;
 
@@ -39,9 +42,18 @@ public class MessageServiceTest : TestBase
     }
 
     [Fact]
-    public async Task CreateStreamingAggregation_Works()
+    public async Task CreateStreamingAggregation_WorksNoContent_RawMessageStartEvent()
     {
-        var stream = await this.client.Messages.CreateStreaming(
+        // arrange
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new RawMessageStartEvent(GenerateStartMessage());
+            yield return new RawMessageStopEvent();
+            await Task.CompletedTask;
+        }
+        messagesServiceMock.Setup(e => e.CreateStreaming(It.IsAny<MessageCreateParams>())).Returns(GetTestValues);
+        var stream = await messagesServiceMock.Object.CreateStreaming(
             new()
             {
                 MaxTokens = 1024,
@@ -51,12 +63,158 @@ public class MessageServiceTest : TestBase
         ).Aggregate();
 
         Assert.NotNull(stream);
-        Assert.NotNull(stream.Text);
-        Assert.NotNull(stream.Thinking);
+        Assert.Null(stream.Text);
+        Assert.Null(stream.Thinking);
+        Assert.NotNull(stream.Citations);
+        Assert.Empty(stream.Citations);
+        Assert.Null(stream.Thinking);
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_WorksNoContent_RawContentBlockStartEvent()
+    {
+        // arrange
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new RawContentBlockStartEvent()
+            {
+                Index = 0,
+                ContentBlock = null
+            };
+            yield return new RawContentBlockStopEvent()
+            {
+                Index = 1,
+            };
+            await Task.CompletedTask;
+        }
+        messagesServiceMock.Setup(e => e.CreateStreaming(It.IsAny<MessageCreateParams>())).Returns(GetTestValues);
+        var stream = await messagesServiceMock.Object.CreateStreaming(
+            new()
+            {
+                MaxTokens = 1024,
+                Messages = [new() { Content = "string", Role = Role.User }],
+                Model = Model.Claude3_7SonnetLatest,
+            }
+        ).Aggregate();
+
+        Assert.NotNull(stream);
+        Assert.Null(stream.Text);
+        Assert.Null(stream.Thinking);
+        Assert.NotNull(stream.Citations);
+        Assert.Empty(stream.Citations);
+        Assert.Null(stream.Thinking);
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_WorksStopEndEvent()
+    {
+        // arrange
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new RawContentBlockStartEvent()
+            {
+                Index = 0,
+                ContentBlock = null
+            };
+            yield return new RawContentBlockStopEvent()
+            {
+                Index = 1,
+            };
+            yield return new RawContentBlockDeltaEvent()
+            {
+                Index = 2,
+                Delta = new TextDelta("Test")
+            };
+            await Task.CompletedTask;
+        }
+        messagesServiceMock.Setup(e => e.CreateStreaming(It.IsAny<MessageCreateParams>())).Returns(GetTestValues);
+        var stream = await messagesServiceMock.Object.CreateStreaming(
+            new()
+            {
+                MaxTokens = 1024,
+                Messages = [new() { Content = "string", Role = Role.User }],
+                Model = Model.Claude3_7SonnetLatest,
+            }
+        ).Aggregate();
+
+        Assert.NotNull(stream);
+        Assert.Null(stream.Text);
+        Assert.Null(stream.Thinking);
+        Assert.NotNull(stream.Citations);
+        Assert.Empty(stream.Citations);
+        Assert.Null(stream.Thinking);
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_Works()
+    {
+        // arrange
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            int index = 0;
+            yield return new RawContentBlockStartEvent()
+            {
+                Index = index++,
+                ContentBlock = null
+            };
+            yield return new RawContentBlockDeltaEvent()
+            {
+                Index = index++,
+                Delta = new TextDelta("Test")
+            };
+            yield return new RawContentBlockDeltaEvent()
+            {
+                Index = index++,
+                Delta = new CitationsDelta(new CitationsWebSearchResultLocation()
+                {
+                    CitedText = "Somewhere",
+                    EncryptedIndex = "0",
+                    Title = "Over",
+                    URL = "the://rainbow"
+                })
+            };
+            yield return new RawContentBlockDeltaEvent()
+            {
+                Index = index++,
+                Delta = new ThinkingDelta("Other Test")
+            };
+            yield return new RawContentBlockStopEvent()
+            {
+                Index = index++,
+            };
+            await Task.CompletedTask;
+        }
+        messagesServiceMock.Setup(e => e.CreateStreaming(It.IsAny<MessageCreateParams>())).Returns(GetTestValues);
+        var stream = await messagesServiceMock.Object.CreateStreaming(
+            new()
+            {
+                MaxTokens = 1024,
+                Messages = [new() { Content = "string", Role = Role.User }],
+                Model = Model.Claude3_7SonnetLatest,
+            }
+        ).Aggregate();
+
+        Assert.NotNull(stream);
+        Assert.Equal("Test", stream.Text);
         Assert.NotNull(stream.Citations);
         Assert.NotEmpty(stream.Citations);
-        Assert.NotNull(stream.Thinking);
-        Assert.NotEmpty(stream.Thinking);
+        Assert.Equal("Other Test", stream.Thinking);
+    }
+
+    private static Message GenerateStartMessage()
+    {
+        return new Message()
+        {
+            ID = "Test",
+            Content = [],
+            Model = Model.Claude3OpusLatest,
+            StopReason = StopReason.ToolUse,
+            StopSequence = "",
+            Usage = null
+        };
     }
 
     [Fact]
