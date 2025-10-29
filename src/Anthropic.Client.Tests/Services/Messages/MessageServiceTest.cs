@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Anthropic.Client.Models.Messages;
@@ -52,6 +53,7 @@ public class MessageServiceTest : TestBase
             yield return new RawMessageStopEvent();
             await Task.CompletedTask;
         }
+        // act
         messagesServiceMock.Setup(e => e.CreateStreaming(It.IsAny<MessageCreateParams>())).Returns(GetTestValues);
         var stream = await messagesServiceMock.Object.CreateStreaming(
             new()
@@ -68,6 +70,30 @@ public class MessageServiceTest : TestBase
         Assert.NotNull(stream.Citations);
         Assert.Empty(stream.Citations);
         Assert.Null(stream.Thinking);
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_HandlesNoEndMessageInterrupt()
+    {
+        // arrange
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new RawMessageStartEvent(GenerateStartMessage());
+            await Task.CompletedTask;
+        }
+        // act
+        messagesServiceMock.Setup(e => e.CreateStreaming(It.IsAny<MessageCreateParams>())).Returns(GetTestValues);
+        
+        // assert
+        await Assert.ThrowsAsync<InvalidOperationException>(async () => await messagesServiceMock.Object.CreateStreaming(
+            new()
+            {
+                MaxTokens = 1024,
+                Messages = [new() { Content = "string", Role = Role.User }],
+                Model = Model.Claude3_7SonnetLatest,
+            }
+        ).Aggregate());        
     }
 
     [Fact]
@@ -89,6 +115,7 @@ public class MessageServiceTest : TestBase
             await Task.CompletedTask;
         }
         messagesServiceMock.Setup(e => e.CreateStreaming(It.IsAny<MessageCreateParams>())).Returns(GetTestValues);
+        // act
         var stream = await messagesServiceMock.Object.CreateStreaming(
             new()
             {
@@ -98,6 +125,7 @@ public class MessageServiceTest : TestBase
             }
         ).Aggregate();
 
+        // assert
         Assert.NotNull(stream);
         Assert.Null(stream.Text);
         Assert.Null(stream.Thinking);
@@ -130,6 +158,7 @@ public class MessageServiceTest : TestBase
             await Task.CompletedTask;
         }
         messagesServiceMock.Setup(e => e.CreateStreaming(It.IsAny<MessageCreateParams>())).Returns(GetTestValues);
+        // act
         var stream = await messagesServiceMock.Object.CreateStreaming(
             new()
             {
@@ -139,6 +168,7 @@ public class MessageServiceTest : TestBase
             }
         ).Aggregate();
 
+        // assert
         Assert.NotNull(stream);
         Assert.Null(stream.Text);
         Assert.Null(stream.Thinking);
@@ -188,6 +218,7 @@ public class MessageServiceTest : TestBase
             await Task.CompletedTask;
         }
         messagesServiceMock.Setup(e => e.CreateStreaming(It.IsAny<MessageCreateParams>())).Returns(GetTestValues);
+        // act
         var stream = await messagesServiceMock.Object.CreateStreaming(
             new()
             {
@@ -197,6 +228,7 @@ public class MessageServiceTest : TestBase
             }
         ).Aggregate();
 
+        // assert
         Assert.NotNull(stream);
         Assert.Equal("Test", stream.Text);
         Assert.NotNull(stream.Citations);
