@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Anthropic.Client.Models.Messages;
 using Anthropic.Client.Models.Messages.CitationsDeltaProperties;
-using RawMessageStreamEventVariants = Anthropic.Client.Models.Messages.RawMessageStreamEventVariants;
 
 namespace Anthropic.Client.Services.Messages;
 
@@ -22,25 +21,25 @@ public class MessageContentAggregator : SseAggregator<RawMessageStreamEvent, Mes
     protected override MessageAggregationResult GetResult(IReadOnlyCollection<RawMessageStreamEvent> messages)
     {
         var aggregation = new MessageAggregationResult();
-        foreach (var item in messages.Cast<RawMessageStreamEventVariants::RawContentBlockDeltaEvent>().Select(e => e.Value.Delta))
+        foreach (var item in messages.Select(e => e.Value).Cast<RawContentBlockDeltaEvent>().Select(e => e.Delta))
         {
             item.Switch(
-                e => aggregation.Text += e.Value.Text,
-                e => aggregation.PartialJson += e.Value.PartialJSON,
-                e => aggregation.Citations.Add(e.Value.Citation),
-                e => aggregation.Thinking += e.Value.Thinking,
-                e => aggregation.Thinking += e.Value.Signature);
+                e => aggregation.Text += e.Text,
+                e => aggregation.PartialJson += e.PartialJSON,
+                e => aggregation.Citations.Add(e.Citation),
+                e => aggregation.Thinking += e.Thinking,
+                e => aggregation.Thinking += e.Signature);
         }
 
         return aggregation;
     }
 
-    protected override FilterResult Filter(RawMessageStreamEvent message) => message switch
+    protected override FilterResult Filter(RawMessageStreamEvent message) => message.Value switch
     {
-        RawMessageStreamEventVariants::RawContentBlockStartEvent _ => FilterResult.StartMessage,
-        RawMessageStreamEventVariants::RawContentBlockStopEvent _ => FilterResult.EndMessage,
-        RawMessageStreamEventVariants::RawContentBlockDeltaEvent _ => FilterResult.Content,
-        RawMessageStreamEventVariants::RawMessageStopEvent _ => FilterResult.EndMessage,
+        RawContentBlockStartEvent _ => FilterResult.StartMessage,
+        RawContentBlockStopEvent _ => FilterResult.EndMessage,
+        RawContentBlockDeltaEvent _ => FilterResult.Content,
+        RawMessageStopEvent _ => FilterResult.EndMessage,
         _ => FilterResult.Ignore
     };
 }
