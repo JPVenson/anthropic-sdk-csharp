@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Anthropic.Client.Models.Beta.Messages;
 using Anthropic.Client.Models.Beta.Messages.BetaCitationsDeltaProperties;
-using RawMessageStreamEventVariants = Anthropic.Client.Models.Beta.Messages.BetaRawMessageStreamEventVariants;
 
 namespace Anthropic.Client.Services.Messages;
 
@@ -22,25 +21,25 @@ public class BetaMessageContentAggregator : SseAggregator<BetaRawMessageStreamEv
     protected override BetaMessageAggregationResult GetResult(IReadOnlyCollection<BetaRawMessageStreamEvent> messages)
     {
         var aggregation = new BetaMessageAggregationResult();
-        foreach (var item in messages.Cast<RawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent>().Select(e => e.Value.Delta))
+        foreach (var item in messages.Select(e => e.Value).Cast<BetaRawContentBlockDelta>())
         {
             item.Switch(
-                e => aggregation.Text += e.Value.Text,
-                e => aggregation.PartialJson += e.Value.PartialJSON,
-                e => aggregation.Citations.Add(e.Value.Citation),
-                e => aggregation.Thinking += e.Value.Thinking,
-                e => aggregation.Thinking += e.Value.Signature);
+                e => aggregation.Text += e.Text,
+                e => aggregation.PartialJson += e.PartialJSON,
+                e => aggregation.Citations.Add(e.Citation),
+                e => aggregation.Thinking += e.Thinking,
+                e => aggregation.Thinking += e.Signature);
         }
 
         return aggregation;
     }
 
-    protected override FilterResult Filter(BetaRawMessageStreamEvent message) => message switch
+    protected override FilterResult Filter(BetaRawMessageStreamEvent message) => message.Value switch
     {
-        RawMessageStreamEventVariants::BetaRawContentBlockStartEvent _ => FilterResult.StartMessage,
-        RawMessageStreamEventVariants::BetaRawContentBlockStopEvent _ => FilterResult.EndMessage,
-        RawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent _ => FilterResult.Content,
-        RawMessageStreamEventVariants::BetaRawMessageStopEvent _ => FilterResult.EndMessage,
+        BetaRawContentBlockStartEvent _ => FilterResult.StartMessage,
+        BetaRawContentBlockStopEvent _ => FilterResult.EndMessage,
+        BetaRawContentBlockDeltaEvent _ => FilterResult.Content,
+        BetaRawMessageStopEvent _ => FilterResult.EndMessage,
         _ => FilterResult.Ignore            
     };
 }

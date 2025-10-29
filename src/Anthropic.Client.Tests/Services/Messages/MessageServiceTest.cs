@@ -49,8 +49,8 @@ public class MessageServiceTest : TestBase
         var messagesServiceMock = new Mock<IMessageService>();
         static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
         {
-            yield return new RawMessageStartEvent(GenerateStartMessage());
-            yield return new RawMessageStopEvent();
+            yield return new(new RawMessageStartEvent(GenerateStartMessage()));
+            yield return new(new RawMessageStopEvent());
             await Task.CompletedTask;
         }
         // act
@@ -59,7 +59,7 @@ public class MessageServiceTest : TestBase
             new()
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = "string", Role = Role.User }],
+                Messages = [new() { Content = new(""), Role = Role.User }],
                 Model = Model.Claude3_7SonnetLatest,
             }
         ).Aggregate();
@@ -79,21 +79,21 @@ public class MessageServiceTest : TestBase
         var messagesServiceMock = new Mock<IMessageService>();
         static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
         {
-            yield return new RawMessageStartEvent(GenerateStartMessage());
+            yield return new(new RawMessageStartEvent(GenerateStartMessage()));
             await Task.CompletedTask;
         }
         // act
         messagesServiceMock.Setup(e => e.CreateStreaming(It.IsAny<MessageCreateParams>())).Returns(GetTestValues);
-        
+
         // assert
         await Assert.ThrowsAsync<InvalidOperationException>(async () => await messagesServiceMock.Object.CreateStreaming(
             new()
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = "string", Role = Role.User }],
+                Messages = [new() { Content = new(""), Role = Role.User }],
                 Model = Model.Claude3_7SonnetLatest,
             }
-        ).Aggregate());        
+        ).Aggregate());
     }
 
     [Fact]
@@ -103,15 +103,15 @@ public class MessageServiceTest : TestBase
         var messagesServiceMock = new Mock<IMessageService>();
         static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
         {
-            yield return new RawContentBlockStartEvent()
+            yield return new(new RawContentBlockStartEvent()
             {
                 Index = 0,
                 ContentBlock = null
-            };
-            yield return new RawContentBlockStopEvent()
+            });
+            yield return new(new RawContentBlockStopEvent()
             {
                 Index = 1,
-            };
+            });
             await Task.CompletedTask;
         }
         messagesServiceMock.Setup(e => e.CreateStreaming(It.IsAny<MessageCreateParams>())).Returns(GetTestValues);
@@ -120,7 +120,7 @@ public class MessageServiceTest : TestBase
             new()
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = "string", Role = Role.User }],
+                Messages = [new() { Content = new(""), Role = Role.User }],
                 Model = Model.Claude3_7SonnetLatest,
             }
         ).Aggregate();
@@ -141,20 +141,20 @@ public class MessageServiceTest : TestBase
         var messagesServiceMock = new Mock<IMessageService>();
         static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
         {
-            yield return new RawContentBlockStartEvent()
+            yield return new(new RawContentBlockStartEvent()
             {
                 Index = 0,
                 ContentBlock = null
-            };
-            yield return new RawContentBlockStopEvent()
+            });
+            yield return new(new RawContentBlockStopEvent()
             {
                 Index = 1,
-            };
-            yield return new RawContentBlockDeltaEvent()
+            });
+            yield return new(new RawContentBlockDeltaEvent()
             {
                 Index = 2,
-                Delta = new TextDelta("Test")
-            };
+                Delta = new(new TextDelta("Test"))
+            });
             await Task.CompletedTask;
         }
         messagesServiceMock.Setup(e => e.CreateStreaming(It.IsAny<MessageCreateParams>())).Returns(GetTestValues);
@@ -163,7 +163,7 @@ public class MessageServiceTest : TestBase
             new()
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = "string", Role = Role.User }],
+                Messages = [new() { Content = new(""), Role = Role.User }],
                 Model = Model.Claude3_7SonnetLatest,
             }
         ).Aggregate();
@@ -185,36 +185,36 @@ public class MessageServiceTest : TestBase
         static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
         {
             int index = 0;
-            yield return new RawContentBlockStartEvent()
+            yield return new(new RawContentBlockStartEvent()
             {
                 Index = index++,
                 ContentBlock = null
-            };
-            yield return new RawContentBlockDeltaEvent()
+            });
+            yield return new(new RawContentBlockDeltaEvent()
             {
                 Index = index++,
-                Delta = new TextDelta("Test")
-            };
-            yield return new RawContentBlockDeltaEvent()
+                Delta = new(new TextDelta("Test"))
+            });
+            yield return new(new RawContentBlockDeltaEvent()
             {
                 Index = index++,
-                Delta = new CitationsDelta(new CitationsWebSearchResultLocation()
+                Delta = new(new CitationsDelta(new(new CitationsWebSearchResultLocation()
                 {
                     CitedText = "Somewhere",
                     EncryptedIndex = "0",
                     Title = "Over",
                     URL = "the://rainbow"
-                })
-            };
-            yield return new RawContentBlockDeltaEvent()
+                })))
+            });
+            yield return new(new RawContentBlockDeltaEvent()
             {
                 Index = index++,
-                Delta = new ThinkingDelta("Other Test")
-            };
-            yield return new RawContentBlockStopEvent()
+                Delta = new(new ThinkingDelta("Other Test"))
+            });
+            yield return new(new RawContentBlockStopEvent()
             {
                 Index = index++,
-            };
+            });
             await Task.CompletedTask;
         }
         messagesServiceMock.Setup(e => e.CreateStreaming(It.IsAny<MessageCreateParams>())).Returns(GetTestValues);
@@ -223,7 +223,7 @@ public class MessageServiceTest : TestBase
             new()
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = "string", Role = Role.User }],
+                Messages = [new() { Content = new(""), Role = Role.User }],
                 Model = Model.Claude3_7SonnetLatest,
             }
         ).Aggregate();
