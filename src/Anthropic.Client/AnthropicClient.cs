@@ -1,6 +1,6 @@
 using System;
 using System.Net.Http;
-using System.Reflection.Metadata;
+using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
@@ -24,6 +24,12 @@ public class AnthropicClient : IAnthropicClient
     {
         get { return this._options.BaseUrl; }
         init { this._options.BaseUrl = value; }
+    }
+
+    public TimeSpan Timeout
+    {
+        get { return this._options.Timeout; }
+        init { this._options.Timeout = value; }
     }
 
     public string? APIKey
@@ -76,12 +82,17 @@ public class AnthropicClient : IAnthropicClient
             Content = request.Params.BodyContent(),
         };
         request.Params.AddHeadersToRequest(requestMessage, this);
+        using CancellationTokenSource cts = new(this.Timeout);
         HttpResponseMessage responseMessage;
         try
         {
             await BeforeSend(request, requestMessage).ConfigureAwait(false);
             responseMessage = await this
-                .HttpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead)
+                .HttpClient.SendAsync(
+                    requestMessage,
+                    HttpCompletionOption.ResponseHeadersRead,
+                    cts.Token
+                )
                 .ConfigureAwait(false);
             await AfterSend(request, responseMessage).ConfigureAwait(false);
         }
