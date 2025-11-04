@@ -12,7 +12,7 @@ namespace Anthropic.Client;
 
 public class AnthropicClient : IAnthropicClient
 {
-    readonly ClientOptions _options = new();
+    readonly ClientOptions _options;
 
     public HttpClient HttpClient
     {
@@ -48,6 +48,11 @@ public class AnthropicClient : IAnthropicClient
     {
         get { return this._options.AuthToken; }
         init { this._options.AuthToken = value; }
+    }
+
+    public IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new AnthropicClient(modifier(this._options));
     }
 
     readonly Lazy<IMessageService> _messages;
@@ -129,8 +134,16 @@ public class AnthropicClient : IAnthropicClient
 
     public AnthropicClient()
     {
+        _options = new();
+
         _messages = new(() => new MessageService(this));
         _models = new(() => new ModelService(this));
         _beta = new(() => new BetaService(this));
+    }
+
+    public AnthropicClient(ClientOptions options)
+        : this()
+    {
+        _options = options;
     }
 }
