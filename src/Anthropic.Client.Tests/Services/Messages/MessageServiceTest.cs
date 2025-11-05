@@ -2,9 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Anthropic.Client.Models.Messages;
-using Anthropic.Client.Models.Messages.MessageParamProperties;
-using Anthropic.Client.Services.Messages;
-using Moq;
 
 namespace Anthropic.Client.Tests.Services.Messages;
 
