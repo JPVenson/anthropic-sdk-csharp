@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
@@ -9,7 +10,7 @@ using Anthropic.Client.Services.Models;
 
 namespace Anthropic.Client;
 
-public sealed class AnthropicClient : IAnthropicClient
+public class AnthropicClient : IAnthropicClient
 {
     public HttpClient HttpClient { get; init; } = new();
 
@@ -57,6 +58,18 @@ public sealed class AnthropicClient : IAnthropicClient
         get { return _beta.Value; }
     }
 
+    protected virtual ValueTask BeforeSend<T>(HttpRequest<T> request, HttpRequestMessage requestMessage)
+        where T : ParamsBase
+    {
+        return ValueTask.CompletedTask;
+    }
+
+    protected virtual ValueTask AfterSend<T>(HttpRequest<T> request, HttpResponseMessage httpResponseMessage)
+        where T : ParamsBase
+    {
+        return ValueTask.CompletedTask;
+    }
+
     public async Task<HttpResponse> Execute<T>(HttpRequest<T> request)
         where T : ParamsBase
     {
@@ -68,9 +81,11 @@ public sealed class AnthropicClient : IAnthropicClient
         HttpResponseMessage responseMessage;
         try
         {
+            await BeforeSend(request, requestMessage).ConfigureAwait(false);
             responseMessage = await this
                 .HttpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead)
                 .ConfigureAwait(false);
+            await AfterSend(request, responseMessage).ConfigureAwait(false);
         }
         catch (HttpRequestException e1)
         {
