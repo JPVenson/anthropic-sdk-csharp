@@ -162,6 +162,18 @@ public record class ToolUnion
         };
     }
 
+    public static implicit operator ToolUnion(Tool value) => new(value);
+
+    public static implicit operator ToolUnion(ToolBash20250124 value) => new(value);
+
+    public static implicit operator ToolUnion(ToolTextEditor20250124 value) => new(value);
+
+    public static implicit operator ToolUnion(ToolTextEditor20250429 value) => new(value);
+
+    public static implicit operator ToolUnion(ToolTextEditor20250728 value) => new(value);
+
+    public static implicit operator ToolUnion(WebSearchTool20250305 value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

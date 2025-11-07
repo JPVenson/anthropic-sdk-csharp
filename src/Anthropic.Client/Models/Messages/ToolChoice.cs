@@ -143,6 +143,14 @@ public record class ToolChoice
         };
     }
 
+    public static implicit operator ToolChoice(ToolChoiceAuto value) => new(value);
+
+    public static implicit operator ToolChoice(ToolChoiceAny value) => new(value);
+
+    public static implicit operator ToolChoice(ToolChoiceTool value) => new(value);
+
+    public static implicit operator ToolChoice(ToolChoiceNone value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

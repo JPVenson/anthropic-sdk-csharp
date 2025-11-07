@@ -299,6 +299,22 @@ public record class Content6
         };
     }
 
+    public static implicit operator Content6(
+        BetaTextEditorCodeExecutionToolResultErrorParam value
+    ) => new(value);
+
+    public static implicit operator Content6(
+        BetaTextEditorCodeExecutionViewResultBlockParam value
+    ) => new(value);
+
+    public static implicit operator Content6(
+        BetaTextEditorCodeExecutionCreateResultBlockParam value
+    ) => new(value);
+
+    public static implicit operator Content6(
+        BetaTextEditorCodeExecutionStrReplaceResultBlockParam value
+    ) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

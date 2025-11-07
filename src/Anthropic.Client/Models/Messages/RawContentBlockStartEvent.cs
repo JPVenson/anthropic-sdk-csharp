@@ -292,6 +292,18 @@ public record class ContentBlockModel
         };
     }
 
+    public static implicit operator ContentBlockModel(TextBlock value) => new(value);
+
+    public static implicit operator ContentBlockModel(ThinkingBlock value) => new(value);
+
+    public static implicit operator ContentBlockModel(RedactedThinkingBlock value) => new(value);
+
+    public static implicit operator ContentBlockModel(ToolUseBlock value) => new(value);
+
+    public static implicit operator ContentBlockModel(ServerToolUseBlock value) => new(value);
+
+    public static implicit operator ContentBlockModel(WebSearchToolResultBlock value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

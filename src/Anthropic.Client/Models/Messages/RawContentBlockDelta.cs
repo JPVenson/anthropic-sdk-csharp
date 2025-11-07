@@ -144,6 +144,16 @@ public record class RawContentBlockDelta
         };
     }
 
+    public static implicit operator RawContentBlockDelta(TextDelta value) => new(value);
+
+    public static implicit operator RawContentBlockDelta(InputJSONDelta value) => new(value);
+
+    public static implicit operator RawContentBlockDelta(CitationsDelta value) => new(value);
+
+    public static implicit operator RawContentBlockDelta(ThinkingDelta value) => new(value);
+
+    public static implicit operator RawContentBlockDelta(SignatureDelta value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

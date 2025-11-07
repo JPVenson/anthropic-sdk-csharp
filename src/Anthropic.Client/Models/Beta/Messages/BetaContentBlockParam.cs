@@ -511,6 +511,60 @@ public record class BetaContentBlockParam
         };
     }
 
+    public static implicit operator BetaContentBlockParam(BetaTextBlockParam value) => new(value);
+
+    public static implicit operator BetaContentBlockParam(BetaImageBlockParam value) => new(value);
+
+    public static implicit operator BetaContentBlockParam(BetaRequestDocumentBlock value) =>
+        new(value);
+
+    public static implicit operator BetaContentBlockParam(BetaSearchResultBlockParam value) =>
+        new(value);
+
+    public static implicit operator BetaContentBlockParam(BetaThinkingBlockParam value) =>
+        new(value);
+
+    public static implicit operator BetaContentBlockParam(BetaRedactedThinkingBlockParam value) =>
+        new(value);
+
+    public static implicit operator BetaContentBlockParam(BetaToolUseBlockParam value) =>
+        new(value);
+
+    public static implicit operator BetaContentBlockParam(BetaToolResultBlockParam value) =>
+        new(value);
+
+    public static implicit operator BetaContentBlockParam(BetaServerToolUseBlockParam value) =>
+        new(value);
+
+    public static implicit operator BetaContentBlockParam(
+        BetaWebSearchToolResultBlockParam value
+    ) => new(value);
+
+    public static implicit operator BetaContentBlockParam(BetaWebFetchToolResultBlockParam value) =>
+        new(value);
+
+    public static implicit operator BetaContentBlockParam(
+        BetaCodeExecutionToolResultBlockParam value
+    ) => new(value);
+
+    public static implicit operator BetaContentBlockParam(
+        BetaBashCodeExecutionToolResultBlockParam value
+    ) => new(value);
+
+    public static implicit operator BetaContentBlockParam(
+        BetaTextEditorCodeExecutionToolResultBlockParam value
+    ) => new(value);
+
+    public static implicit operator BetaContentBlockParam(BetaMCPToolUseBlockParam value) =>
+        new(value);
+
+    public static implicit operator BetaContentBlockParam(
+        BetaRequestMCPToolResultBlockParam value
+    ) => new(value);
+
+    public static implicit operator BetaContentBlockParam(BetaContainerUploadBlockParam value) =>
+        new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

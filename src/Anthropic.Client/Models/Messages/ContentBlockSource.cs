@@ -174,6 +174,11 @@ public record class Content
         };
     }
 
+    public static implicit operator Content(string value) => new(value);
+
+    public static implicit operator Content(List<ContentBlockSourceContent> value) =>
+        new((IReadOnlyList<ContentBlockSourceContent>)value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

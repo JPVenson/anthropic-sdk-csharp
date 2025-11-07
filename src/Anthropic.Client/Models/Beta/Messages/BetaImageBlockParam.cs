@@ -225,6 +225,12 @@ public record class SourceModel
         };
     }
 
+    public static implicit operator SourceModel(BetaBase64ImageSource value) => new(value);
+
+    public static implicit operator SourceModel(BetaURLImageSource value) => new(value);
+
+    public static implicit operator SourceModel(BetaFileImageSource value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

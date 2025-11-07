@@ -201,6 +201,10 @@ public record class SourceModel
         };
     }
 
+    public static implicit operator SourceModel(Base64ImageSource value) => new(value);
+
+    public static implicit operator SourceModel(URLImageSource value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

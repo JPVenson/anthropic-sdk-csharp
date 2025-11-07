@@ -133,6 +133,18 @@ public record class BetaMessageBatchResult
         };
     }
 
+    public static implicit operator BetaMessageBatchResult(BetaMessageBatchSucceededResult value) =>
+        new(value);
+
+    public static implicit operator BetaMessageBatchResult(BetaMessageBatchErroredResult value) =>
+        new(value);
+
+    public static implicit operator BetaMessageBatchResult(BetaMessageBatchCanceledResult value) =>
+        new(value);
+
+    public static implicit operator BetaMessageBatchResult(BetaMessageBatchExpiredResult value) =>
+        new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

@@ -191,6 +191,12 @@ public record class AppliedEdit
         };
     }
 
+    public static implicit operator AppliedEdit(BetaClearToolUses20250919EditResponse value) =>
+        new(value);
+
+    public static implicit operator AppliedEdit(BetaClearThinking20251015EditResponse value) =>
+        new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

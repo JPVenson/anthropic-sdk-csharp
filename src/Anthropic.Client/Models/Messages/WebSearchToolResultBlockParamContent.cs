@@ -80,6 +80,14 @@ public record class WebSearchToolResultBlockParamContent
         };
     }
 
+    public static implicit operator WebSearchToolResultBlockParamContent(
+        List<WebSearchResultBlockParam> value
+    ) => new((IReadOnlyList<WebSearchResultBlockParam>)value);
+
+    public static implicit operator WebSearchToolResultBlockParamContent(
+        WebSearchToolRequestError value
+    ) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

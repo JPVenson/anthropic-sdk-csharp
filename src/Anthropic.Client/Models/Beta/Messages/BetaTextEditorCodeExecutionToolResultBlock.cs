@@ -272,6 +272,19 @@ public record class Content5
         };
     }
 
+    public static implicit operator Content5(BetaTextEditorCodeExecutionToolResultError value) =>
+        new(value);
+
+    public static implicit operator Content5(BetaTextEditorCodeExecutionViewResultBlock value) =>
+        new(value);
+
+    public static implicit operator Content5(BetaTextEditorCodeExecutionCreateResultBlock value) =>
+        new(value);
+
+    public static implicit operator Content5(
+        BetaTextEditorCodeExecutionStrReplaceResultBlock value
+    ) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

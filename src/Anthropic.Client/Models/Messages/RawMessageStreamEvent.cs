@@ -177,6 +177,21 @@ public record class RawMessageStreamEvent
         };
     }
 
+    public static implicit operator RawMessageStreamEvent(RawMessageStartEvent value) => new(value);
+
+    public static implicit operator RawMessageStreamEvent(RawMessageDeltaEvent value) => new(value);
+
+    public static implicit operator RawMessageStreamEvent(RawMessageStopEvent value) => new(value);
+
+    public static implicit operator RawMessageStreamEvent(RawContentBlockStartEvent value) =>
+        new(value);
+
+    public static implicit operator RawMessageStreamEvent(RawContentBlockDeltaEvent value) =>
+        new(value);
+
+    public static implicit operator RawMessageStreamEvent(RawContentBlockStopEvent value) =>
+        new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

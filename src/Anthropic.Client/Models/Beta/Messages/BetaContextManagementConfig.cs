@@ -149,6 +149,10 @@ public record class Edit
         };
     }
 
+    public static implicit operator Edit(BetaClearToolUses20250919Edit value) => new(value);
+
+    public static implicit operator Edit(BetaClearThinking20251015Edit value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

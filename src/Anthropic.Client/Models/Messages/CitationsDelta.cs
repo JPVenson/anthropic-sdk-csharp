@@ -340,6 +340,16 @@ public record class Citation
         };
     }
 
+    public static implicit operator Citation(CitationCharLocation value) => new(value);
+
+    public static implicit operator Citation(CitationPageLocation value) => new(value);
+
+    public static implicit operator Citation(CitationContentBlockLocation value) => new(value);
+
+    public static implicit operator Citation(CitationsWebSearchResultLocation value) => new(value);
+
+    public static implicit operator Citation(CitationsSearchResultLocation value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

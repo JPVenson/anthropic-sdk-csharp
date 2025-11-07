@@ -189,6 +189,30 @@ public record class BetaMemoryTool20250818Command
         };
     }
 
+    public static implicit operator BetaMemoryTool20250818Command(
+        BetaMemoryTool20250818ViewCommand value
+    ) => new(value);
+
+    public static implicit operator BetaMemoryTool20250818Command(
+        BetaMemoryTool20250818CreateCommand value
+    ) => new(value);
+
+    public static implicit operator BetaMemoryTool20250818Command(
+        BetaMemoryTool20250818StrReplaceCommand value
+    ) => new(value);
+
+    public static implicit operator BetaMemoryTool20250818Command(
+        BetaMemoryTool20250818InsertCommand value
+    ) => new(value);
+
+    public static implicit operator BetaMemoryTool20250818Command(
+        BetaMemoryTool20250818DeleteCommand value
+    ) => new(value);
+
+    public static implicit operator BetaMemoryTool20250818Command(
+        BetaMemoryTool20250818RenameCommand value
+    ) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

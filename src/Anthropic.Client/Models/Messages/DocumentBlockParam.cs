@@ -327,6 +327,14 @@ public record class Source
         };
     }
 
+    public static implicit operator Source(Base64PDFSource value) => new(value);
+
+    public static implicit operator Source(PlainTextSource value) => new(value);
+
+    public static implicit operator Source(ContentBlockSource value) => new(value);
+
+    public static implicit operator Source(URLPDFSource value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

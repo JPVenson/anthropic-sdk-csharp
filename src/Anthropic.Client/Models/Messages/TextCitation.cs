@@ -248,6 +248,17 @@ public record class TextCitation
         };
     }
 
+    public static implicit operator TextCitation(CitationCharLocation value) => new(value);
+
+    public static implicit operator TextCitation(CitationPageLocation value) => new(value);
+
+    public static implicit operator TextCitation(CitationContentBlockLocation value) => new(value);
+
+    public static implicit operator TextCitation(CitationsWebSearchResultLocation value) =>
+        new(value);
+
+    public static implicit operator TextCitation(CitationsSearchResultLocation value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

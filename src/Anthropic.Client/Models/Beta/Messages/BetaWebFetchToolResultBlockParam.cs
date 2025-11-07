@@ -238,6 +238,11 @@ public record class Content9
         };
     }
 
+    public static implicit operator Content9(BetaWebFetchToolResultErrorBlockParam value) =>
+        new(value);
+
+    public static implicit operator Content9(BetaWebFetchBlockParam value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

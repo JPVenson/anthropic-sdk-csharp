@@ -346,6 +346,17 @@ public record class Citation
         };
     }
 
+    public static implicit operator Citation(BetaCitationCharLocation value) => new(value);
+
+    public static implicit operator Citation(BetaCitationPageLocation value) => new(value);
+
+    public static implicit operator Citation(BetaCitationContentBlockLocation value) => new(value);
+
+    public static implicit operator Citation(BetaCitationsWebSearchResultLocation value) =>
+        new(value);
+
+    public static implicit operator Citation(BetaCitationSearchResultLocation value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

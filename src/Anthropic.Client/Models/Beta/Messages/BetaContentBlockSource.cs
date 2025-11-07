@@ -176,6 +176,11 @@ public record class Content1
         };
     }
 
+    public static implicit operator Content1(string value) => new(value);
+
+    public static implicit operator Content1(List<BetaContentBlockSourceContent> value) =>
+        new((IReadOnlyList<BetaContentBlockSourceContent>)value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

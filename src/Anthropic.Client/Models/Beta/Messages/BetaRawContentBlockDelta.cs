@@ -144,6 +144,19 @@ public record class BetaRawContentBlockDelta
         };
     }
 
+    public static implicit operator BetaRawContentBlockDelta(BetaTextDelta value) => new(value);
+
+    public static implicit operator BetaRawContentBlockDelta(BetaInputJSONDelta value) =>
+        new(value);
+
+    public static implicit operator BetaRawContentBlockDelta(BetaCitationsDelta value) =>
+        new(value);
+
+    public static implicit operator BetaRawContentBlockDelta(BetaThinkingDelta value) => new(value);
+
+    public static implicit operator BetaRawContentBlockDelta(BetaSignatureDelta value) =>
+        new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

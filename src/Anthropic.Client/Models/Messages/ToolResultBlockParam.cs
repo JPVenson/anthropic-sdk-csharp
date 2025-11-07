@@ -232,6 +232,10 @@ public record class Content1
         };
     }
 
+    public static implicit operator Content1(string value) => new(value);
+
+    public static implicit operator Content1(List<Block> value) => new((IReadOnlyList<Block>)value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)
@@ -436,6 +440,14 @@ public record class Block
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Block"),
         };
     }
+
+    public static implicit operator Block(TextBlockParam value) => new(value);
+
+    public static implicit operator Block(ImageBlockParam value) => new(value);
+
+    public static implicit operator Block(SearchResultBlockParam value) => new(value);
+
+    public static implicit operator Block(DocumentBlockParam value) => new(value);
 
     public void Validate()
     {

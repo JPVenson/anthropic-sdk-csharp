@@ -350,6 +350,38 @@ public record class BetaContentBlock
         };
     }
 
+    public static implicit operator BetaContentBlock(BetaTextBlock value) => new(value);
+
+    public static implicit operator BetaContentBlock(BetaThinkingBlock value) => new(value);
+
+    public static implicit operator BetaContentBlock(BetaRedactedThinkingBlock value) => new(value);
+
+    public static implicit operator BetaContentBlock(BetaToolUseBlock value) => new(value);
+
+    public static implicit operator BetaContentBlock(BetaServerToolUseBlock value) => new(value);
+
+    public static implicit operator BetaContentBlock(BetaWebSearchToolResultBlock value) =>
+        new(value);
+
+    public static implicit operator BetaContentBlock(BetaWebFetchToolResultBlock value) =>
+        new(value);
+
+    public static implicit operator BetaContentBlock(BetaCodeExecutionToolResultBlock value) =>
+        new(value);
+
+    public static implicit operator BetaContentBlock(BetaBashCodeExecutionToolResultBlock value) =>
+        new(value);
+
+    public static implicit operator BetaContentBlock(
+        BetaTextEditorCodeExecutionToolResultBlock value
+    ) => new(value);
+
+    public static implicit operator BetaContentBlock(BetaMCPToolUseBlock value) => new(value);
+
+    public static implicit operator BetaContentBlock(BetaMCPToolResultBlock value) => new(value);
+
+    public static implicit operator BetaContentBlock(BetaContainerUploadBlock value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

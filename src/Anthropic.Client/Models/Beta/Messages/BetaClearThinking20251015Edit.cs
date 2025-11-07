@@ -192,6 +192,12 @@ public record class Keep
         };
     }
 
+    public static implicit operator Keep(BetaThinkingTurns value) => new(value);
+
+    public static implicit operator Keep(BetaAllThinkingTurns value) => new(value);
+
+    public static implicit operator Keep(UnionMember2 value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

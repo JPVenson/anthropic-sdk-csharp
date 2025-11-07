@@ -181,6 +181,26 @@ public record class BetaRawMessageStreamEvent
         };
     }
 
+    public static implicit operator BetaRawMessageStreamEvent(BetaRawMessageStartEvent value) =>
+        new(value);
+
+    public static implicit operator BetaRawMessageStreamEvent(BetaRawMessageDeltaEvent value) =>
+        new(value);
+
+    public static implicit operator BetaRawMessageStreamEvent(BetaRawMessageStopEvent value) =>
+        new(value);
+
+    public static implicit operator BetaRawMessageStreamEvent(
+        BetaRawContentBlockStartEvent value
+    ) => new(value);
+
+    public static implicit operator BetaRawMessageStreamEvent(
+        BetaRawContentBlockDeltaEvent value
+    ) => new(value);
+
+    public static implicit operator BetaRawMessageStreamEvent(BetaRawContentBlockStopEvent value) =>
+        new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

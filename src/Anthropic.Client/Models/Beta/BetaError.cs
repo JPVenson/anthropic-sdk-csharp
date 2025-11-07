@@ -234,6 +234,24 @@ public record class BetaError
         };
     }
 
+    public static implicit operator BetaError(BetaInvalidRequestError value) => new(value);
+
+    public static implicit operator BetaError(BetaAuthenticationError value) => new(value);
+
+    public static implicit operator BetaError(BetaBillingError value) => new(value);
+
+    public static implicit operator BetaError(BetaPermissionError value) => new(value);
+
+    public static implicit operator BetaError(BetaNotFoundError value) => new(value);
+
+    public static implicit operator BetaError(BetaRateLimitError value) => new(value);
+
+    public static implicit operator BetaError(BetaGatewayTimeoutError value) => new(value);
+
+    public static implicit operator BetaError(BetaAPIError value) => new(value);
+
+    public static implicit operator BetaError(BetaOverloadedError value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

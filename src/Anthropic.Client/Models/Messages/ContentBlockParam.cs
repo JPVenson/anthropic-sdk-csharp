@@ -315,6 +315,28 @@ public record class ContentBlockParam
         };
     }
 
+    public static implicit operator ContentBlockParam(TextBlockParam value) => new(value);
+
+    public static implicit operator ContentBlockParam(ImageBlockParam value) => new(value);
+
+    public static implicit operator ContentBlockParam(DocumentBlockParam value) => new(value);
+
+    public static implicit operator ContentBlockParam(SearchResultBlockParam value) => new(value);
+
+    public static implicit operator ContentBlockParam(ThinkingBlockParam value) => new(value);
+
+    public static implicit operator ContentBlockParam(RedactedThinkingBlockParam value) =>
+        new(value);
+
+    public static implicit operator ContentBlockParam(ToolUseBlockParam value) => new(value);
+
+    public static implicit operator ContentBlockParam(ToolResultBlockParam value) => new(value);
+
+    public static implicit operator ContentBlockParam(ServerToolUseBlockParam value) => new(value);
+
+    public static implicit operator ContentBlockParam(WebSearchToolResultBlockParam value) =>
+        new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

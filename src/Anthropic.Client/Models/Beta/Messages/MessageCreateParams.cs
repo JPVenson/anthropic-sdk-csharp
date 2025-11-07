@@ -714,6 +714,10 @@ public record class Container
         };
     }
 
+    public static implicit operator Container(BetaContainerParams value) => new(value);
+
+    public static implicit operator Container(string value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)
@@ -913,6 +917,11 @@ public record class SystemModel
             ),
         };
     }
+
+    public static implicit operator SystemModel(string value) => new(value);
+
+    public static implicit operator SystemModel(List<BetaTextBlockParam> value) =>
+        new((IReadOnlyList<BetaTextBlockParam>)value);
 
     public void Validate()
     {

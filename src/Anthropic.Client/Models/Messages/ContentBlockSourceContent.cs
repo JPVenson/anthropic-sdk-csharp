@@ -95,6 +95,10 @@ public record class ContentBlockSourceContent
         };
     }
 
+    public static implicit operator ContentBlockSourceContent(TextBlockParam value) => new(value);
+
+    public static implicit operator ContentBlockSourceContent(ImageBlockParam value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

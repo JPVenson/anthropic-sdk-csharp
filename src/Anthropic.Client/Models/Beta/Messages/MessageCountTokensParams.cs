@@ -503,6 +503,11 @@ public record class System1
         };
     }
 
+    public static implicit operator System1(string value) => new(value);
+
+    public static implicit operator System1(List<BetaTextBlockParam> value) =>
+        new((IReadOnlyList<BetaTextBlockParam>)value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)
@@ -976,6 +981,34 @@ public record class Tool
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Tool"),
         };
     }
+
+    public static implicit operator Tool(BetaTool value) => new(value);
+
+    public static implicit operator Tool(BetaToolBash20241022 value) => new(value);
+
+    public static implicit operator Tool(BetaToolBash20250124 value) => new(value);
+
+    public static implicit operator Tool(BetaCodeExecutionTool20250522 value) => new(value);
+
+    public static implicit operator Tool(BetaCodeExecutionTool20250825 value) => new(value);
+
+    public static implicit operator Tool(BetaToolComputerUse20241022 value) => new(value);
+
+    public static implicit operator Tool(BetaMemoryTool20250818 value) => new(value);
+
+    public static implicit operator Tool(BetaToolComputerUse20250124 value) => new(value);
+
+    public static implicit operator Tool(BetaToolTextEditor20241022 value) => new(value);
+
+    public static implicit operator Tool(BetaToolTextEditor20250124 value) => new(value);
+
+    public static implicit operator Tool(BetaToolTextEditor20250429 value) => new(value);
+
+    public static implicit operator Tool(BetaToolTextEditor20250728 value) => new(value);
+
+    public static implicit operator Tool(BetaWebSearchTool20250305 value) => new(value);
+
+    public static implicit operator Tool(BetaWebFetchTool20250910 value) => new(value);
 
     public void Validate()
     {

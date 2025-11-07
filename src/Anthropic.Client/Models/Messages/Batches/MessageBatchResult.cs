@@ -133,6 +133,18 @@ public record class MessageBatchResult
         };
     }
 
+    public static implicit operator MessageBatchResult(MessageBatchSucceededResult value) =>
+        new(value);
+
+    public static implicit operator MessageBatchResult(MessageBatchErroredResult value) =>
+        new(value);
+
+    public static implicit operator MessageBatchResult(MessageBatchCanceledResult value) =>
+        new(value);
+
+    public static implicit operator MessageBatchResult(MessageBatchExpiredResult value) =>
+        new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

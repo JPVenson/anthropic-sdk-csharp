@@ -425,6 +425,11 @@ public record class System1
         };
     }
 
+    public static implicit operator System1(string value) => new(value);
+
+    public static implicit operator System1(List<TextBlockParam> value) =>
+        new((IReadOnlyList<TextBlockParam>)value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

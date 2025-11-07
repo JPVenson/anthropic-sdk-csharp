@@ -84,6 +84,14 @@ public record class BetaCodeExecutionToolResultBlockContent
         };
     }
 
+    public static implicit operator BetaCodeExecutionToolResultBlockContent(
+        BetaCodeExecutionToolResultError value
+    ) => new(value);
+
+    public static implicit operator BetaCodeExecutionToolResultBlockContent(
+        BetaCodeExecutionResultBlock value
+    ) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

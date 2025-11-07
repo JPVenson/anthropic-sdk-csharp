@@ -94,6 +94,10 @@ public record class ThinkingConfigParam
         };
     }
 
+    public static implicit operator ThinkingConfigParam(ThinkingConfigEnabled value) => new(value);
+
+    public static implicit operator ThinkingConfigParam(ThinkingConfigDisabled value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

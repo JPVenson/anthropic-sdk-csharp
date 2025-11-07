@@ -666,6 +666,11 @@ public record class SystemModel
         };
     }
 
+    public static implicit operator SystemModel(string value) => new(value);
+
+    public static implicit operator SystemModel(List<TextBlockParam> value) =>
+        new((IReadOnlyList<TextBlockParam>)value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

@@ -95,6 +95,12 @@ public record class BetaContentBlockSourceContent
         };
     }
 
+    public static implicit operator BetaContentBlockSourceContent(BetaTextBlockParam value) =>
+        new(value);
+
+    public static implicit operator BetaContentBlockSourceContent(BetaImageBlockParam value) =>
+        new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

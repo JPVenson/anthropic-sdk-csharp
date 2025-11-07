@@ -22,7 +22,7 @@ public class BatchServiceTest : TestBase
                         Params = new()
                         {
                             MaxTokens = 1024,
-                            Messages = [new() { Content = new("Hello, world"), Role = Role.User }],
+                            Messages = [new() { Content = "Hello, world", Role = Role.User }],
                             Model = Model.Claude3_7SonnetLatest,
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                             ServiceTier = Batches::ServiceTier.Auto,
@@ -36,51 +36,42 @@ public class BatchServiceTest : TestBase
                                         CacheControl = new() { TTL = TTL.TTL5m },
                                         Citations =
                                         [
-                                            new(
-                                                new CitationCharLocationParam()
-                                                {
-                                                    CitedText = "cited_text",
-                                                    DocumentIndex = 0,
-                                                    DocumentTitle = "x",
-                                                    EndCharIndex = 0,
-                                                    StartCharIndex = 0,
-                                                }
-                                            ),
+                                            new CitationCharLocationParam()
+                                            {
+                                                CitedText = "cited_text",
+                                                DocumentIndex = 0,
+                                                DocumentTitle = "x",
+                                                EndCharIndex = 0,
+                                                StartCharIndex = 0,
+                                            },
                                         ],
                                     },
                                 ]
                             ),
                             Temperature = 1,
-                            Thinking = new(new ThinkingConfigEnabled(1024)),
-                            ToolChoice = new(
-                                new ToolChoiceAuto() { DisableParallelToolUse = true }
-                            ),
+                            Thinking = new ThinkingConfigEnabled(1024),
+                            ToolChoice = new ToolChoiceAuto() { DisableParallelToolUse = true },
                             Tools =
                             [
-                                new(
-                                    new Tool()
+                                new Tool()
+                                {
+                                    InputSchema = new()
                                     {
-                                        InputSchema = new()
+                                        Properties1 = new Dictionary<string, JsonElement>()
                                         {
-                                            Properties1 = new Dictionary<string, JsonElement>()
                                             {
-                                                {
-                                                    "location",
-                                                    JsonSerializer.SerializeToElement("bar")
-                                                },
-                                                {
-                                                    "unit",
-                                                    JsonSerializer.SerializeToElement("bar")
-                                                },
+                                                "location",
+                                                JsonSerializer.SerializeToElement("bar")
                                             },
-                                            Required = ["location"],
+                                            { "unit", JsonSerializer.SerializeToElement("bar") },
                                         },
-                                        Name = "name",
-                                        CacheControl = new() { TTL = TTL.TTL5m },
-                                        Description = "Get the current weather in a given location",
-                                        Type = Type.Custom,
-                                    }
-                                ),
+                                        Required = ["location"],
+                                    },
+                                    Name = "name",
+                                    CacheControl = new() { TTL = TTL.TTL5m },
+                                    Description = "Get the current weather in a given location",
+                                    Type = Type.Custom,
+                                },
                             ],
                             TopK = 5,
                             TopP = 0.7,

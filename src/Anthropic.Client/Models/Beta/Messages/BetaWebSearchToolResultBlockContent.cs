@@ -82,6 +82,14 @@ public record class BetaWebSearchToolResultBlockContent
         };
     }
 
+    public static implicit operator BetaWebSearchToolResultBlockContent(
+        BetaWebSearchToolResultError value
+    ) => new(value);
+
+    public static implicit operator BetaWebSearchToolResultBlockContent(
+        List<BetaWebSearchResultBlock> value
+    ) => new((IReadOnlyList<BetaWebSearchResultBlock>)value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

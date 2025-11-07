@@ -240,6 +240,24 @@ public record class BetaTextCitationParam
         };
     }
 
+    public static implicit operator BetaTextCitationParam(BetaCitationCharLocationParam value) =>
+        new(value);
+
+    public static implicit operator BetaTextCitationParam(BetaCitationPageLocationParam value) =>
+        new(value);
+
+    public static implicit operator BetaTextCitationParam(
+        BetaCitationContentBlockLocationParam value
+    ) => new(value);
+
+    public static implicit operator BetaTextCitationParam(
+        BetaCitationWebSearchResultLocationParam value
+    ) => new(value);
+
+    public static implicit operator BetaTextCitationParam(
+        BetaCitationSearchResultLocationParam value
+    ) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

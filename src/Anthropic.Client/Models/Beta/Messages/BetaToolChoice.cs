@@ -143,6 +143,14 @@ public record class BetaToolChoice
         };
     }
 
+    public static implicit operator BetaToolChoice(BetaToolChoiceAuto value) => new(value);
+
+    public static implicit operator BetaToolChoice(BetaToolChoiceAny value) => new(value);
+
+    public static implicit operator BetaToolChoice(BetaToolChoiceTool value) => new(value);
+
+    public static implicit operator BetaToolChoice(BetaToolChoiceNone value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

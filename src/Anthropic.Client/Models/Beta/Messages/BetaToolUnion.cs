@@ -408,6 +408,36 @@ public record class BetaToolUnion
         };
     }
 
+    public static implicit operator BetaToolUnion(BetaTool value) => new(value);
+
+    public static implicit operator BetaToolUnion(BetaToolBash20241022 value) => new(value);
+
+    public static implicit operator BetaToolUnion(BetaToolBash20250124 value) => new(value);
+
+    public static implicit operator BetaToolUnion(BetaCodeExecutionTool20250522 value) =>
+        new(value);
+
+    public static implicit operator BetaToolUnion(BetaCodeExecutionTool20250825 value) =>
+        new(value);
+
+    public static implicit operator BetaToolUnion(BetaToolComputerUse20241022 value) => new(value);
+
+    public static implicit operator BetaToolUnion(BetaMemoryTool20250818 value) => new(value);
+
+    public static implicit operator BetaToolUnion(BetaToolComputerUse20250124 value) => new(value);
+
+    public static implicit operator BetaToolUnion(BetaToolTextEditor20241022 value) => new(value);
+
+    public static implicit operator BetaToolUnion(BetaToolTextEditor20250124 value) => new(value);
+
+    public static implicit operator BetaToolUnion(BetaToolTextEditor20250429 value) => new(value);
+
+    public static implicit operator BetaToolUnion(BetaToolTextEditor20250728 value) => new(value);
+
+    public static implicit operator BetaToolUnion(BetaWebSearchTool20250305 value) => new(value);
+
+    public static implicit operator BetaToolUnion(BetaWebFetchTool20250910 value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

@@ -212,6 +212,11 @@ public record class Content
         };
     }
 
+    public static implicit operator Content(BetaBashCodeExecutionToolResultError value) =>
+        new(value);
+
+    public static implicit operator Content(BetaBashCodeExecutionResultBlock value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

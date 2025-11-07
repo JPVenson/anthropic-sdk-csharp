@@ -466,6 +466,36 @@ public record class ContentBlock
         };
     }
 
+    public static implicit operator ContentBlock(BetaTextBlock value) => new(value);
+
+    public static implicit operator ContentBlock(BetaThinkingBlock value) => new(value);
+
+    public static implicit operator ContentBlock(BetaRedactedThinkingBlock value) => new(value);
+
+    public static implicit operator ContentBlock(BetaToolUseBlock value) => new(value);
+
+    public static implicit operator ContentBlock(BetaServerToolUseBlock value) => new(value);
+
+    public static implicit operator ContentBlock(BetaWebSearchToolResultBlock value) => new(value);
+
+    public static implicit operator ContentBlock(BetaWebFetchToolResultBlock value) => new(value);
+
+    public static implicit operator ContentBlock(BetaCodeExecutionToolResultBlock value) =>
+        new(value);
+
+    public static implicit operator ContentBlock(BetaBashCodeExecutionToolResultBlock value) =>
+        new(value);
+
+    public static implicit operator ContentBlock(
+        BetaTextEditorCodeExecutionToolResultBlock value
+    ) => new(value);
+
+    public static implicit operator ContentBlock(BetaMCPToolUseBlock value) => new(value);
+
+    public static implicit operator ContentBlock(BetaMCPToolResultBlock value) => new(value);
+
+    public static implicit operator ContentBlock(BetaContainerUploadBlock value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

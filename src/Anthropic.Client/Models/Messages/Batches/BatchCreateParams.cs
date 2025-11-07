@@ -886,6 +886,14 @@ public record class SystemModel
         };
     }
 
+    public static implicit operator global::Anthropic.Client.Models.Messages.Batches.SystemModel(
+        string value
+    ) => new(value);
+
+    public static implicit operator global::Anthropic.Client.Models.Messages.Batches.SystemModel(
+        List<TextBlockParam> value
+    ) => new((IReadOnlyList<TextBlockParam>)value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

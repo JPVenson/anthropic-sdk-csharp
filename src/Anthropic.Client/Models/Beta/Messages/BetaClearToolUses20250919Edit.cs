@@ -258,6 +258,11 @@ public record class ClearToolInputs
         };
     }
 
+    public static implicit operator ClearToolInputs(bool value) => new(value);
+
+    public static implicit operator ClearToolInputs(List<string> value) =>
+        new((IReadOnlyList<string>)value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)
@@ -408,6 +413,10 @@ public record class Trigger
             ),
         };
     }
+
+    public static implicit operator Trigger(BetaInputTokensTrigger value) => new(value);
+
+    public static implicit operator Trigger(BetaToolUsesTrigger value) => new(value);
 
     public void Validate()
     {

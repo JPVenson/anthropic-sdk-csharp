@@ -14,7 +14,7 @@ public class MessageServiceTest : TestBase
             new()
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = new("Hello, world"), Role = Role.User }],
+                Messages = [new() { Content = "Hello, world", Role = Role.User }],
                 Model = Model.Claude3_7SonnetLatest,
             }
         );
@@ -28,7 +28,7 @@ public class MessageServiceTest : TestBase
             new()
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = new("Hello, world"), Role = Role.User }],
+                Messages = [new() { Content = "Hello, world", Role = Role.User }],
                 Model = Model.Claude3_7SonnetLatest,
             }
         );
@@ -252,7 +252,7 @@ public class MessageServiceTest : TestBase
         var messageTokensCount = await this.client.Messages.CountTokens(
             new()
             {
-                Messages = [new() { Content = new("string"), Role = Role.User }],
+                Messages = [new() { Content = "string", Role = Role.User }],
                 Model = Model.Claude3_7SonnetLatest,
             }
         );

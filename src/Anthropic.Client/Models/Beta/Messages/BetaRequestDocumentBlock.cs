@@ -349,6 +349,16 @@ public record class Source1
         };
     }
 
+    public static implicit operator Source1(BetaBase64PDFSource value) => new(value);
+
+    public static implicit operator Source1(BetaPlainTextSource value) => new(value);
+
+    public static implicit operator Source1(BetaContentBlockSource value) => new(value);
+
+    public static implicit operator Source1(BetaURLPDFSource value) => new(value);
+
+    public static implicit operator Source1(BetaFileDocumentSource value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

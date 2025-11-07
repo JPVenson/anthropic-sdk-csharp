@@ -94,6 +94,12 @@ public record class BetaThinkingConfigParam
         };
     }
 
+    public static implicit operator BetaThinkingConfigParam(BetaThinkingConfigEnabled value) =>
+        new(value);
+
+    public static implicit operator BetaThinkingConfigParam(BetaThinkingConfigDisabled value) =>
+        new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

@@ -44,7 +44,7 @@ Messages::MessageCreateParams parameters = new()
         new()
         {
             Role = Messages::Role.User,
-            Content = new("Hello, Claude"),
+            Content = "Hello, Claude",
         },
     ],
     Model = Messages::Model.Claude3_7SonnetLatest,
@@ -134,7 +134,7 @@ Messages::MessageCreateParams parameters = new()
         new()
         {
             Role = Messages::Role.User,
-            Content = new("Hello, Claude"),
+            Content = "Hello, Claude",
         },
     ],
     Model = Messages::Model.Claude3_7SonnetLatest,

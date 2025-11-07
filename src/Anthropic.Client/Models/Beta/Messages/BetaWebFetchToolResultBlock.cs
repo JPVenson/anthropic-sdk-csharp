@@ -208,6 +208,10 @@ public record class Content8
         };
     }
 
+    public static implicit operator Content8(BetaWebFetchToolResultErrorBlock value) => new(value);
+
+    public static implicit operator Content8(BetaWebFetchBlock value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

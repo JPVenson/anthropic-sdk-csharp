@@ -933,6 +933,14 @@ public record class Container
         };
     }
 
+    public static implicit operator global::Anthropic.Client.Models.Beta.Messages.Batches.Container(
+        BetaContainerParams value
+    ) => new(value);
+
+    public static implicit operator global::Anthropic.Client.Models.Beta.Messages.Batches.Container(
+        string value
+    ) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)
@@ -1148,6 +1156,14 @@ public record class SystemModel
             ),
         };
     }
+
+    public static implicit operator global::Anthropic.Client.Models.Beta.Messages.Batches.SystemModel(
+        string value
+    ) => new(value);
+
+    public static implicit operator global::Anthropic.Client.Models.Beta.Messages.Batches.SystemModel(
+        List<BetaTextBlockParam> value
+    ) => new((IReadOnlyList<BetaTextBlockParam>)value);
 
     public void Validate()
     {

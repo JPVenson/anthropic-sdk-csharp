@@ -224,6 +224,10 @@ public record class Source
         };
     }
 
+    public static implicit operator Source(BetaBase64PDFSource value) => new(value);
+
+    public static implicit operator Source(BetaPlainTextSource value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

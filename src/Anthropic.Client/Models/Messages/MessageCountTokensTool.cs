@@ -162,6 +162,22 @@ public record class MessageCountTokensTool
         };
     }
 
+    public static implicit operator MessageCountTokensTool(Tool value) => new(value);
+
+    public static implicit operator MessageCountTokensTool(ToolBash20250124 value) => new(value);
+
+    public static implicit operator MessageCountTokensTool(ToolTextEditor20250124 value) =>
+        new(value);
+
+    public static implicit operator MessageCountTokensTool(ToolTextEditor20250429 value) =>
+        new(value);
+
+    public static implicit operator MessageCountTokensTool(ToolTextEditor20250728 value) =>
+        new(value);
+
+    public static implicit operator MessageCountTokensTool(WebSearchTool20250305 value) =>
+        new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

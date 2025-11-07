@@ -243,6 +243,12 @@ public record class ContentModel
         };
     }
 
+    public static implicit operator ContentModel(BetaBashCodeExecutionToolResultErrorParam value) =>
+        new(value);
+
+    public static implicit operator ContentModel(BetaBashCodeExecutionResultBlockParam value) =>
+        new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

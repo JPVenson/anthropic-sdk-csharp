@@ -234,6 +234,24 @@ public record class ErrorObject
         };
     }
 
+    public static implicit operator ErrorObject(InvalidRequestError value) => new(value);
+
+    public static implicit operator ErrorObject(AuthenticationError value) => new(value);
+
+    public static implicit operator ErrorObject(BillingError value) => new(value);
+
+    public static implicit operator ErrorObject(PermissionError value) => new(value);
+
+    public static implicit operator ErrorObject(NotFoundError value) => new(value);
+
+    public static implicit operator ErrorObject(RateLimitError value) => new(value);
+
+    public static implicit operator ErrorObject(GatewayTimeoutError value) => new(value);
+
+    public static implicit operator ErrorObject(APIErrorObject value) => new(value);
+
+    public static implicit operator ErrorObject(OverloadedError value) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

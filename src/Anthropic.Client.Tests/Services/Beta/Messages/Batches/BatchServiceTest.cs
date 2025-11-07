@@ -23,37 +23,33 @@ public class BatchServiceTest : TestBase
                         Params = new()
                         {
                             MaxTokens = 1024,
-                            Messages = [new() { Content = new("Hello, world"), Role = Role.User }],
+                            Messages = [new() { Content = "Hello, world", Role = Role.User }],
                             Model = Messages::Model.Claude3_7SonnetLatest,
-                            Container = new(
-                                new BetaContainerParams()
-                                {
-                                    ID = "id",
-                                    Skills =
-                                    [
-                                        new()
-                                        {
-                                            SkillID = "x",
-                                            Type = TypeModel.Anthropic,
-                                            Version = "x",
-                                        },
-                                    ],
-                                }
-                            ),
+                            Container = new BetaContainerParams()
+                            {
+                                ID = "id",
+                                Skills =
+                                [
+                                    new()
+                                    {
+                                        SkillID = "x",
+                                        Type = TypeModel.Anthropic,
+                                        Version = "x",
+                                    },
+                                ],
+                            },
                             ContextManagement = new()
                             {
                                 Edits =
                                 [
-                                    new(
-                                        new BetaClearToolUses20250919Edit()
-                                        {
-                                            ClearAtLeast = new(0),
-                                            ClearToolInputs = new(true),
-                                            ExcludeTools = ["string"],
-                                            Keep = new(0),
-                                            Trigger = new(new BetaInputTokensTrigger(1)),
-                                        }
-                                    ),
+                                    new BetaClearToolUses20250919Edit()
+                                    {
+                                        ClearAtLeast = new(0),
+                                        ClearToolInputs = true,
+                                        ExcludeTools = ["string"],
+                                        Keep = new(0),
+                                        Trigger = new BetaInputTokensTrigger(1),
+                                    },
                                 ],
                             },
                             MCPServers =
@@ -82,51 +78,42 @@ public class BatchServiceTest : TestBase
                                         CacheControl = new() { TTL = TTL.TTL5m },
                                         Citations =
                                         [
-                                            new(
-                                                new BetaCitationCharLocationParam()
-                                                {
-                                                    CitedText = "cited_text",
-                                                    DocumentIndex = 0,
-                                                    DocumentTitle = "x",
-                                                    EndCharIndex = 0,
-                                                    StartCharIndex = 0,
-                                                }
-                                            ),
+                                            new BetaCitationCharLocationParam()
+                                            {
+                                                CitedText = "cited_text",
+                                                DocumentIndex = 0,
+                                                DocumentTitle = "x",
+                                                EndCharIndex = 0,
+                                                StartCharIndex = 0,
+                                            },
                                         ],
                                     },
                                 ]
                             ),
                             Temperature = 1,
-                            Thinking = new(new BetaThinkingConfigEnabled(1024)),
-                            ToolChoice = new(
-                                new BetaToolChoiceAuto() { DisableParallelToolUse = true }
-                            ),
+                            Thinking = new BetaThinkingConfigEnabled(1024),
+                            ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
                             Tools =
                             [
-                                new(
-                                    new BetaTool()
+                                new BetaTool()
+                                {
+                                    InputSchema = new()
                                     {
-                                        InputSchema = new()
+                                        Properties1 = new Dictionary<string, JsonElement>()
                                         {
-                                            Properties1 = new Dictionary<string, JsonElement>()
                                             {
-                                                {
-                                                    "location",
-                                                    JsonSerializer.SerializeToElement("bar")
-                                                },
-                                                {
-                                                    "unit",
-                                                    JsonSerializer.SerializeToElement("bar")
-                                                },
+                                                "location",
+                                                JsonSerializer.SerializeToElement("bar")
                                             },
-                                            Required = ["location"],
+                                            { "unit", JsonSerializer.SerializeToElement("bar") },
                                         },
-                                        Name = "name",
-                                        CacheControl = new() { TTL = TTL.TTL5m },
-                                        Description = "Get the current weather in a given location",
-                                        Type = Type1.Custom,
-                                    }
-                                ),
+                                        Required = ["location"],
+                                    },
+                                    Name = "name",
+                                    CacheControl = new() { TTL = TTL.TTL5m },
+                                    Description = "Get the current weather in a given location",
+                                    Type = Type1.Custom,
+                                },
                             ],
                             TopK = 5,
                             TopP = 0.7,

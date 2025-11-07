@@ -248,6 +248,19 @@ public record class BetaTextCitation
         };
     }
 
+    public static implicit operator BetaTextCitation(BetaCitationCharLocation value) => new(value);
+
+    public static implicit operator BetaTextCitation(BetaCitationPageLocation value) => new(value);
+
+    public static implicit operator BetaTextCitation(BetaCitationContentBlockLocation value) =>
+        new(value);
+
+    public static implicit operator BetaTextCitation(BetaCitationsWebSearchResultLocation value) =>
+        new(value);
+
+    public static implicit operator BetaTextCitation(BetaCitationSearchResultLocation value) =>
+        new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

@@ -238,6 +238,21 @@ public record class TextCitationParam
         };
     }
 
+    public static implicit operator TextCitationParam(CitationCharLocationParam value) =>
+        new(value);
+
+    public static implicit operator TextCitationParam(CitationPageLocationParam value) =>
+        new(value);
+
+    public static implicit operator TextCitationParam(CitationContentBlockLocationParam value) =>
+        new(value);
+
+    public static implicit operator TextCitationParam(CitationWebSearchResultLocationParam value) =>
+        new(value);
+
+    public static implicit operator TextCitationParam(CitationSearchResultLocationParam value) =>
+        new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

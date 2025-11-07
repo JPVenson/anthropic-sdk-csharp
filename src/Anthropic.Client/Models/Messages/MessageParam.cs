@@ -163,6 +163,11 @@ public record class ContentModel
         };
     }
 
+    public static implicit operator ContentModel(string value) => new(value);
+
+    public static implicit operator ContentModel(List<ContentBlockParam> value) =>
+        new((IReadOnlyList<ContentBlockParam>)value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

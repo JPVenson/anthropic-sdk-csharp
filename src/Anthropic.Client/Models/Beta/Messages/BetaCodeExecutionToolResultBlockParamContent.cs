@@ -90,6 +90,14 @@ public record class BetaCodeExecutionToolResultBlockParamContent
         };
     }
 
+    public static implicit operator BetaCodeExecutionToolResultBlockParamContent(
+        BetaCodeExecutionToolResultErrorParam value
+    ) => new(value);
+
+    public static implicit operator BetaCodeExecutionToolResultBlockParamContent(
+        BetaCodeExecutionResultBlockParam value
+    ) => new(value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)

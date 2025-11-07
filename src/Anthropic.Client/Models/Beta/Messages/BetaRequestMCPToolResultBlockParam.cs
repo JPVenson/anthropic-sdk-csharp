@@ -242,6 +242,11 @@ public record class Content4
         };
     }
 
+    public static implicit operator Content4(string value) => new(value);
+
+    public static implicit operator Content4(List<BetaTextBlockParam> value) =>
+        new((IReadOnlyList<BetaTextBlockParam>)value);
+
     public void Validate()
     {
         if (this.Value is UnknownVariant)
