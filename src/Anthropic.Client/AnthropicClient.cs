@@ -73,19 +73,10 @@ public class AnthropicClient : IAnthropicClient
         get { return _beta.Value; }
     }
 
-    protected virtual ValueTask BeforeSend<T>(HttpRequest<T> request, HttpRequestMessage requestMessage)
-        where T : ParamsBase
-    {
-        return ValueTask.CompletedTask;
-    }
-
-    protected virtual ValueTask AfterSend<T>(HttpRequest<T> request, HttpResponseMessage httpResponseMessage)
-        where T : ParamsBase
-    {
-        return ValueTask.CompletedTask;
-    }
-
-    public async Task<HttpResponse> Execute<T>(HttpRequest<T> request)
+    public async Task<HttpResponse> Execute<T>(
+        HttpRequest<T> request,
+        CancellationToken cancellationToken = default
+    )
         where T : ParamsBase
     {
         using HttpRequestMessage requestMessage = new(request.Method, request.Params.Url(this))
@@ -93,7 +84,11 @@ public class AnthropicClient : IAnthropicClient
             Content = request.Params.BodyContent(),
         };
         request.Params.AddHeadersToRequest(requestMessage, this);
-        using CancellationTokenSource cts = new(this.Timeout);
+        using CancellationTokenSource timeoutCts = new(this.Timeout);
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(
+            timeoutCts.Token,
+            cancellationToken
+        );
         HttpResponseMessage responseMessage;
         try
         {
@@ -117,7 +112,7 @@ public class AnthropicClient : IAnthropicClient
             {
                 throw AnthropicExceptionFactory.CreateApiException(
                     responseMessage.StatusCode,
-                    await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false)
+                    await responseMessage.Content.ReadAsStringAsync(cts.Token).ConfigureAwait(false)
                 );
             }
             catch (HttpRequestException e)
@@ -129,7 +124,7 @@ public class AnthropicClient : IAnthropicClient
                 responseMessage.Dispose();
             }
         }
-        return new() { Message = responseMessage };
+        return new() { Message = responseMessage, CancellationToken = cts.Token };
     }
 
     public AnthropicClient()
