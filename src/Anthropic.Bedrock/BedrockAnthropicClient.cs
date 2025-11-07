@@ -33,14 +33,6 @@ public class BedrockAnthropicClient : AnthropicClient
     /// </summary>
     private const string CONTENT_TYPE_SSE_STREAM = "text/event-stream; charset=utf-8";
 
-    /// <summary>
-    /// The name of the environment variable that may hold the API key for authorization. If this
-    /// variable is set, it will take precedence over the AWS credentials resolved from all other
-    /// sources.
-    /// </summary>
-    private const string ENV_API_KEY = "AWS_BEARER_TOKEN_BEDROCK";
-
-
     private readonly IBedrockCredentials _bedrockCredentials;
 
     public BedrockAnthropicClient(IBedrockCredentials bedrockCredentials, string region)
@@ -82,6 +74,7 @@ public class BedrockAnthropicClient : AnthropicClient
         uriBuilder.Path = string.Join('/', [.. uriBuilder.Path.Split("/").Select(e => e == "model" ? modelValue.ToString() : e), (parsedStreamValue ? "invoke-with-response-stream" : "invoke")]);
 
         requestMessage.RequestUri = uriBuilder.Uri;
+        requestMessage.Headers.TryAddWithoutValidation("Host", uriBuilder.Uri.Host);      
 
         _bedrockCredentials.Apply(requestMessage);
     }

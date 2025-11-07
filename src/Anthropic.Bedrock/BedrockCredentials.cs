@@ -1,29 +1,19 @@
 ﻿namespace Anthropic.Bedrock;
 
-public class BedrockCredentials : IBedrockCredentials
+public class BedrockApiTokenCredentials : IBedrockCredentials
 {
-    private BedrockCredentials()
+    public BedrockApiTokenCredentials(string bearerToken, string region)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(bearerToken, nameof(bearerToken));
+        ArgumentException.ThrowIfNullOrWhiteSpace(region, nameof(region));
 
+        BearerToken = bearerToken;
+        Region = region;                
     }
 
-    public string? BearerToken { get; private set; }
+    public string BearerToken { get; private set; }
 
-    public string? Region { get; private set; }
-
-    public static BedrockCredentials FromApiKey(string bearerToken, string? region = null)
-    {
-        if (string.IsNullOrWhiteSpace(bearerToken))
-        {
-            throw new ArgumentNullException(nameof(bearerToken), "The bearer token cannot be null or empty");
-        }
-
-        return new()
-        {
-            BearerToken = bearerToken,
-            Region = region
-        };
-    }
+    public string Region { get; private set; }
 
     public void Apply(HttpRequestMessage requestMessage)
     {
