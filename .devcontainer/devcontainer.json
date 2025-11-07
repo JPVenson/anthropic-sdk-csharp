@@ -6,6 +6,7 @@
     "postAttachCommand": "cat .vscode/extensions.json | jq -r .recommendations[] | xargs -n 1 code --install-extension",
     "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
     "features": {
-        "ghcr.io/devcontainers/features/node:1": {},
+        // For the Prism mock server.
+        "ghcr.io/devcontainers/features/node:1": {}
     }
 }
