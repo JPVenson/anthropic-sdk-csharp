@@ -15,7 +15,7 @@ public sealed record class BetaMemoryTool20250818 : ModelBase, IFromRaw<BetaMemo
     /// <summary>
     /// Name of the tool.
     ///
-    /// This is how the tool will be called by the model and in `tool_use` blocks.
+    /// <para>This is how the tool will be called by the model and in `tool_use` blocks.</para>
     /// </summary>
     public JsonElement Name
     {

@@ -43,7 +43,7 @@ public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
     /// <summary>
     /// Deleted object type.
     ///
-    /// For file deletion, this is always `"file_deleted"`.
+    /// <para>For file deletion, this is always `"file_deleted"`.</para>
     /// </summary>
     public ApiEnum<string, global::Anthropic.Client.Models.Beta.Files.Type>? Type
     {
@@ -108,7 +108,7 @@ public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
 /// <summary>
 /// Deleted object type.
 ///
-/// For file deletion, this is always `"file_deleted"`.
+/// <para>For file deletion, this is always `"file_deleted"`.</para>
 /// </summary>
 [JsonConverter(typeof(TypeConverter))]
 public enum Type

@@ -70,7 +70,7 @@ public sealed record class FileListParams : ParamsBase
     /// <summary>
     /// Number of items to return per page.
     ///
-    /// Defaults to `20`. Ranges from `1` to `1000`.
+    /// <para>Defaults to `20`. Ranges from `1` to `1000`.</para>
     /// </summary>
     public long? Limit
     {

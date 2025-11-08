@@ -17,7 +17,7 @@ public sealed record class BetaMessageBatchRequestCounts
     /// <summary>
     /// Number of requests in the Message Batch that have been canceled.
     ///
-    /// This is zero until processing of the entire Message Batch has ended.
+    /// <para>This is zero until processing of the entire Message Batch has ended.</para>
     /// </summary>
     public required long Canceled
     {
@@ -43,7 +43,7 @@ public sealed record class BetaMessageBatchRequestCounts
     /// <summary>
     /// Number of requests in the Message Batch that encountered an error.
     ///
-    /// This is zero until processing of the entire Message Batch has ended.
+    /// <para>This is zero until processing of the entire Message Batch has ended.</para>
     /// </summary>
     public required long Errored
     {
@@ -69,7 +69,7 @@ public sealed record class BetaMessageBatchRequestCounts
     /// <summary>
     /// Number of requests in the Message Batch that have expired.
     ///
-    /// This is zero until processing of the entire Message Batch has ended.
+    /// <para>This is zero until processing of the entire Message Batch has ended.</para>
     /// </summary>
     public required long Expired
     {
@@ -119,7 +119,7 @@ public sealed record class BetaMessageBatchRequestCounts
     /// <summary>
     /// Number of requests in the Message Batch that have completed successfully.
     ///
-    /// This is zero until processing of the entire Message Batch has ended.
+    /// <para>This is zero until processing of the entire Message Batch has ended.</para>
     /// </summary>
     public required long Succeeded
     {

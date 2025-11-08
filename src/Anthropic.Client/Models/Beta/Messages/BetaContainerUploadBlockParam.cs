@@ -10,8 +10,8 @@ using System = System;
 namespace Anthropic.Client.Models.Beta.Messages;
 
 /// <summary>
-/// A content block that represents a file to be uploaded to the container Files uploaded
-/// via this block will be available in the container's input directory.
+/// A content block that represents a file to be uploaded to the container Files
+/// uploaded via this block will be available in the container's input directory.
 /// </summary>
 [JsonConverter(typeof(ModelConverter<BetaContainerUploadBlockParam>))]
 public sealed record class BetaContainerUploadBlockParam

@@ -15,7 +15,7 @@ public sealed record class SkillCreateResponse : ModelBase, IFromRaw<SkillCreate
     /// <summary>
     /// Unique identifier for the skill.
     ///
-    /// The format and length of IDs may change over time.
+    /// <para>The format and length of IDs may change over time.</para>
     /// </summary>
     public required string ID
     {
@@ -73,8 +73,8 @@ public sealed record class SkillCreateResponse : ModelBase, IFromRaw<SkillCreate
     /// <summary>
     /// Display title for the skill.
     ///
-    /// This is a human-readable label that is not included in the prompt sent to
-    /// the model.
+    /// <para>This is a human-readable label that is not included in the prompt sent
+    /// to the model.</para>
     /// </summary>
     public required string? DisplayTitle
     {
@@ -97,7 +97,7 @@ public sealed record class SkillCreateResponse : ModelBase, IFromRaw<SkillCreate
     /// <summary>
     /// The latest version identifier for the skill.
     ///
-    /// This represents the most recent version of the skill that has been created.
+    /// <para>This represents the most recent version of the skill that has been created.</para>
     /// </summary>
     public required string? LatestVersion
     {
@@ -120,8 +120,8 @@ public sealed record class SkillCreateResponse : ModelBase, IFromRaw<SkillCreate
     /// <summary>
     /// Source of the skill.
     ///
-    /// This may be one of the following values: * `"custom"`: the skill was created
-    /// by a user * `"anthropic"`: the skill was created by Anthropic
+    /// <para>This may be one of the following values: * `"custom"`: the skill was
+    /// created by a user * `"anthropic"`: the skill was created by Anthropic</para>
     /// </summary>
     public required string Source
     {
@@ -151,7 +151,7 @@ public sealed record class SkillCreateResponse : ModelBase, IFromRaw<SkillCreate
     /// <summary>
     /// Object type.
     ///
-    /// For Skills, this is always `"skill"`.
+    /// <para>For Skills, this is always `"skill"`.</para>
     /// </summary>
     public required string Type
     {

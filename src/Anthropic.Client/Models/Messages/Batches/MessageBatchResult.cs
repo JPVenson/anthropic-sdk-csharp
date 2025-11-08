@@ -10,9 +10,9 @@ namespace Anthropic.Client.Models.Messages.Batches;
 /// <summary>
 /// Processing result for this request.
 ///
-/// Contains a Message output if processing was successful, an error response if processing
-/// failed, or the reason why processing was not attempted, such as cancellation
-/// or expiration.
+/// <para>Contains a Message output if processing was successful, an error response
+/// if processing failed, or the reason why processing was not attempted, such as
+/// cancellation or expiration.</para>
 /// </summary>
 [JsonConverter(typeof(MessageBatchResultConverter))]
 public record class MessageBatchResult

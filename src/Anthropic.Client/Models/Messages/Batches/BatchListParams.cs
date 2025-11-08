@@ -12,7 +12,7 @@ namespace Anthropic.Client.Models.Messages.Batches;
 /// List all Message Batches within a Workspace. Most recently created batches are
 /// returned first.
 ///
-/// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
+/// <para>Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)</para>
 /// </summary>
 public sealed record class BatchListParams : ParamsBase
 {
@@ -73,7 +73,7 @@ public sealed record class BatchListParams : ParamsBase
     /// <summary>
     /// Number of items to return per page.
     ///
-    /// Defaults to `20`. Ranges from `1` to `1000`.
+    /// <para>Defaults to `20`. Ranges from `1` to `1000`.</para>
     /// </summary>
     public long? Limit
     {

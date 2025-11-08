@@ -38,9 +38,9 @@ public sealed record class BetaCacheControlEphemeral
     /// <summary>
     /// The time-to-live for the cache control breakpoint.
     ///
-    /// This may be one the following values: - `5m`: 5 minutes - `1h`: 1 hour
+    /// <para>This may be one the following values: - `5m`: 5 minutes - `1h`: 1 hour</para>
     ///
-    /// Defaults to `5m`.
+    /// <para>Defaults to `5m`.</para>
     /// </summary>
     public ApiEnum<string, TTL>? TTL
     {
@@ -105,9 +105,9 @@ public sealed record class BetaCacheControlEphemeral
 /// <summary>
 /// The time-to-live for the cache control breakpoint.
 ///
-/// This may be one the following values: - `5m`: 5 minutes - `1h`: 1 hour
+/// <para>This may be one the following values: - `5m`: 5 minutes - `1h`: 1 hour</para>
 ///
-/// Defaults to `5m`.
+/// <para>Defaults to `5m`.</para>
 /// </summary>
 [JsonConverter(typeof(TTLConverter))]
 public enum TTL

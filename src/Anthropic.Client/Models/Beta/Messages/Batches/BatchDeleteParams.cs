@@ -11,10 +11,10 @@ namespace Anthropic.Client.Models.Beta.Messages.Batches;
 /// <summary>
 /// Delete a Message Batch.
 ///
-/// Message Batches can only be deleted once they've finished processing. If you'd
-/// like to delete an in-progress batch, you must first cancel it.
+/// <para>Message Batches can only be deleted once they've finished processing. If
+/// you'd like to delete an in-progress batch, you must first cancel it.</para>
 ///
-/// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
+/// <para>Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)</para>
 /// </summary>
 public sealed record class BatchDeleteParams : ParamsBase
 {

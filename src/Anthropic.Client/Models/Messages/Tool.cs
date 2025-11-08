@@ -15,8 +15,8 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
     /// <summary>
     /// [JSON schema](https://json-schema.org/draft/2020-12) for this tool's input.
     ///
-    /// This defines the shape of the `input` that your tool accepts and that the
-    /// model will produce.
+    /// <para>This defines the shape of the `input` that your tool accepts and that
+    /// the model will produce.</para>
     /// </summary>
     public required InputSchema InputSchema
     {
@@ -49,7 +49,7 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
     /// <summary>
     /// Name of the tool.
     ///
-    /// This is how the tool will be called by the model and in `tool_use` blocks.
+    /// <para>This is how the tool will be called by the model and in `tool_use` blocks.</para>
     /// </summary>
     public required string Name
     {
@@ -103,10 +103,10 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
     /// <summary>
     /// Description of what this tool does.
     ///
-    /// Tool descriptions should be as detailed as possible. The more information
+    /// <para>Tool descriptions should be as detailed as possible. The more information
     /// that the model has about what the tool is and how to use it, the better it
     /// will perform. You can use natural language descriptions to reinforce important
-    /// aspects of the tool input JSON schema.
+    /// aspects of the tool input JSON schema.</para>
     /// </summary>
     public string? Description
     {
@@ -185,8 +185,8 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
 /// <summary>
 /// [JSON schema](https://json-schema.org/draft/2020-12) for this tool's input.
 ///
-/// This defines the shape of the `input` that your tool accepts and that the model
-/// will produce.
+/// <para>This defines the shape of the `input` that your tool accepts and that the
+/// model will produce.</para>
 /// </summary>
 [JsonConverter(typeof(ModelConverter<InputSchema>))]
 public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>

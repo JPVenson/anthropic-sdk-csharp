@@ -23,8 +23,8 @@ public sealed record class SkillCreateParams : ParamsBase
     /// <summary>
     /// Display title for the skill.
     ///
-    /// This is a human-readable label that is not included in the prompt sent to
-    /// the model.
+    /// <para>This is a human-readable label that is not included in the prompt sent
+    /// to the model.</para>
     /// </summary>
     public string? DisplayTitle
     {
@@ -47,8 +47,8 @@ public sealed record class SkillCreateParams : ParamsBase
     /// <summary>
     /// Files to upload for the skill.
     ///
-    /// All files must be in the same top-level directory and must include a SKILL.md
-    /// file at the root of that directory.
+    /// <para>All files must be in the same top-level directory and must include
+    /// a SKILL.md file at the root of that directory.</para>
     /// </summary>
     public List<string>? Files
     {

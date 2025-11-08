@@ -15,7 +15,7 @@ public sealed record class VersionDeleteResponse : ModelBase, IFromRaw<VersionDe
     /// <summary>
     /// Version identifier for the skill.
     ///
-    /// Each version is identified by a Unix epoch timestamp (e.g., "1759178010641129").
+    /// <para>Each version is identified by a Unix epoch timestamp (e.g., "1759178010641129").</para>
     /// </summary>
     public required string ID
     {
@@ -45,7 +45,7 @@ public sealed record class VersionDeleteResponse : ModelBase, IFromRaw<VersionDe
     /// <summary>
     /// Deleted object type.
     ///
-    /// For Skill Versions, this is always `"skill_version_deleted"`.
+    /// <para>For Skill Versions, this is always `"skill_version_deleted"`.</para>
     /// </summary>
     public required string Type
     {

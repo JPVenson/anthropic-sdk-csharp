@@ -17,7 +17,7 @@ public sealed record class BetaCodeExecutionTool20250522
     /// <summary>
     /// Name of the tool.
     ///
-    /// This is how the tool will be called by the model and in `tool_use` blocks.
+    /// <para>This is how the tool will be called by the model and in `tool_use` blocks.</para>
     /// </summary>
     public JsonElement Name
     {

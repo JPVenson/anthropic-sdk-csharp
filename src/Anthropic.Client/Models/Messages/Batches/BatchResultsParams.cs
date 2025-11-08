@@ -11,11 +11,11 @@ namespace Anthropic.Client.Models.Messages.Batches;
 /// <summary>
 /// Streams the results of a Message Batch as a `.jsonl` file.
 ///
-/// Each line in the file is a JSON object containing the result of a single request
-/// in the Message Batch. Results are not guaranteed to be in the same order as requests.
-/// Use the `custom_id` field to match results to requests.
+/// <para>Each line in the file is a JSON object containing the result of a single
+/// request in the Message Batch. Results are not guaranteed to be in the same order
+/// as requests. Use the `custom_id` field to match results to requests.</para>
 ///
-/// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
+/// <para>Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)</para>
 /// </summary>
 public sealed record class BatchResultsParams : ParamsBase
 {

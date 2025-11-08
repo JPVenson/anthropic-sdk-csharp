@@ -96,7 +96,7 @@ public sealed record class BetaModelInfo : ModelBase, IFromRaw<BetaModelInfo>
     /// <summary>
     /// Object type.
     ///
-    /// For Models, this is always `"model"`.
+    /// <para>For Models, this is always `"model"`.</para>
     /// </summary>
     public JsonElement Type
     {

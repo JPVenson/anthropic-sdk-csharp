@@ -15,7 +15,7 @@ public sealed record class WebSearchTool20250305 : ModelBase, IFromRaw<WebSearch
     /// <summary>
     /// Name of the tool.
     ///
-    /// This is how the tool will be called by the model and in `tool_use` blocks.
+    /// <para>This is how the tool will be called by the model and in `tool_use` blocks.</para>
     /// </summary>
     public JsonElement Name
     {

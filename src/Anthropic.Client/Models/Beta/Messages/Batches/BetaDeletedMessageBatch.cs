@@ -43,7 +43,7 @@ public sealed record class BetaDeletedMessageBatch : ModelBase, IFromRaw<BetaDel
     /// <summary>
     /// Deleted object type.
     ///
-    /// For Message Batches, this is always `"message_batch_deleted"`.
+    /// <para>For Message Batches, this is always `"message_batch_deleted"`.</para>
     /// </summary>
     public JsonElement Type
     {

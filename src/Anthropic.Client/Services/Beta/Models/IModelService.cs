@@ -13,8 +13,8 @@ public interface IModelService
     /// <summary>
     /// Get a specific model.
     ///
-    /// The Models API response can be used to determine information about a specific
-    /// model or resolve a model alias to a model ID.
+    /// <para>The Models API response can be used to determine information about a
+    /// specific model or resolve a model alias to a model ID.</para>
     /// </summary>
     Task<BetaModelInfo> Retrieve(
         ModelRetrieveParams parameters,
@@ -24,8 +24,8 @@ public interface IModelService
     /// <summary>
     /// List available models.
     ///
-    /// The Models API response can be used to determine which models are available
-    /// for use in the API. More recently released models are listed first.
+    /// <para>The Models API response can be used to determine which models are available
+    /// for use in the API. More recently released models are listed first.</para>
     /// </summary>
     Task<ModelListPageResponse> List(
         ModelListParams? parameters = null,

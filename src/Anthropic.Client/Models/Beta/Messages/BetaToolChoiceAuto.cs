@@ -39,7 +39,8 @@ public sealed record class BetaToolChoiceAuto : ModelBase, IFromRaw<BetaToolChoi
     /// <summary>
     /// Whether to disable parallel tool use.
     ///
-    /// Defaults to `false`. If set to `true`, the model will output at most one tool use.
+    /// <para>Defaults to `false`. If set to `true`, the model will output at most
+    /// one tool use.</para>
     /// </summary>
     public bool? DisableParallelToolUse
     {

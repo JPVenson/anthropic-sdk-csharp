@@ -36,8 +36,8 @@ public sealed record class BetaClearThinking20251015Edit
     }
 
     /// <summary>
-    /// Number of most recent assistant turns to keep thinking blocks for. Older turns
-    /// will have their thinking blocks removed.
+    /// Number of most recent assistant turns to keep thinking blocks for. Older
+    /// turns will have their thinking blocks removed.
     /// </summary>
     public Keep? Keep
     {

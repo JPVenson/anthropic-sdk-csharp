@@ -15,7 +15,7 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
     /// <summary>
     /// Unique object identifier.
     ///
-    /// The format and length of IDs may change over time.
+    /// <para>The format and length of IDs may change over time.</para>
     /// </summary>
     public required string ID
     {
@@ -161,7 +161,7 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
     /// <summary>
     /// Object type.
     ///
-    /// For files, this is always `"file"`.
+    /// <para>For files, this is always `"file"`.</para>
     /// </summary>
     public JsonElement Type
     {

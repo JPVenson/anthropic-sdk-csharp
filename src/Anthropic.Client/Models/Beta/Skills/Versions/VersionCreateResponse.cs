@@ -15,7 +15,7 @@ public sealed record class VersionCreateResponse : ModelBase, IFromRaw<VersionCr
     /// <summary>
     /// Unique identifier for the skill version.
     ///
-    /// The format and length of IDs may change over time.
+    /// <para>The format and length of IDs may change over time.</para>
     /// </summary>
     public required string ID
     {
@@ -73,7 +73,7 @@ public sealed record class VersionCreateResponse : ModelBase, IFromRaw<VersionCr
     /// <summary>
     /// Description of the skill version.
     ///
-    /// This is extracted from the SKILL.md file in the skill upload.
+    /// <para>This is extracted from the SKILL.md file in the skill upload.</para>
     /// </summary>
     public required string Description
     {
@@ -103,7 +103,7 @@ public sealed record class VersionCreateResponse : ModelBase, IFromRaw<VersionCr
     /// <summary>
     /// Directory name of the skill version.
     ///
-    /// This is the top-level directory name that was extracted from the uploaded files.
+    /// <para>This is the top-level directory name that was extracted from the uploaded files.</para>
     /// </summary>
     public required string Directory
     {
@@ -133,7 +133,7 @@ public sealed record class VersionCreateResponse : ModelBase, IFromRaw<VersionCr
     /// <summary>
     /// Human-readable name of the skill version.
     ///
-    /// This is extracted from the SKILL.md file in the skill upload.
+    /// <para>This is extracted from the SKILL.md file in the skill upload.</para>
     /// </summary>
     public required string Name
     {
@@ -191,7 +191,7 @@ public sealed record class VersionCreateResponse : ModelBase, IFromRaw<VersionCr
     /// <summary>
     /// Object type.
     ///
-    /// For Skill Versions, this is always `"skill_version"`.
+    /// <para>For Skill Versions, this is always `"skill_version"`.</para>
     /// </summary>
     public required string Type
     {
@@ -221,7 +221,7 @@ public sealed record class VersionCreateResponse : ModelBase, IFromRaw<VersionCr
     /// <summary>
     /// Version identifier for the skill.
     ///
-    /// Each version is identified by a Unix epoch timestamp (e.g., "1759178010641129").
+    /// <para>Each version is identified by a Unix epoch timestamp (e.g., "1759178010641129").</para>
     /// </summary>
     public required string Version
     {

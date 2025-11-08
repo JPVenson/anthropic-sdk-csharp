@@ -11,8 +11,8 @@ namespace Anthropic.Client.Models.Beta.Models;
 /// <summary>
 /// List available models.
 ///
-/// The Models API response can be used to determine which models are available for
-/// use in the API. More recently released models are listed first.
+/// <para>The Models API response can be used to determine which models are available
+/// for use in the API. More recently released models are listed first.</para>
 /// </summary>
 public sealed record class ModelListParams : ParamsBase
 {
@@ -73,7 +73,7 @@ public sealed record class ModelListParams : ParamsBase
     /// <summary>
     /// Number of items to return per page.
     ///
-    /// Defaults to `20`. Ranges from `1` to `1000`.
+    /// <para>Defaults to `20`. Ranges from `1` to `1000`.</para>
     /// </summary>
     public long? Limit
     {

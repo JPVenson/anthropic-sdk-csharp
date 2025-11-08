@@ -22,7 +22,7 @@ public sealed record class BetaMessageBatchIndividualResponse
     /// Developer-provided ID created for each request in a Message Batch. Useful
     /// for matching results to requests, as results may be given out of request order.
     ///
-    /// Must be unique for each request within the Message Batch.
+    /// <para>Must be unique for each request within the Message Batch.</para>
     /// </summary>
     public required string CustomID
     {
@@ -52,9 +52,9 @@ public sealed record class BetaMessageBatchIndividualResponse
     /// <summary>
     /// Processing result for this request.
     ///
-    /// Contains a Message output if processing was successful, an error response
+    /// <para>Contains a Message output if processing was successful, an error response
     /// if processing failed, or the reason why processing was not attempted, such
-    /// as cancellation or expiration.
+    /// as cancellation or expiration.</para>
     /// </summary>
     public required BetaMessageBatchResult Result
     {

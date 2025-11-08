@@ -39,8 +39,8 @@ public sealed record class ToolChoiceAny : ModelBase, IFromRaw<ToolChoiceAny>
     /// <summary>
     /// Whether to disable parallel tool use.
     ///
-    /// Defaults to `false`. If set to `true`, the model will output exactly one
-    /// tool use.
+    /// <para>Defaults to `false`. If set to `true`, the model will output exactly
+    /// one tool use.</para>
     /// </summary>
     public bool? DisableParallelToolUse
     {

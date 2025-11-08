@@ -15,7 +15,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     /// <summary>
     /// Unique object identifier.
     ///
-    /// The format and length of IDs may change over time.
+    /// <para>The format and length of IDs may change over time.</para>
     /// </summary>
     public required string ID
     {
@@ -68,8 +68,8 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     }
 
     /// <summary>
-    /// RFC 3339 datetime string representing the time at which cancellation was
-    /// initiated for the Message Batch. Specified only if cancellation was initiated.
+    /// RFC 3339 datetime string representing the time at which cancellation was initiated
+    /// for the Message Batch. Specified only if cancellation was initiated.
     /// </summary>
     public required System::DateTime? CancelInitiatedAt
     {
@@ -127,8 +127,8 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     /// RFC 3339 datetime string representing the time at which processing for the
     /// Message Batch ended. Specified only once processing ends.
     ///
-    /// Processing ends when every request in a Message Batch has either succeeded,
-    /// errored, canceled, or expired.
+    /// <para>Processing ends when every request in a Message Batch has either succeeded,
+    /// errored, canceled, or expired.</para>
     /// </summary>
     public required System::DateTime? EndedAt
     {
@@ -215,9 +215,9 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     /// <summary>
     /// Tallies requests within the Message Batch, categorized by their status.
     ///
-    /// Requests start as `processing` and move to one of the other statuses only
-    /// once processing of the entire batch ends. The sum of all values always matches
-    /// the total number of requests in the batch.
+    /// <para>Requests start as `processing` and move to one of the other statuses
+    /// only once processing of the entire batch ends. The sum of all values always
+    /// matches the total number of requests in the batch.</para>
     /// </summary>
     public required MessageBatchRequestCounts RequestCounts
     {
@@ -254,8 +254,8 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     /// URL to a `.jsonl` file containing the results of the Message Batch requests.
     /// Specified only once processing ends.
     ///
-    /// Results in the file are not guaranteed to be in the same order as requests.
-    /// Use the `custom_id` field to match results to requests.
+    /// <para>Results in the file are not guaranteed to be in the same order as requests.
+    /// Use the `custom_id` field to match results to requests.</para>
     /// </summary>
     public required string? ResultsURL
     {
@@ -278,7 +278,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     /// <summary>
     /// Object type.
     ///
-    /// For Message Batches, this is always `"message_batch"`.
+    /// <para>For Message Batches, this is always `"message_batch"`.</para>
     /// </summary>
     public JsonElement Type
     {

@@ -15,7 +15,7 @@ public sealed record class SkillDeleteResponse : ModelBase, IFromRaw<SkillDelete
     /// <summary>
     /// Unique identifier for the skill.
     ///
-    /// The format and length of IDs may change over time.
+    /// <para>The format and length of IDs may change over time.</para>
     /// </summary>
     public required string ID
     {
@@ -45,7 +45,7 @@ public sealed record class SkillDeleteResponse : ModelBase, IFromRaw<SkillDelete
     /// <summary>
     /// Deleted object type.
     ///
-    /// For Skills, this is always `"skill_deleted"`.
+    /// <para>For Skills, this is always `"skill_deleted"`.</para>
     /// </summary>
     public required string Type
     {

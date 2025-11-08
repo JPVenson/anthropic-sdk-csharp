@@ -15,10 +15,10 @@ namespace Anthropic.Client.Models.Messages;
 /// <summary>
 /// Count the number of tokens in a Message.
 ///
-/// The Token Count API can be used to count the number of tokens in a Message, including
-/// tools, images, and documents, without creating it.
+/// <para>The Token Count API can be used to count the number of tokens in a Message,
+/// including tools, images, and documents, without creating it.</para>
 ///
-/// Learn more about token counting in our [user guide](/en/docs/build-with-claude/token-counting)
+/// <para>Learn more about token counting in our [user guide](/en/docs/build-with-claude/token-counting)</para>
 /// </summary>
 public sealed record class MessageCountTokensParams : ParamsBase
 {
@@ -31,52 +31,53 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// <summary>
     /// Input messages.
     ///
-    /// Our models are trained to operate on alternating `user` and `assistant` conversational
-    /// turns. When creating a new `Message`, you specify the prior conversational
-    /// turns with the `messages` parameter, and the model then generates the next
-    /// `Message` in the conversation. Consecutive `user` or `assistant` turns in
-    /// your request will be combined into a single turn.
+    /// <para>Our models are trained to operate on alternating `user` and `assistant`
+    /// conversational turns. When creating a new `Message`, you specify the prior
+    /// conversational turns with the `messages` parameter, and the model then generates
+    /// the next `Message` in the conversation. Consecutive `user` or `assistant`
+    /// turns in your request will be combined into a single turn.</para>
     ///
-    /// Each input message must be an object with a `role` and `content`. You can
-    /// specify a single `user`-role message, or you can include multiple `user`
-    /// and `assistant` messages.
+    /// <para>Each input message must be an object with a `role` and `content`. You
+    /// can specify a single `user`-role message, or you can include multiple `user`
+    /// and `assistant` messages.</para>
     ///
-    /// If the final message uses the `assistant` role, the response content will
-    /// continue immediately from the content in that message. This can be used to
-    /// constrain part of the model's response.
+    /// <para>If the final message uses the `assistant` role, the response content
+    /// will continue immediately from the content in that message. This can be used
+    /// to constrain part of the model's response.</para>
     ///
-    /// Example with a single `user` message:
+    /// <para>Example with a single `user` message:</para>
     ///
-    /// ```json [{"role": "user", "content": "Hello, Claude"}] ```
+    /// <para>```json [{"role": "user", "content": "Hello, Claude"}] ```</para>
     ///
-    /// Example with multiple conversational turns:
+    /// <para>Example with multiple conversational turns:</para>
     ///
-    /// ```json [   {"role": "user", "content": "Hello there."},   {"role": "assistant",
-    /// "content": "Hi, I'm Claude. How can I help you?"},   {"role": "user", "content":
-    /// "Can you explain LLMs in plain English?"}, ] ```
+    /// <para>```json [   {"role": "user", "content": "Hello there."},   {"role":
+    /// "assistant", "content": "Hi, I'm Claude. How can I help you?"},   {"role":
+    /// "user", "content": "Can you explain LLMs in plain English?"}, ] ```</para>
     ///
-    /// Example with a partially-filled response from Claude:
+    /// <para>Example with a partially-filled response from Claude:</para>
     ///
-    /// ```json [   {"role": "user", "content": "What's the Greek name for Sun? (A)
-    /// Sol (B) Helios (C) Sun"},   {"role": "assistant", "content": "The best answer
-    /// is ("}, ] ```
+    /// <para>```json [   {"role": "user", "content": "What's the Greek name for
+    /// Sun? (A) Sol (B) Helios (C) Sun"},   {"role": "assistant", "content": "The
+    /// best answer is ("}, ] ```</para>
     ///
-    /// Each input message `content` may be either a single `string` or an array
-    /// of content blocks, where each block has a specific `type`. Using a `string`
+    /// <para>Each input message `content` may be either a single `string` or an
+    /// array of content blocks, where each block has a specific `type`. Using a `string`
     /// for `content` is shorthand for an array of one content block of type `"text"`.
-    /// The following input messages are equivalent:
+    /// The following input messages are equivalent:</para>
     ///
-    /// ```json {"role": "user", "content": "Hello, Claude"} ```
+    /// <para>```json {"role": "user", "content": "Hello, Claude"} ```</para>
     ///
-    /// ```json {"role": "user", "content": [{"type": "text", "text": "Hello, Claude"}]} ```
+    /// <para>```json {"role": "user", "content": [{"type": "text", "text": "Hello,
+    /// Claude"}]} ```</para>
     ///
-    /// See [input examples](https://docs.claude.com/en/api/messages-examples).
+    /// <para>See [input examples](https://docs.claude.com/en/api/messages-examples).</para>
     ///
-    /// Note that if you want to include a [system prompt](https://docs.claude.com/en/docs/system-prompts),
+    /// <para>Note that if you want to include a [system prompt](https://docs.claude.com/en/docs/system-prompts),
     /// you can use the top-level `system` parameter — there is no `"system"` role
-    /// for input messages in the Messages API.
+    /// for input messages in the Messages API.</para>
     ///
-    /// There is a limit of 100,000 messages in a single request.
+    /// <para>There is a limit of 100,000 messages in a single request.</para>
     /// </summary>
     public required List<MessageParam> Messages
     {
@@ -137,8 +138,8 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// <summary>
     /// System prompt.
     ///
-    /// A system prompt is a way of providing context and instructions to Claude,
-    /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).
+    /// <para>A system prompt is a way of providing context and instructions to Claude,
+    /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).</para>
     /// </summary>
     public System1? System
     {
@@ -166,12 +167,12 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// <summary>
     /// Configuration for enabling Claude's extended thinking.
     ///
-    /// When enabled, responses include `thinking` content blocks showing Claude's
+    /// <para>When enabled, responses include `thinking` content blocks showing Claude's
     /// thinking process before the final answer. Requires a minimum budget of 1,024
-    /// tokens and counts towards your `max_tokens` limit.
+    /// tokens and counts towards your `max_tokens` limit.</para>
     ///
-    /// See [extended thinking](https://docs.claude.com/en/docs/build-with-claude/extended-thinking)
-    /// for details.
+    /// <para>See [extended thinking](https://docs.claude.com/en/docs/build-with-claude/extended-thinking)
+    /// for details.</para>
     /// </summary>
     public ThinkingConfigParam? Thinking
     {
@@ -229,48 +230,49 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// <summary>
     /// Definitions of tools that the model may use.
     ///
-    /// If you include `tools` in your API request, the model may return `tool_use`
+    /// <para>If you include `tools` in your API request, the model may return `tool_use`
     /// content blocks that represent the model's use of those tools. You can then
     /// run those tools using the tool input generated by the model and then optionally
-    /// return results back to the model using `tool_result` content blocks.
+    /// return results back to the model using `tool_result` content blocks.</para>
     ///
-    /// There are two types of tools: **client tools** and **server tools**. The behavior
-    /// described below applies to client tools. For [server tools](https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview\#server-tools),
+    /// <para>There are two types of tools: **client tools** and **server tools**.
+    /// The behavior described below applies to client tools. For [server tools](https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview\#server-tools),
     /// see their individual documentation as each has its own behavior (e.g., the
-    /// [web search tool](https://docs.claude.com/en/docs/agents-and-tools/tool-use/web-search-tool)).
+    /// [web search tool](https://docs.claude.com/en/docs/agents-and-tools/tool-use/web-search-tool)).</para>
     ///
-    /// Each tool definition includes:
+    /// <para>Each tool definition includes:</para>
     ///
-    /// * `name`: Name of the tool. * `description`: Optional, but strongly-recommended
+    /// <para>* `name`: Name of the tool. * `description`: Optional, but strongly-recommended
     /// description of the tool. * `input_schema`: [JSON schema](https://json-schema.org/draft/2020-12)
     /// for the tool `input` shape that the model will produce in `tool_use` output
-    /// content blocks.
+    /// content blocks.</para>
     ///
-    /// For example, if you defined `tools` as:
+    /// <para>For example, if you defined `tools` as:</para>
     ///
-    /// ```json [   {     "name": "get_stock_price",     "description": "Get the current
-    /// stock price for a given ticker symbol.",     "input_schema": {       "type":
-    /// "object",       "properties": {         "ticker": {           "type": "string",
-    ///           "description": "The stock ticker symbol, e.g. AAPL for Apple Inc."
-    ///         }       },       "required": ["ticker"]     }   } ] ```
+    /// <para>```json [   {     "name": "get_stock_price",     "description": "Get
+    /// the current stock price for a given ticker symbol.",     "input_schema": {
+    ///       "type": "object",       "properties": {         "ticker": {
+    ///    "type": "string",           "description": "The stock ticker symbol, e.g.
+    /// AAPL for Apple Inc."         }       },       "required": ["ticker"]
+    /// }   } ] ```</para>
     ///
-    /// And then asked the model "What's the S&P 500 at today?", the model might produce
-    /// `tool_use` content blocks in the response like this:
+    /// <para>And then asked the model "What's the S&P 500 at today?", the model might
+    /// produce `tool_use` content blocks in the response like this:</para>
     ///
-    /// ```json [   {     "type": "tool_use",     "id": "toolu_01D7FLrfh4GYq7yT1ULFeyMV",
-    ///     "name": "get_stock_price",     "input": { "ticker": "^GSPC" }   } ] ```
+    /// <para>```json [   {     "type": "tool_use",     "id": "toolu_01D7FLrfh4GYq7yT1ULFeyMV",
+    ///     "name": "get_stock_price",     "input": { "ticker": "^GSPC" }   } ] ```</para>
     ///
-    /// You might then run your `get_stock_price` tool with `{"ticker": "^GSPC"}`
-    /// as an input, and return the following back to the model in a subsequent `user` message:
+    /// <para>You might then run your `get_stock_price` tool with `{"ticker": "^GSPC"}`
+    /// as an input, and return the following back to the model in a subsequent `user` message:</para>
     ///
-    /// ```json [   {     "type": "tool_result",     "tool_use_id": "toolu_01D7FLrfh4GYq7yT1ULFeyMV",
-    ///     "content": "259.75 USD"   } ] ```
+    /// <para>```json [   {     "type": "tool_result",     "tool_use_id": "toolu_01D7FLrfh4GYq7yT1ULFeyMV",
+    ///     "content": "259.75 USD"   } ] ```</para>
     ///
-    /// Tools can be used for workflows that include running client-side tools and
-    /// functions, or more generally whenever you want the model to produce a particular
-    /// JSON structure of output.
+    /// <para>Tools can be used for workflows that include running client-side tools
+    /// and functions, or more generally whenever you want the model to produce a
+    /// particular JSON structure of output.</para>
     ///
-    /// See our [guide](https://docs.claude.com/en/docs/tool-use) for more details.
+    /// <para>See our [guide](https://docs.claude.com/en/docs/tool-use) for more details.</para>
     /// </summary>
     public List<MessageCountTokensTool>? Tools
     {
@@ -370,8 +372,8 @@ public sealed record class MessageCountTokensParams : ParamsBase
 /// <summary>
 /// System prompt.
 ///
-/// A system prompt is a way of providing context and instructions to Claude, such
-/// as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).
+/// <para>A system prompt is a way of providing context and instructions to Claude,
+/// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).</para>
 /// </summary>
 [JsonConverter(typeof(System1Converter))]
 public record class System1

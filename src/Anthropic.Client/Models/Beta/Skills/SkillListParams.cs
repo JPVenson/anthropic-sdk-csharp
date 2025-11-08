@@ -16,7 +16,7 @@ public sealed record class SkillListParams : ParamsBase
     /// <summary>
     /// Number of results to return per page.
     ///
-    /// Maximum value is 100. Defaults to 20.
+    /// <para>Maximum value is 100. Defaults to 20.</para>
     /// </summary>
     public long? Limit
     {
@@ -44,8 +44,8 @@ public sealed record class SkillListParams : ParamsBase
     /// <summary>
     /// Pagination token for fetching a specific page of results.
     ///
-    /// Pass the value from a previous response's `next_page` field to get the next
-    /// page of results.
+    /// <para>Pass the value from a previous response's `next_page` field to get the
+    /// next page of results.</para>
     /// </summary>
     public string? Page
     {
@@ -68,8 +68,9 @@ public sealed record class SkillListParams : ParamsBase
     /// <summary>
     /// Filter skills by source.
     ///
-    /// If provided, only skills from the specified source will be returned: * `"custom"`:
-    /// only return user-created skills * `"anthropic"`: only return Anthropic-created skills
+    /// <para>If provided, only skills from the specified source will be returned:
+    /// * `"custom"`: only return user-created skills * `"anthropic"`: only return
+    /// Anthropic-created skills</para>
     /// </summary>
     public string? Source
     {

@@ -12,8 +12,8 @@ namespace Anthropic.Client.Models.Models;
 /// <summary>
 /// Get a specific model.
 ///
-/// The Models API response can be used to determine information about a specific
-/// model or resolve a model alias to a model ID.
+/// <para>The Models API response can be used to determine information about a specific
+/// model or resolve a model alias to a model ID.</para>
 /// </summary>
 public sealed record class ModelRetrieveParams : ParamsBase
 {

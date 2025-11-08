@@ -25,8 +25,8 @@ public sealed record class VersionCreateParams : ParamsBase
     /// <summary>
     /// Files to upload for the skill.
     ///
-    /// All files must be in the same top-level directory and must include a SKILL.md
-    /// file at the root of that directory.
+    /// <para>All files must be in the same top-level directory and must include
+    /// a SKILL.md file at the root of that directory.</para>
     /// </summary>
     public List<string>? Files
     {

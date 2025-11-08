@@ -15,12 +15,13 @@ public interface IMessageService
     IBatchService Batches { get; }
 
     /// <summary>
-    /// Send a structured list of input messages with text and/or image content, and
-    /// the model will generate the next message in the conversation.
+    /// Send a structured list of input messages with text and/or image content,
+    /// and the model will generate the next message in the conversation.
     ///
-    /// The Messages API can be used for either single queries or stateless multi-turn conversations.
+    /// <para>The Messages API can be used for either single queries or stateless
+    /// multi-turn conversations.</para>
     ///
-    /// Learn more about the Messages API in our [user guide](/en/docs/initial-setup)
+    /// <para>Learn more about the Messages API in our [user guide](/en/docs/initial-setup)</para>
     /// </summary>
     Task<Messages::BetaMessage> Create(
         Messages::MessageCreateParams parameters,
@@ -28,12 +29,13 @@ public interface IMessageService
     );
 
     /// <summary>
-    /// Send a structured list of input messages with text and/or image content, and
-    /// the model will generate the next message in the conversation.
+    /// Send a structured list of input messages with text and/or image content,
+    /// and the model will generate the next message in the conversation.
     ///
-    /// The Messages API can be used for either single queries or stateless multi-turn conversations.
+    /// <para>The Messages API can be used for either single queries or stateless
+    /// multi-turn conversations.</para>
     ///
-    /// Learn more about the Messages API in our [user guide](/en/docs/initial-setup)
+    /// <para>Learn more about the Messages API in our [user guide](/en/docs/initial-setup)</para>
     /// </summary>
     IAsyncEnumerable<Messages::BetaRawMessageStreamEvent> CreateStreaming(
         Messages::MessageCreateParams parameters,
@@ -43,10 +45,10 @@ public interface IMessageService
     /// <summary>
     /// Count the number of tokens in a Message.
     ///
-    /// The Token Count API can be used to count the number of tokens in a Message,
-    /// including tools, images, and documents, without creating it.
+    /// <para>The Token Count API can be used to count the number of tokens in a Message,
+    /// including tools, images, and documents, without creating it.</para>
     ///
-    /// Learn more about token counting in our [user guide](/en/docs/build-with-claude/token-counting)
+    /// <para>Learn more about token counting in our [user guide](/en/docs/build-with-claude/token-counting)</para>
     /// </summary>
     Task<Messages::BetaMessageTokensCount> CountTokens(
         Messages::MessageCountTokensParams parameters,
