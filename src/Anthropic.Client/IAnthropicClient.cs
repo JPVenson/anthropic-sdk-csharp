@@ -3,9 +3,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
-using Anthropic.Client.Services.Beta;
-using Anthropic.Client.Services.Messages;
-using Anthropic.Client.Services.Models;
+using Anthropic.Client.Services;
 
 namespace Anthropic.Client;
 
