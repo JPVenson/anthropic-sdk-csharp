@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
+using Anthropic.Client.Models.Beta.Messages;
 using Anthropic.Client.Services.Beta.Messages.Batches;
-using Messages = Anthropic.Client.Models.Beta.Messages;
 
 namespace Anthropic.Client.Services.Beta.Messages;
 
@@ -23,8 +23,8 @@ public interface IMessageService
     ///
     /// <para>Learn more about the Messages API in our [user guide](/en/docs/initial-setup)</para>
     /// </summary>
-    Task<Messages::BetaMessage> Create(
-        Messages::MessageCreateParams parameters,
+    Task<BetaMessage> Create(
+        MessageCreateParams parameters,
         CancellationToken cancellationToken = default
     );
 
@@ -37,8 +37,8 @@ public interface IMessageService
     ///
     /// <para>Learn more about the Messages API in our [user guide](/en/docs/initial-setup)</para>
     /// </summary>
-    IAsyncEnumerable<Messages::BetaRawMessageStreamEvent> CreateStreaming(
-        Messages::MessageCreateParams parameters,
+    IAsyncEnumerable<BetaRawMessageStreamEvent> CreateStreaming(
+        MessageCreateParams parameters,
         CancellationToken cancellationToken = default
     );
 
@@ -50,8 +50,8 @@ public interface IMessageService
     ///
     /// <para>Learn more about token counting in our [user guide](/en/docs/build-with-claude/token-counting)</para>
     /// </summary>
-    Task<Messages::BetaMessageTokensCount> CountTokens(
-        Messages::MessageCountTokensParams parameters,
+    Task<BetaMessageTokensCount> CountTokens(
+        MessageCountTokensParams parameters,
         CancellationToken cancellationToken = default
     );
 }

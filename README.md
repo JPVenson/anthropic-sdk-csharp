@@ -32,22 +32,22 @@ See the [`examples`](examples) directory for complete and runnable examples.
 ```csharp
 using System;
 using Anthropic.Client;
-using Messages = Anthropic.Client.Models.Messages;
+using Anthropic.Client.Models.Messages;
 
 AnthropicClient client = new();
 
-Messages::MessageCreateParams parameters = new()
+MessageCreateParams parameters = new()
 {
     MaxTokens = 1024,
     Messages =
     [
         new()
         {
-            Role = Messages::Role.User,
+            Role = Role.User,
             Content = "Hello, Claude",
         },
     ],
-    Model = Messages::Model.Claude3_7SonnetLatest,
+    Model = Model.Claude3_7SonnetLatest,
 };
 
 var message = await client.Messages.Create(parameters);
@@ -124,20 +124,20 @@ These streaming methods return [`IAsyncEnumerable`](https://learn.microsoft.com/
 
 ```csharp
 using System;
-using Messages = Anthropic.Client.Models.Messages;
+using Anthropic.Client.Models.Messages;
 
-Messages::MessageCreateParams parameters = new()
+MessageCreateParams parameters = new()
 {
     MaxTokens = 1024,
     Messages =
     [
         new()
         {
-            Role = Messages::Role.User,
+            Role = Role.User,
             Content = "Hello, Claude",
         },
     ],
-    Model = Messages::Model.Claude3_7SonnetLatest,
+    Model = Model.Claude3_7SonnetLatest,
 };
 
 await foreach (var message in client.Messages.CreateStreaming(parameters))

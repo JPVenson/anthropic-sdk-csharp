@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -21,7 +21,7 @@ public sealed record class BetaCodeExecutionToolResultBlockParam
             if (!this._properties.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
-                    new System::ArgumentOutOfRangeException("content", "Missing required argument")
+                    new ArgumentOutOfRangeException("content", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockParamContent>(
@@ -30,7 +30,7 @@ public sealed record class BetaCodeExecutionToolResultBlockParam
                 )
                 ?? throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
-                    new System::ArgumentNullException("content")
+                    new ArgumentNullException("content")
                 );
         }
         init
@@ -49,16 +49,13 @@ public sealed record class BetaCodeExecutionToolResultBlockParam
             if (!this._properties.TryGetValue("tool_use_id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'tool_use_id' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "tool_use_id",
-                        "Missing required argument"
-                    )
+                    new ArgumentOutOfRangeException("tool_use_id", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'tool_use_id' cannot be null",
-                    new System::ArgumentNullException("tool_use_id")
+                    new ArgumentNullException("tool_use_id")
                 );
         }
         init
@@ -77,7 +74,7 @@ public sealed record class BetaCodeExecutionToolResultBlockParam
             if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);

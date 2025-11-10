@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -25,13 +25,13 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
             if (!this._properties.TryGetValue("id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
-                    new System::ArgumentOutOfRangeException("id", "Missing required argument")
+                    new ArgumentOutOfRangeException("id", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
-                    new System::ArgumentNullException("id")
+                    new ArgumentNullException("id")
                 );
         }
         init
@@ -46,23 +46,17 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
     /// <summary>
     /// The time at which the container will expire.
     /// </summary>
-    public required System::DateTime ExpiresAt
+    public required DateTime ExpiresAt
     {
         get
         {
             if (!this._properties.TryGetValue("expires_at", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'expires_at' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "expires_at",
-                        "Missing required argument"
-                    )
+                    new ArgumentOutOfRangeException("expires_at", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<System::DateTime>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return JsonSerializer.Deserialize<DateTime>(element, ModelBase.SerializerOptions);
         }
         init
         {

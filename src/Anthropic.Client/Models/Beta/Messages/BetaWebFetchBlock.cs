@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -19,7 +19,7 @@ public sealed record class BetaWebFetchBlock : ModelBase, IFromRaw<BetaWebFetchB
             if (!this._properties.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
-                    new System::ArgumentOutOfRangeException("content", "Missing required argument")
+                    new ArgumentOutOfRangeException("content", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<BetaDocumentBlock>(
@@ -28,7 +28,7 @@ public sealed record class BetaWebFetchBlock : ModelBase, IFromRaw<BetaWebFetchB
                 )
                 ?? throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
-                    new System::ArgumentNullException("content")
+                    new ArgumentNullException("content")
                 );
         }
         init
@@ -68,7 +68,7 @@ public sealed record class BetaWebFetchBlock : ModelBase, IFromRaw<BetaWebFetchB
             if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -92,13 +92,13 @@ public sealed record class BetaWebFetchBlock : ModelBase, IFromRaw<BetaWebFetchB
             if (!this._properties.TryGetValue("url", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'url' cannot be null",
-                    new System::ArgumentOutOfRangeException("url", "Missing required argument")
+                    new ArgumentOutOfRangeException("url", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'url' cannot be null",
-                    new System::ArgumentNullException("url")
+                    new ArgumentNullException("url")
                 );
         }
         init

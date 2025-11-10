@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -21,16 +21,13 @@ public sealed record class BetaCitationContentBlockLocationParam
             if (!this._properties.TryGetValue("cited_text", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'cited_text' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "cited_text",
-                        "Missing required argument"
-                    )
+                    new ArgumentOutOfRangeException("cited_text", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'cited_text' cannot be null",
-                    new System::ArgumentNullException("cited_text")
+                    new ArgumentNullException("cited_text")
                 );
         }
         init
@@ -49,10 +46,7 @@ public sealed record class BetaCitationContentBlockLocationParam
             if (!this._properties.TryGetValue("document_index", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'document_index' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "document_index",
-                        "Missing required argument"
-                    )
+                    new ArgumentOutOfRangeException("document_index", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
@@ -91,10 +85,7 @@ public sealed record class BetaCitationContentBlockLocationParam
             if (!this._properties.TryGetValue("end_block_index", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'end_block_index' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "end_block_index",
-                        "Missing required argument"
-                    )
+                    new ArgumentOutOfRangeException("end_block_index", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
@@ -115,7 +106,7 @@ public sealed record class BetaCitationContentBlockLocationParam
             if (!this._properties.TryGetValue("start_block_index", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'start_block_index' cannot be null",
-                    new System::ArgumentOutOfRangeException(
+                    new ArgumentOutOfRangeException(
                         "start_block_index",
                         "Missing required argument"
                     )
@@ -139,7 +130,7 @@ public sealed record class BetaCitationContentBlockLocationParam
             if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);

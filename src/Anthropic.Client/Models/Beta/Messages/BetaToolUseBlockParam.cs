@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -19,13 +19,13 @@ public sealed record class BetaToolUseBlockParam : ModelBase, IFromRaw<BetaToolU
             if (!this._properties.TryGetValue("id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
-                    new System::ArgumentOutOfRangeException("id", "Missing required argument")
+                    new ArgumentOutOfRangeException("id", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
-                    new System::ArgumentNullException("id")
+                    new ArgumentNullException("id")
                 );
         }
         init
@@ -44,7 +44,7 @@ public sealed record class BetaToolUseBlockParam : ModelBase, IFromRaw<BetaToolU
             if (!this._properties.TryGetValue("input", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'input' cannot be null",
-                    new System::ArgumentOutOfRangeException("input", "Missing required argument")
+                    new ArgumentOutOfRangeException("input", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
@@ -53,7 +53,7 @@ public sealed record class BetaToolUseBlockParam : ModelBase, IFromRaw<BetaToolU
                 )
                 ?? throw new AnthropicInvalidDataException(
                     "'input' cannot be null",
-                    new System::ArgumentNullException("input")
+                    new ArgumentNullException("input")
                 );
         }
         init
@@ -72,13 +72,13 @@ public sealed record class BetaToolUseBlockParam : ModelBase, IFromRaw<BetaToolU
             if (!this._properties.TryGetValue("name", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'name' cannot be null",
-                    new System::ArgumentOutOfRangeException("name", "Missing required argument")
+                    new ArgumentOutOfRangeException("name", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'name' cannot be null",
-                    new System::ArgumentNullException("name")
+                    new ArgumentNullException("name")
                 );
         }
         init
@@ -97,7 +97,7 @@ public sealed record class BetaToolUseBlockParam : ModelBase, IFromRaw<BetaToolU
             if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -19,13 +19,13 @@ public sealed record class RawMessageStartEvent : ModelBase, IFromRaw<RawMessage
             if (!this._properties.TryGetValue("message", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'message' cannot be null",
-                    new System::ArgumentOutOfRangeException("message", "Missing required argument")
+                    new ArgumentOutOfRangeException("message", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<Message>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'message' cannot be null",
-                    new System::ArgumentNullException("message")
+                    new ArgumentNullException("message")
                 );
         }
         init
@@ -44,7 +44,7 @@ public sealed record class RawMessageStartEvent : ModelBase, IFromRaw<RawMessage
             if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);

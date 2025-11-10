@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -21,10 +21,7 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock
             if (!this._properties.TryGetValue("is_file_update", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'is_file_update' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "is_file_update",
-                        "Missing required argument"
-                    )
+                    new ArgumentOutOfRangeException("is_file_update", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<bool>(element, ModelBase.SerializerOptions);
@@ -45,7 +42,7 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock
             if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);

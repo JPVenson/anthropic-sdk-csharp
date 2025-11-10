@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using Messages = Anthropic.Client.Models.Messages;
+using Anthropic.Client.Models.Messages;
 using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages.Batches;
@@ -377,7 +377,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     /// The model that will complete your prompt.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview)
     /// for additional details and options.
     /// </summary>
-    public required ApiEnum<string, Messages::Model> Model
+    public required ApiEnum<string, Model> Model
     {
         get
         {
@@ -387,7 +387,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
                     new System::ArgumentOutOfRangeException("model", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<ApiEnum<string, Messages::Model>>(
+            return JsonSerializer.Deserialize<ApiEnum<string, Model>>(
                 element,
                 ModelBase.SerializerOptions
             );

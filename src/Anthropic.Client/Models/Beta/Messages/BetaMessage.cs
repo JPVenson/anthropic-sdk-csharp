@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,8 +6,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using Messages = Anthropic.Client.Models.Messages;
-using System = System;
+using Anthropic.Client.Models.Messages;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -25,13 +25,13 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
             if (!this._properties.TryGetValue("id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
-                    new System::ArgumentOutOfRangeException("id", "Missing required argument")
+                    new ArgumentOutOfRangeException("id", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
-                    new System::ArgumentNullException("id")
+                    new ArgumentNullException("id")
                 );
         }
         init
@@ -93,7 +93,7 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
             if (!this._properties.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
-                    new System::ArgumentOutOfRangeException("content", "Missing required argument")
+                    new ArgumentOutOfRangeException("content", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<List<BetaContentBlock>>(
@@ -102,7 +102,7 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
                 )
                 ?? throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
-                    new System::ArgumentNullException("content")
+                    new ArgumentNullException("content")
                 );
         }
         init
@@ -144,17 +144,17 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
     /// The model that will complete your prompt.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview)
     /// for additional details and options.
     /// </summary>
-    public required ApiEnum<string, Messages::Model> Model
+    public required ApiEnum<string, Model> Model
     {
         get
         {
             if (!this._properties.TryGetValue("model", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'model' cannot be null",
-                    new System::ArgumentOutOfRangeException("model", "Missing required argument")
+                    new ArgumentOutOfRangeException("model", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<ApiEnum<string, Messages::Model>>(
+            return JsonSerializer.Deserialize<ApiEnum<string, Model>>(
                 element,
                 ModelBase.SerializerOptions
             );
@@ -180,7 +180,7 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
             if (!this._properties.TryGetValue("role", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'role' cannot be null",
-                    new System::ArgumentOutOfRangeException("role", "Missing required argument")
+                    new ArgumentOutOfRangeException("role", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -265,7 +265,7 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
             if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -303,13 +303,13 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
             if (!this._properties.TryGetValue("usage", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'usage' cannot be null",
-                    new System::ArgumentOutOfRangeException("usage", "Missing required argument")
+                    new ArgumentOutOfRangeException("usage", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<BetaUsage>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'usage' cannot be null",
-                    new System::ArgumentNullException("usage")
+                    new ArgumentNullException("usage")
                 );
         }
         init

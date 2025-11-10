@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -24,7 +24,7 @@ public sealed record class BetaMemoryTool20250818DeleteCommand
             if (!this._properties.TryGetValue("command", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'command' cannot be null",
-                    new System::ArgumentOutOfRangeException("command", "Missing required argument")
+                    new ArgumentOutOfRangeException("command", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -48,13 +48,13 @@ public sealed record class BetaMemoryTool20250818DeleteCommand
             if (!this._properties.TryGetValue("path", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'path' cannot be null",
-                    new System::ArgumentOutOfRangeException("path", "Missing required argument")
+                    new ArgumentOutOfRangeException("path", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'path' cannot be null",
-                    new System::ArgumentNullException("path")
+                    new ArgumentNullException("path")
                 );
         }
         init

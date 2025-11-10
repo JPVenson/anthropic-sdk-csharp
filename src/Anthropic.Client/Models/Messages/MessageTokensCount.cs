@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -23,10 +23,7 @@ public sealed record class MessageTokensCount : ModelBase, IFromRaw<MessageToken
             if (!this._properties.TryGetValue("input_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'input_tokens' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "input_tokens",
-                        "Missing required argument"
-                    )
+                    new ArgumentOutOfRangeException("input_tokens", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);

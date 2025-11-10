@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -19,7 +19,7 @@ public sealed record class BetaCitationConfig : ModelBase, IFromRaw<BetaCitation
             if (!this._properties.TryGetValue("enabled", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'enabled' cannot be null",
-                    new System::ArgumentOutOfRangeException("enabled", "Missing required argument")
+                    new ArgumentOutOfRangeException("enabled", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<bool>(element, ModelBase.SerializerOptions);

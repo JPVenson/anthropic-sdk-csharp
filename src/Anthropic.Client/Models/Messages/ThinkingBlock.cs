@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -19,16 +19,13 @@ public sealed record class ThinkingBlock : ModelBase, IFromRaw<ThinkingBlock>
             if (!this._properties.TryGetValue("signature", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'signature' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "signature",
-                        "Missing required argument"
-                    )
+                    new ArgumentOutOfRangeException("signature", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'signature' cannot be null",
-                    new System::ArgumentNullException("signature")
+                    new ArgumentNullException("signature")
                 );
         }
         init
@@ -47,13 +44,13 @@ public sealed record class ThinkingBlock : ModelBase, IFromRaw<ThinkingBlock>
             if (!this._properties.TryGetValue("thinking", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'thinking' cannot be null",
-                    new System::ArgumentOutOfRangeException("thinking", "Missing required argument")
+                    new ArgumentOutOfRangeException("thinking", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'thinking' cannot be null",
-                    new System::ArgumentNullException("thinking")
+                    new ArgumentNullException("thinking")
                 );
         }
         init
@@ -72,7 +69,7 @@ public sealed record class ThinkingBlock : ModelBase, IFromRaw<ThinkingBlock>
             if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);

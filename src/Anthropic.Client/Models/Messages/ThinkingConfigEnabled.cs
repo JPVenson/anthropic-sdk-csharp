@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -29,10 +29,7 @@ public sealed record class ThinkingConfigEnabled : ModelBase, IFromRaw<ThinkingC
             if (!this._properties.TryGetValue("budget_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'budget_tokens' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "budget_tokens",
-                        "Missing required argument"
-                    )
+                    new ArgumentOutOfRangeException("budget_tokens", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
@@ -53,7 +50,7 @@ public sealed record class ThinkingConfigEnabled : ModelBase, IFromRaw<ThinkingC
             if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);

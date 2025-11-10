@@ -1,10 +1,10 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Client.Core;
-using System = System;
 
 namespace Anthropic.Client.Models.Beta.Files;
 
@@ -78,9 +78,9 @@ public sealed record class FileDeleteParams : ParamsBase
         );
     }
 
-    public override System::Uri Url(ClientOptions options)
+    public override Uri Url(ClientOptions options)
     {
-        return new System::UriBuilder(
+        return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format("/v1/files/{0}?beta=true", this.FileID)
         )

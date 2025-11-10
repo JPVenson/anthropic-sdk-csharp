@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using System = System;
 
 namespace Anthropic.Client.Models.Beta.Files;
 
@@ -22,7 +22,7 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
             if (!this._properties.TryGetValue("data", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'data' cannot be null",
-                    new System::ArgumentOutOfRangeException("data", "Missing required argument")
+                    new ArgumentOutOfRangeException("data", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<List<FileMetadata>>(
@@ -31,7 +31,7 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
                 )
                 ?? throw new AnthropicInvalidDataException(
                     "'data' cannot be null",
-                    new System::ArgumentNullException("data")
+                    new ArgumentNullException("data")
                 );
         }
         init

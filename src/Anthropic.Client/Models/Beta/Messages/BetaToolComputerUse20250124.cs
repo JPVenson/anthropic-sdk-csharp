@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -24,7 +24,7 @@ public sealed record class BetaToolComputerUse20250124
             if (!this._properties.TryGetValue("display_height_px", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'display_height_px' cannot be null",
-                    new System::ArgumentOutOfRangeException(
+                    new ArgumentOutOfRangeException(
                         "display_height_px",
                         "Missing required argument"
                     )
@@ -51,10 +51,7 @@ public sealed record class BetaToolComputerUse20250124
             if (!this._properties.TryGetValue("display_width_px", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'display_width_px' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "display_width_px",
-                        "Missing required argument"
-                    )
+                    new ArgumentOutOfRangeException("display_width_px", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
@@ -80,7 +77,7 @@ public sealed record class BetaToolComputerUse20250124
             if (!this._properties.TryGetValue("name", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'name' cannot be null",
-                    new System::ArgumentOutOfRangeException("name", "Missing required argument")
+                    new ArgumentOutOfRangeException("name", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -101,7 +98,7 @@ public sealed record class BetaToolComputerUse20250124
             if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);

@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
-using Files = Anthropic.Client.Models.Beta.Files;
+using Anthropic.Client.Models.Beta.Files;
 
 namespace Anthropic.Client.Services.Beta.Files;
 
@@ -21,14 +21,14 @@ public sealed class FileService : IFileService
         _client = client;
     }
 
-    public async Task<Files::FileListPageResponse> List(
-        Files::FileListParams? parameters = null,
+    public async Task<FileListPageResponse> List(
+        FileListParams? parameters = null,
         CancellationToken cancellationToken = default
     )
     {
         parameters ??= new();
 
-        HttpRequest<Files::FileListParams> request = new()
+        HttpRequest<FileListParams> request = new()
         {
             Method = HttpMethod.Get,
             Params = parameters,
@@ -37,7 +37,7 @@ public sealed class FileService : IFileService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var page = await response
-            .Deserialize<Files::FileListPageResponse>(cancellationToken)
+            .Deserialize<FileListPageResponse>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -46,12 +46,12 @@ public sealed class FileService : IFileService
         return page;
     }
 
-    public async Task<Files::DeletedFile> Delete(
-        Files::FileDeleteParams parameters,
+    public async Task<DeletedFile> Delete(
+        FileDeleteParams parameters,
         CancellationToken cancellationToken = default
     )
     {
-        HttpRequest<Files::FileDeleteParams> request = new()
+        HttpRequest<FileDeleteParams> request = new()
         {
             Method = HttpMethod.Delete,
             Params = parameters,
@@ -60,7 +60,7 @@ public sealed class FileService : IFileService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var deletedFile = await response
-            .Deserialize<Files::DeletedFile>(cancellationToken)
+            .Deserialize<DeletedFile>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -69,12 +69,12 @@ public sealed class FileService : IFileService
         return deletedFile;
     }
 
-    public async Task<Files::FileMetadata> RetrieveMetadata(
-        Files::FileRetrieveMetadataParams parameters,
+    public async Task<FileMetadata> RetrieveMetadata(
+        FileRetrieveMetadataParams parameters,
         CancellationToken cancellationToken = default
     )
     {
-        HttpRequest<Files::FileRetrieveMetadataParams> request = new()
+        HttpRequest<FileRetrieveMetadataParams> request = new()
         {
             Method = HttpMethod.Get,
             Params = parameters,
@@ -83,7 +83,7 @@ public sealed class FileService : IFileService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var fileMetadata = await response
-            .Deserialize<Files::FileMetadata>(cancellationToken)
+            .Deserialize<FileMetadata>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {

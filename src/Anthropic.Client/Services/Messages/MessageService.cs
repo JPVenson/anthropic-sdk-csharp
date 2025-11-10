@@ -6,8 +6,8 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
+using Anthropic.Client.Models.Messages;
 using Anthropic.Client.Services.Messages.Batches;
-using Messages = Anthropic.Client.Models.Messages;
 
 namespace Anthropic.Client.Services.Messages;
 
@@ -32,12 +32,12 @@ public sealed class MessageService : IMessageService
         get { return _batches.Value; }
     }
 
-    public async Task<Messages::Message> Create(
-        Messages::MessageCreateParams parameters,
+    public async Task<Message> Create(
+        MessageCreateParams parameters,
         CancellationToken cancellationToken = default
     )
     {
-        HttpRequest<Messages::MessageCreateParams> request = new()
+        HttpRequest<MessageCreateParams> request = new()
         {
             Method = HttpMethod.Post,
             Params = parameters,
@@ -45,9 +45,7 @@ public sealed class MessageService : IMessageService
         using var response = await this
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
-        var message = await response
-            .Deserialize<Messages::Message>(cancellationToken)
-            .ConfigureAwait(false);
+        var message = await response.Deserialize<Message>(cancellationToken).ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             message.Validate();
@@ -55,8 +53,8 @@ public sealed class MessageService : IMessageService
         return message;
     }
 
-    public async IAsyncEnumerable<Messages::RawMessageStreamEvent> CreateStreaming(
-        Messages::MessageCreateParams parameters,
+    public async IAsyncEnumerable<RawMessageStreamEvent> CreateStreaming(
+        MessageCreateParams parameters,
         [EnumeratorCancellation] CancellationToken cancellationToken = default
     )
     {
@@ -64,12 +62,12 @@ public sealed class MessageService : IMessageService
         {
             ["stream"] = JsonSerializer.Deserialize<JsonElement>("true"),
         };
-        parameters = Messages::MessageCreateParams.FromRawUnchecked(
+        parameters = MessageCreateParams.FromRawUnchecked(
             parameters.HeaderProperties,
             parameters.QueryProperties,
             bodyProperties
         );
-        HttpRequest<Messages::MessageCreateParams> request = new()
+        HttpRequest<MessageCreateParams> request = new()
         {
             Method = HttpMethod.Post,
             Params = parameters,
@@ -79,7 +77,7 @@ public sealed class MessageService : IMessageService
             .ConfigureAwait(false);
         await foreach (var message in SseMessage.GetEnumerable(response.Message, cancellationToken))
         {
-            var deserializedMessage = message.Deserialize<Messages::RawMessageStreamEvent>();
+            var deserializedMessage = message.Deserialize<RawMessageStreamEvent>();
             if (this._client.ResponseValidation)
             {
                 deserializedMessage.Validate();
@@ -88,12 +86,12 @@ public sealed class MessageService : IMessageService
         }
     }
 
-    public async Task<Messages::MessageTokensCount> CountTokens(
-        Messages::MessageCountTokensParams parameters,
+    public async Task<MessageTokensCount> CountTokens(
+        MessageCountTokensParams parameters,
         CancellationToken cancellationToken = default
     )
     {
-        HttpRequest<Messages::MessageCountTokensParams> request = new()
+        HttpRequest<MessageCountTokensParams> request = new()
         {
             Method = HttpMethod.Post,
             Params = parameters,
@@ -102,7 +100,7 @@ public sealed class MessageService : IMessageService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var messageTokensCount = await response
-            .Deserialize<Messages::MessageTokensCount>(cancellationToken)
+            .Deserialize<MessageTokensCount>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {

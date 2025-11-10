@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -21,7 +21,7 @@ public sealed record class RawContentBlockDeltaEvent
             if (!this._properties.TryGetValue("delta", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'delta' cannot be null",
-                    new System::ArgumentOutOfRangeException("delta", "Missing required argument")
+                    new ArgumentOutOfRangeException("delta", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<RawContentBlockDelta>(
@@ -30,7 +30,7 @@ public sealed record class RawContentBlockDeltaEvent
                 )
                 ?? throw new AnthropicInvalidDataException(
                     "'delta' cannot be null",
-                    new System::ArgumentNullException("delta")
+                    new ArgumentNullException("delta")
                 );
         }
         init
@@ -49,7 +49,7 @@ public sealed record class RawContentBlockDeltaEvent
             if (!this._properties.TryGetValue("index", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'index' cannot be null",
-                    new System::ArgumentOutOfRangeException("index", "Missing required argument")
+                    new ArgumentOutOfRangeException("index", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
@@ -70,7 +70,7 @@ public sealed record class RawContentBlockDeltaEvent
             if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
