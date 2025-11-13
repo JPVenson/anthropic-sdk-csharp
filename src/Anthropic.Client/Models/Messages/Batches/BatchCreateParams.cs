@@ -503,17 +503,14 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     /// <para>A system prompt is a way of providing context and instructions to Claude,
     /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).</para>
     /// </summary>
-    public global::Anthropic.Client.Models.Messages.Batches.SystemModel? System
+    public ParamsSystem? System
     {
         get
         {
             if (!this._properties.TryGetValue("system", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<global::Anthropic.Client.Models.Messages.Batches.SystemModel?>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return JsonSerializer.Deserialize<ParamsSystem?>(element, ModelBase.SerializerOptions);
         }
         init
         {
@@ -872,29 +869,27 @@ sealed class ServiceTierConverter
 /// <para>A system prompt is a way of providing context and instructions to Claude,
 /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).</para>
 /// </summary>
-[JsonConverter(typeof(global::Anthropic.Client.Models.Messages.Batches.SystemModelConverter))]
-public record class SystemModel
+[JsonConverter(typeof(ParamsSystemConverter))]
+public record class ParamsSystem
 {
     public object Value { get; private init; }
 
-    public SystemModel(string value)
+    public ParamsSystem(string value)
     {
         Value = value;
     }
 
-    public SystemModel(IReadOnlyList<TextBlockParam> value)
+    public ParamsSystem(IReadOnlyList<TextBlockParam> value)
     {
         Value = ImmutableArray.ToImmutableArray(value);
     }
 
-    SystemModel(UnknownVariant value)
+    ParamsSystem(UnknownVariant value)
     {
         Value = value;
     }
 
-    public static global::Anthropic.Client.Models.Messages.Batches.SystemModel CreateUnknownVariant(
-        JsonElement value
-    )
+    public static ParamsSystem CreateUnknownVariant(JsonElement value)
     {
         return new(new UnknownVariant(value));
     }
@@ -926,7 +921,7 @@ public record class SystemModel
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of SystemModel"
+                    "Data did not match any variant of ParamsSystem"
                 );
         }
     }
@@ -941,25 +936,22 @@ public record class SystemModel
             string value => @string(value),
             IReadOnlyList<TextBlockParam> value => textBlockParams(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of SystemModel"
+                "Data did not match any variant of ParamsSystem"
             ),
         };
     }
 
-    public static implicit operator global::Anthropic.Client.Models.Messages.Batches.SystemModel(
-        string value
-    ) => new(value);
+    public static implicit operator ParamsSystem(string value) => new(value);
 
-    public static implicit operator global::Anthropic.Client.Models.Messages.Batches.SystemModel(
-        List<TextBlockParam> value
-    ) => new((IReadOnlyList<TextBlockParam>)value);
+    public static implicit operator ParamsSystem(List<TextBlockParam> value) =>
+        new((IReadOnlyList<TextBlockParam>)value);
 
     public void Validate()
     {
         if (this.Value is UnknownVariant)
         {
             throw new AnthropicInvalidDataException(
-                "Data did not match any variant of SystemModel"
+                "Data did not match any variant of ParamsSystem"
             );
         }
     }
@@ -967,10 +959,9 @@ public record class SystemModel
     record struct UnknownVariant(JsonElement value);
 }
 
-sealed class SystemModelConverter
-    : JsonConverter<global::Anthropic.Client.Models.Messages.Batches.SystemModel>
+sealed class ParamsSystemConverter : JsonConverter<ParamsSystem>
 {
-    public override global::Anthropic.Client.Models.Messages.Batches.SystemModel? Read(
+    public override ParamsSystem? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -983,9 +974,7 @@ sealed class SystemModelConverter
             var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
             if (deserialized != null)
             {
-                return new global::Anthropic.Client.Models.Messages.Batches.SystemModel(
-                    deserialized
-                );
+                return new ParamsSystem(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1003,9 +992,7 @@ sealed class SystemModelConverter
             );
             if (deserialized != null)
             {
-                return new global::Anthropic.Client.Models.Messages.Batches.SystemModel(
-                    deserialized
-                );
+                return new ParamsSystem(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1023,7 +1010,7 @@ sealed class SystemModelConverter
 
     public override void Write(
         Utf8JsonWriter writer,
-        global::Anthropic.Client.Models.Messages.Batches.SystemModel value,
+        ParamsSystem value,
         JsonSerializerOptions options
     )
     {

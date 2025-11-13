@@ -13,7 +13,7 @@ namespace Anthropic.Client.Models.Beta.Messages;
 [JsonConverter(typeof(ModelConverter<BetaContentBlockSource>))]
 public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaContentBlockSource>
 {
-    public required Content1 Content
+    public required BetaContentBlockSourceContent Content
     {
         get
         {
@@ -23,7 +23,10 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<Content1>(element, ModelBase.SerializerOptions)
+            return JsonSerializer.Deserialize<BetaContentBlockSourceContent>(
+                    element,
+                    ModelBase.SerializerOptions
+                )
                 ?? throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentNullException("content")
@@ -101,34 +104,34 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
     }
 
     [SetsRequiredMembers]
-    public BetaContentBlockSource(Content1 content)
+    public BetaContentBlockSource(BetaContentBlockSourceContent content)
         : this()
     {
         this.Content = content;
     }
 }
 
-[JsonConverter(typeof(Content1Converter))]
-public record class Content1
+[JsonConverter(typeof(BetaContentBlockSourceContentConverter))]
+public record class BetaContentBlockSourceContent
 {
     public object Value { get; private init; }
 
-    public Content1(string value)
+    public BetaContentBlockSourceContent(string value)
     {
         Value = value;
     }
 
-    public Content1(IReadOnlyList<BetaContentBlockSourceContent> value)
+    public BetaContentBlockSourceContent(IReadOnlyList<MessageBetaContentBlockSourceContent> value)
     {
         Value = ImmutableArray.ToImmutableArray(value);
     }
 
-    Content1(UnknownVariant value)
+    BetaContentBlockSourceContent(UnknownVariant value)
     {
         Value = value;
     }
 
-    public static Content1 CreateUnknownVariant(JsonElement value)
+    public static BetaContentBlockSourceContent CreateUnknownVariant(JsonElement value)
     {
         return new(new UnknownVariant(value));
     }
@@ -140,16 +143,18 @@ public record class Content1
     }
 
     public bool TryPickBetaContentBlockSource(
-        [NotNullWhen(true)] out IReadOnlyList<BetaContentBlockSourceContent>? value
+        [NotNullWhen(true)] out IReadOnlyList<MessageBetaContentBlockSourceContent>? value
     )
     {
-        value = this.Value as IReadOnlyList<BetaContentBlockSourceContent>;
+        value = this.Value as IReadOnlyList<MessageBetaContentBlockSourceContent>;
         return value != null;
     }
 
     public void Switch(
         System::Action<string> @string,
-        System::Action<IReadOnlyList<BetaContentBlockSourceContent>> betaContentBlockSourceContent
+        System::Action<
+            IReadOnlyList<MessageBetaContentBlockSourceContent>
+        > betaContentBlockSourceContent
     )
     {
         switch (this.Value)
@@ -157,52 +162,57 @@ public record class Content1
             case string value:
                 @string(value);
                 break;
-            case List<BetaContentBlockSourceContent> value:
+            case List<MessageBetaContentBlockSourceContent> value:
                 betaContentBlockSourceContent(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of Content1"
+                    "Data did not match any variant of BetaContentBlockSourceContent"
                 );
         }
     }
 
     public T Match<T>(
         System::Func<string, T> @string,
-        System::Func<IReadOnlyList<BetaContentBlockSourceContent>, T> betaContentBlockSourceContent
+        System::Func<
+            IReadOnlyList<MessageBetaContentBlockSourceContent>,
+            T
+        > betaContentBlockSourceContent
     )
     {
         return this.Value switch
         {
             string value => @string(value),
-            IReadOnlyList<BetaContentBlockSourceContent> value => betaContentBlockSourceContent(
-                value
-            ),
+            IReadOnlyList<MessageBetaContentBlockSourceContent> value =>
+                betaContentBlockSourceContent(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Content1"
+                "Data did not match any variant of BetaContentBlockSourceContent"
             ),
         };
     }
 
-    public static implicit operator Content1(string value) => new(value);
+    public static implicit operator BetaContentBlockSourceContent(string value) => new(value);
 
-    public static implicit operator Content1(List<BetaContentBlockSourceContent> value) =>
-        new((IReadOnlyList<BetaContentBlockSourceContent>)value);
+    public static implicit operator BetaContentBlockSourceContent(
+        List<MessageBetaContentBlockSourceContent> value
+    ) => new((IReadOnlyList<MessageBetaContentBlockSourceContent>)value);
 
     public void Validate()
     {
         if (this.Value is UnknownVariant)
         {
-            throw new AnthropicInvalidDataException("Data did not match any variant of Content1");
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaContentBlockSourceContent"
+            );
         }
     }
 
     record struct UnknownVariant(JsonElement value);
 }
 
-sealed class Content1Converter : JsonConverter<Content1>
+sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentBlockSourceContent>
 {
-    public override Content1? Read(
+    public override BetaContentBlockSourceContent? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -215,7 +225,7 @@ sealed class Content1Converter : JsonConverter<Content1>
             var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
             if (deserialized != null)
             {
-                return new Content1(deserialized);
+                return new BetaContentBlockSourceContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -227,20 +237,19 @@ sealed class Content1Converter : JsonConverter<Content1>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<BetaContentBlockSourceContent>>(
-                ref reader,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<
+                List<MessageBetaContentBlockSourceContent>
+            >(ref reader, options);
             if (deserialized != null)
             {
-                return new Content1(deserialized);
+                return new BetaContentBlockSourceContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant 'List<BetaContentBlockSourceContent>'",
+                    "Data does not match union variant 'List<MessageBetaContentBlockSourceContent>'",
                     e
                 )
             );
@@ -249,7 +258,11 @@ sealed class Content1Converter : JsonConverter<Content1>
         throw new System::AggregateException(exceptions);
     }
 
-    public override void Write(Utf8JsonWriter writer, Content1 value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaContentBlockSourceContent value,
+        JsonSerializerOptions options
+    )
     {
         object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);

@@ -67,7 +67,7 @@ public sealed record class BetaServerToolUseBlockParam
         }
     }
 
-    public required ApiEnum<string, NameModel> Name
+    public required ApiEnum<string, BetaServerToolUseBlockParamName> Name
     {
         get
         {
@@ -77,7 +77,7 @@ public sealed record class BetaServerToolUseBlockParam
                     new System::ArgumentOutOfRangeException("name", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<ApiEnum<string, NameModel>>(
+            return JsonSerializer.Deserialize<ApiEnum<string, BetaServerToolUseBlockParamName>>(
                 element,
                 ModelBase.SerializerOptions
             );
@@ -181,8 +181,8 @@ public sealed record class BetaServerToolUseBlockParam
     }
 }
 
-[JsonConverter(typeof(NameModelConverter))]
-public enum NameModel
+[JsonConverter(typeof(BetaServerToolUseBlockParamNameConverter))]
+public enum BetaServerToolUseBlockParamName
 {
     WebSearch,
     WebFetch,
@@ -191,9 +191,10 @@ public enum NameModel
     TextEditorCodeExecution,
 }
 
-sealed class NameModelConverter : JsonConverter<NameModel>
+sealed class BetaServerToolUseBlockParamNameConverter
+    : JsonConverter<BetaServerToolUseBlockParamName>
 {
-    public override NameModel Read(
+    public override BetaServerToolUseBlockParamName Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -201,18 +202,18 @@ sealed class NameModelConverter : JsonConverter<NameModel>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "web_search" => NameModel.WebSearch,
-            "web_fetch" => NameModel.WebFetch,
-            "code_execution" => NameModel.CodeExecution,
-            "bash_code_execution" => NameModel.BashCodeExecution,
-            "text_editor_code_execution" => NameModel.TextEditorCodeExecution,
-            _ => (NameModel)(-1),
+            "web_search" => BetaServerToolUseBlockParamName.WebSearch,
+            "web_fetch" => BetaServerToolUseBlockParamName.WebFetch,
+            "code_execution" => BetaServerToolUseBlockParamName.CodeExecution,
+            "bash_code_execution" => BetaServerToolUseBlockParamName.BashCodeExecution,
+            "text_editor_code_execution" => BetaServerToolUseBlockParamName.TextEditorCodeExecution,
+            _ => (BetaServerToolUseBlockParamName)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        NameModel value,
+        BetaServerToolUseBlockParamName value,
         JsonSerializerOptions options
     )
     {
@@ -220,11 +221,12 @@ sealed class NameModelConverter : JsonConverter<NameModel>
             writer,
             value switch
             {
-                NameModel.WebSearch => "web_search",
-                NameModel.WebFetch => "web_fetch",
-                NameModel.CodeExecution => "code_execution",
-                NameModel.BashCodeExecution => "bash_code_execution",
-                NameModel.TextEditorCodeExecution => "text_editor_code_execution",
+                BetaServerToolUseBlockParamName.WebSearch => "web_search",
+                BetaServerToolUseBlockParamName.WebFetch => "web_fetch",
+                BetaServerToolUseBlockParamName.CodeExecution => "code_execution",
+                BetaServerToolUseBlockParamName.BashCodeExecution => "bash_code_execution",
+                BetaServerToolUseBlockParamName.TextEditorCodeExecution =>
+                    "text_editor_code_execution",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

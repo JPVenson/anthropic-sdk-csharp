@@ -7,8 +7,8 @@ using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
-[JsonConverter(typeof(BetaContentBlockSourceContentConverter))]
-public record class BetaContentBlockSourceContent
+[JsonConverter(typeof(MessageBetaContentBlockSourceContentConverter))]
+public record class MessageBetaContentBlockSourceContent
 {
     public object Value { get; private init; }
 
@@ -28,22 +28,22 @@ public record class BetaContentBlockSourceContent
         }
     }
 
-    public BetaContentBlockSourceContent(BetaTextBlockParam value)
+    public MessageBetaContentBlockSourceContent(BetaTextBlockParam value)
     {
         Value = value;
     }
 
-    public BetaContentBlockSourceContent(BetaImageBlockParam value)
+    public MessageBetaContentBlockSourceContent(BetaImageBlockParam value)
     {
         Value = value;
     }
 
-    BetaContentBlockSourceContent(UnknownVariant value)
+    MessageBetaContentBlockSourceContent(UnknownVariant value)
     {
         Value = value;
     }
 
-    public static BetaContentBlockSourceContent CreateUnknownVariant(JsonElement value)
+    public static MessageBetaContentBlockSourceContent CreateUnknownVariant(JsonElement value)
     {
         return new(new UnknownVariant(value));
     }
@@ -75,7 +75,7 @@ public record class BetaContentBlockSourceContent
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of BetaContentBlockSourceContent"
+                    "Data did not match any variant of MessageBetaContentBlockSourceContent"
                 );
         }
     }
@@ -90,23 +90,25 @@ public record class BetaContentBlockSourceContent
             BetaTextBlockParam value => textBlockParam(value),
             BetaImageBlockParam value => imageBlockParam(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaContentBlockSourceContent"
+                "Data did not match any variant of MessageBetaContentBlockSourceContent"
             ),
         };
     }
 
-    public static implicit operator BetaContentBlockSourceContent(BetaTextBlockParam value) =>
-        new(value);
+    public static implicit operator MessageBetaContentBlockSourceContent(
+        BetaTextBlockParam value
+    ) => new(value);
 
-    public static implicit operator BetaContentBlockSourceContent(BetaImageBlockParam value) =>
-        new(value);
+    public static implicit operator MessageBetaContentBlockSourceContent(
+        BetaImageBlockParam value
+    ) => new(value);
 
     public void Validate()
     {
         if (this.Value is UnknownVariant)
         {
             throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaContentBlockSourceContent"
+                "Data did not match any variant of MessageBetaContentBlockSourceContent"
             );
         }
     }
@@ -114,9 +116,10 @@ public record class BetaContentBlockSourceContent
     record struct UnknownVariant(JsonElement value);
 }
 
-sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentBlockSourceContent>
+sealed class MessageBetaContentBlockSourceContentConverter
+    : JsonConverter<MessageBetaContentBlockSourceContent>
 {
-    public override BetaContentBlockSourceContent? Read(
+    public override MessageBetaContentBlockSourceContent? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -148,7 +151,7 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockSourceContent(deserialized);
+                        return new MessageBetaContentBlockSourceContent(deserialized);
                     }
                 }
                 catch (System::Exception e)
@@ -177,7 +180,7 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockSourceContent(deserialized);
+                        return new MessageBetaContentBlockSourceContent(deserialized);
                     }
                 }
                 catch (System::Exception e)
@@ -204,7 +207,7 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaContentBlockSourceContent value,
+        MessageBetaContentBlockSourceContent value,
         JsonSerializerOptions options
     )
     {

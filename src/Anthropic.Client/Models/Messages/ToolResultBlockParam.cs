@@ -86,14 +86,17 @@ public sealed record class ToolResultBlockParam : ModelBase, IFromRaw<ToolResult
         }
     }
 
-    public Content1? Content
+    public ToolResultBlockParamContent? Content
     {
         get
         {
             if (!this._properties.TryGetValue("content", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<Content1?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<ToolResultBlockParamContent?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         init
         {
@@ -184,27 +187,27 @@ public sealed record class ToolResultBlockParam : ModelBase, IFromRaw<ToolResult
     }
 }
 
-[JsonConverter(typeof(Content1Converter))]
-public record class Content1
+[JsonConverter(typeof(ToolResultBlockParamContentConverter))]
+public record class ToolResultBlockParamContent
 {
     public object Value { get; private init; }
 
-    public Content1(string value)
+    public ToolResultBlockParamContent(string value)
     {
         Value = value;
     }
 
-    public Content1(IReadOnlyList<Block> value)
+    public ToolResultBlockParamContent(IReadOnlyList<Block> value)
     {
         Value = ImmutableArray.ToImmutableArray(value);
     }
 
-    Content1(UnknownVariant value)
+    ToolResultBlockParamContent(UnknownVariant value)
     {
         Value = value;
     }
 
-    public static Content1 CreateUnknownVariant(JsonElement value)
+    public static ToolResultBlockParamContent CreateUnknownVariant(JsonElement value)
     {
         return new(new UnknownVariant(value));
     }
@@ -233,7 +236,7 @@ public record class Content1
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of Content1"
+                    "Data did not match any variant of ToolResultBlockParamContent"
                 );
         }
     }
@@ -245,29 +248,32 @@ public record class Content1
             string value => @string(value),
             IReadOnlyList<Block> value => blocks(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Content1"
+                "Data did not match any variant of ToolResultBlockParamContent"
             ),
         };
     }
 
-    public static implicit operator Content1(string value) => new(value);
+    public static implicit operator ToolResultBlockParamContent(string value) => new(value);
 
-    public static implicit operator Content1(List<Block> value) => new((IReadOnlyList<Block>)value);
+    public static implicit operator ToolResultBlockParamContent(List<Block> value) =>
+        new((IReadOnlyList<Block>)value);
 
     public void Validate()
     {
         if (this.Value is UnknownVariant)
         {
-            throw new AnthropicInvalidDataException("Data did not match any variant of Content1");
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ToolResultBlockParamContent"
+            );
         }
     }
 
     record struct UnknownVariant(JsonElement value);
 }
 
-sealed class Content1Converter : JsonConverter<Content1>
+sealed class ToolResultBlockParamContentConverter : JsonConverter<ToolResultBlockParamContent>
 {
-    public override Content1? Read(
+    public override ToolResultBlockParamContent? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -280,7 +286,7 @@ sealed class Content1Converter : JsonConverter<Content1>
             var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
             if (deserialized != null)
             {
-                return new Content1(deserialized);
+                return new ToolResultBlockParamContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -295,7 +301,7 @@ sealed class Content1Converter : JsonConverter<Content1>
             var deserialized = JsonSerializer.Deserialize<List<Block>>(ref reader, options);
             if (deserialized != null)
             {
-                return new Content1(deserialized);
+                return new ToolResultBlockParamContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -311,7 +317,11 @@ sealed class Content1Converter : JsonConverter<Content1>
         throw new System::AggregateException(exceptions);
     }
 
-    public override void Write(Utf8JsonWriter writer, Content1 value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        ToolResultBlockParamContent value,
+        JsonSerializerOptions options
+    )
     {
         object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);

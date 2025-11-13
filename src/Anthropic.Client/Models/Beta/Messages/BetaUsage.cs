@@ -164,14 +164,14 @@ public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
     /// <summary>
     /// If the request used the priority, standard, or batch tier.
     /// </summary>
-    public required ApiEnum<string, ServiceTierModel>? ServiceTier
+    public required ApiEnum<string, BetaUsageServiceTier>? ServiceTier
     {
         get
         {
             if (!this._properties.TryGetValue("service_tier", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<ApiEnum<string, ServiceTierModel>?>(
+            return JsonSerializer.Deserialize<ApiEnum<string, BetaUsageServiceTier>?>(
                 element,
                 ModelBase.SerializerOptions
             );
@@ -220,17 +220,17 @@ public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
 /// <summary>
 /// If the request used the priority, standard, or batch tier.
 /// </summary>
-[JsonConverter(typeof(ServiceTierModelConverter))]
-public enum ServiceTierModel
+[JsonConverter(typeof(BetaUsageServiceTierConverter))]
+public enum BetaUsageServiceTier
 {
     Standard,
     Priority,
     Batch,
 }
 
-sealed class ServiceTierModelConverter : JsonConverter<ServiceTierModel>
+sealed class BetaUsageServiceTierConverter : JsonConverter<BetaUsageServiceTier>
 {
-    public override ServiceTierModel Read(
+    public override BetaUsageServiceTier Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -238,16 +238,16 @@ sealed class ServiceTierModelConverter : JsonConverter<ServiceTierModel>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "standard" => ServiceTierModel.Standard,
-            "priority" => ServiceTierModel.Priority,
-            "batch" => ServiceTierModel.Batch,
-            _ => (ServiceTierModel)(-1),
+            "standard" => BetaUsageServiceTier.Standard,
+            "priority" => BetaUsageServiceTier.Priority,
+            "batch" => BetaUsageServiceTier.Batch,
+            _ => (BetaUsageServiceTier)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        ServiceTierModel value,
+        BetaUsageServiceTier value,
         JsonSerializerOptions options
     )
     {
@@ -255,9 +255,9 @@ sealed class ServiceTierModelConverter : JsonConverter<ServiceTierModel>
             writer,
             value switch
             {
-                ServiceTierModel.Standard => "standard",
-                ServiceTierModel.Priority => "priority",
-                ServiceTierModel.Batch => "batch",
+                BetaUsageServiceTier.Standard => "standard",
+                BetaUsageServiceTier.Priority => "priority",
+                BetaUsageServiceTier.Batch => "batch",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

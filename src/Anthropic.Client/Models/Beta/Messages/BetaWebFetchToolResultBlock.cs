@@ -14,7 +14,7 @@ public sealed record class BetaWebFetchToolResultBlock
     : ModelBase,
         IFromRaw<BetaWebFetchToolResultBlock>
 {
-    public required Content8 Content
+    public required BetaWebFetchToolResultBlockContent Content
     {
         get
         {
@@ -24,7 +24,10 @@ public sealed record class BetaWebFetchToolResultBlock
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<Content8>(element, ModelBase.SerializerOptions)
+            return JsonSerializer.Deserialize<BetaWebFetchToolResultBlockContent>(
+                    element,
+                    ModelBase.SerializerOptions
+                )
                 ?? throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentNullException("content")
@@ -131,8 +134,8 @@ public sealed record class BetaWebFetchToolResultBlock
     }
 }
 
-[JsonConverter(typeof(Content8Converter))]
-public record class Content8
+[JsonConverter(typeof(BetaWebFetchToolResultBlockContentConverter))]
+public record class BetaWebFetchToolResultBlockContent
 {
     public object Value { get; private init; }
 
@@ -147,22 +150,22 @@ public record class Content8
         }
     }
 
-    public Content8(BetaWebFetchToolResultErrorBlock value)
+    public BetaWebFetchToolResultBlockContent(BetaWebFetchToolResultErrorBlock value)
     {
         Value = value;
     }
 
-    public Content8(BetaWebFetchBlock value)
+    public BetaWebFetchToolResultBlockContent(BetaWebFetchBlock value)
     {
         Value = value;
     }
 
-    Content8(UnknownVariant value)
+    BetaWebFetchToolResultBlockContent(UnknownVariant value)
     {
         Value = value;
     }
 
-    public static Content8 CreateUnknownVariant(JsonElement value)
+    public static BetaWebFetchToolResultBlockContent CreateUnknownVariant(JsonElement value)
     {
         return new(new UnknownVariant(value));
     }
@@ -196,7 +199,7 @@ public record class Content8
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of Content8"
+                    "Data did not match any variant of BetaWebFetchToolResultBlockContent"
                 );
         }
     }
@@ -211,29 +214,35 @@ public record class Content8
             BetaWebFetchToolResultErrorBlock value => betaWebFetchToolResultErrorBlock(value),
             BetaWebFetchBlock value => betaWebFetchBlock(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Content8"
+                "Data did not match any variant of BetaWebFetchToolResultBlockContent"
             ),
         };
     }
 
-    public static implicit operator Content8(BetaWebFetchToolResultErrorBlock value) => new(value);
+    public static implicit operator BetaWebFetchToolResultBlockContent(
+        BetaWebFetchToolResultErrorBlock value
+    ) => new(value);
 
-    public static implicit operator Content8(BetaWebFetchBlock value) => new(value);
+    public static implicit operator BetaWebFetchToolResultBlockContent(BetaWebFetchBlock value) =>
+        new(value);
 
     public void Validate()
     {
         if (this.Value is UnknownVariant)
         {
-            throw new AnthropicInvalidDataException("Data did not match any variant of Content8");
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaWebFetchToolResultBlockContent"
+            );
         }
     }
 
     record struct UnknownVariant(JsonElement value);
 }
 
-sealed class Content8Converter : JsonConverter<Content8>
+sealed class BetaWebFetchToolResultBlockContentConverter
+    : JsonConverter<BetaWebFetchToolResultBlockContent>
 {
-    public override Content8? Read(
+    public override BetaWebFetchToolResultBlockContent? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -250,7 +259,7 @@ sealed class Content8Converter : JsonConverter<Content8>
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new Content8(deserialized);
+                return new BetaWebFetchToolResultBlockContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -269,7 +278,7 @@ sealed class Content8Converter : JsonConverter<Content8>
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new Content8(deserialized);
+                return new BetaWebFetchToolResultBlockContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -285,7 +294,11 @@ sealed class Content8Converter : JsonConverter<Content8>
         throw new System::AggregateException(exceptions);
     }
 
-    public override void Write(Utf8JsonWriter writer, Content8 value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaWebFetchToolResultBlockContent value,
+        JsonSerializerOptions options
+    )
     {
         object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);

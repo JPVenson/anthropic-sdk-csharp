@@ -14,7 +14,7 @@ public sealed record class BetaBashCodeExecutionToolResultBlockParam
     : ModelBase,
         IFromRaw<BetaBashCodeExecutionToolResultBlockParam>
 {
-    public required ContentModel Content
+    public required BetaBashCodeExecutionToolResultBlockParamContent Content
     {
         get
         {
@@ -24,7 +24,10 @@ public sealed record class BetaBashCodeExecutionToolResultBlockParam
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<ContentModel>(element, ModelBase.SerializerOptions)
+            return JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(
+                    element,
+                    ModelBase.SerializerOptions
+                )
                 ?? throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentNullException("content")
@@ -158,8 +161,8 @@ public sealed record class BetaBashCodeExecutionToolResultBlockParam
     }
 }
 
-[JsonConverter(typeof(ContentModelConverter))]
-public record class ContentModel
+[JsonConverter(typeof(BetaBashCodeExecutionToolResultBlockParamContentConverter))]
+public record class BetaBashCodeExecutionToolResultBlockParamContent
 {
     public object Value { get; private init; }
 
@@ -174,22 +177,28 @@ public record class ContentModel
         }
     }
 
-    public ContentModel(BetaBashCodeExecutionToolResultErrorParam value)
+    public BetaBashCodeExecutionToolResultBlockParamContent(
+        BetaBashCodeExecutionToolResultErrorParam value
+    )
     {
         Value = value;
     }
 
-    public ContentModel(BetaBashCodeExecutionResultBlockParam value)
+    public BetaBashCodeExecutionToolResultBlockParamContent(
+        BetaBashCodeExecutionResultBlockParam value
+    )
     {
         Value = value;
     }
 
-    ContentModel(UnknownVariant value)
+    BetaBashCodeExecutionToolResultBlockParamContent(UnknownVariant value)
     {
         Value = value;
     }
 
-    public static ContentModel CreateUnknownVariant(JsonElement value)
+    public static BetaBashCodeExecutionToolResultBlockParamContent CreateUnknownVariant(
+        JsonElement value
+    )
     {
         return new(new UnknownVariant(value));
     }
@@ -225,7 +234,7 @@ public record class ContentModel
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of ContentModel"
+                    "Data did not match any variant of BetaBashCodeExecutionToolResultBlockParamContent"
                 );
         }
     }
@@ -246,23 +255,25 @@ public record class ContentModel
                 value
             ),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of ContentModel"
+                "Data did not match any variant of BetaBashCodeExecutionToolResultBlockParamContent"
             ),
         };
     }
 
-    public static implicit operator ContentModel(BetaBashCodeExecutionToolResultErrorParam value) =>
-        new(value);
+    public static implicit operator BetaBashCodeExecutionToolResultBlockParamContent(
+        BetaBashCodeExecutionToolResultErrorParam value
+    ) => new(value);
 
-    public static implicit operator ContentModel(BetaBashCodeExecutionResultBlockParam value) =>
-        new(value);
+    public static implicit operator BetaBashCodeExecutionToolResultBlockParamContent(
+        BetaBashCodeExecutionResultBlockParam value
+    ) => new(value);
 
     public void Validate()
     {
         if (this.Value is UnknownVariant)
         {
             throw new AnthropicInvalidDataException(
-                "Data did not match any variant of ContentModel"
+                "Data did not match any variant of BetaBashCodeExecutionToolResultBlockParamContent"
             );
         }
     }
@@ -270,9 +281,10 @@ public record class ContentModel
     record struct UnknownVariant(JsonElement value);
 }
 
-sealed class ContentModelConverter : JsonConverter<ContentModel>
+sealed class BetaBashCodeExecutionToolResultBlockParamContentConverter
+    : JsonConverter<BetaBashCodeExecutionToolResultBlockParamContent>
 {
-    public override ContentModel? Read(
+    public override BetaBashCodeExecutionToolResultBlockParamContent? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -290,7 +302,7 @@ sealed class ContentModelConverter : JsonConverter<ContentModel>
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new ContentModel(deserialized);
+                return new BetaBashCodeExecutionToolResultBlockParamContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -312,7 +324,7 @@ sealed class ContentModelConverter : JsonConverter<ContentModel>
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new ContentModel(deserialized);
+                return new BetaBashCodeExecutionToolResultBlockParamContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -330,7 +342,7 @@ sealed class ContentModelConverter : JsonConverter<ContentModel>
 
     public override void Write(
         Utf8JsonWriter writer,
-        ContentModel value,
+        BetaBashCodeExecutionToolResultBlockParamContent value,
         JsonSerializerOptions options
     )
     {

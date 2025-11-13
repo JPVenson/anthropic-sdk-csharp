@@ -14,7 +14,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlockParam
     : ModelBase,
         IFromRaw<BetaTextEditorCodeExecutionToolResultBlockParam>
 {
-    public required Content6 Content
+    public required BetaTextEditorCodeExecutionToolResultBlockParamContent Content
     {
         get
         {
@@ -24,7 +24,10 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlockParam
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<Content6>(element, ModelBase.SerializerOptions)
+            return JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
+                    element,
+                    ModelBase.SerializerOptions
+                )
                 ?? throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentNullException("content")
@@ -166,8 +169,8 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlockParam
     }
 }
 
-[JsonConverter(typeof(Content6Converter))]
-public record class Content6
+[JsonConverter(typeof(BetaTextEditorCodeExecutionToolResultBlockParamContentConverter))]
+public record class BetaTextEditorCodeExecutionToolResultBlockParamContent
 {
     public object Value { get; private init; }
 
@@ -184,32 +187,42 @@ public record class Content6
         }
     }
 
-    public Content6(BetaTextEditorCodeExecutionToolResultErrorParam value)
+    public BetaTextEditorCodeExecutionToolResultBlockParamContent(
+        BetaTextEditorCodeExecutionToolResultErrorParam value
+    )
     {
         Value = value;
     }
 
-    public Content6(BetaTextEditorCodeExecutionViewResultBlockParam value)
+    public BetaTextEditorCodeExecutionToolResultBlockParamContent(
+        BetaTextEditorCodeExecutionViewResultBlockParam value
+    )
     {
         Value = value;
     }
 
-    public Content6(BetaTextEditorCodeExecutionCreateResultBlockParam value)
+    public BetaTextEditorCodeExecutionToolResultBlockParamContent(
+        BetaTextEditorCodeExecutionCreateResultBlockParam value
+    )
     {
         Value = value;
     }
 
-    public Content6(BetaTextEditorCodeExecutionStrReplaceResultBlockParam value)
+    public BetaTextEditorCodeExecutionToolResultBlockParamContent(
+        BetaTextEditorCodeExecutionStrReplaceResultBlockParam value
+    )
     {
         Value = value;
     }
 
-    Content6(UnknownVariant value)
+    BetaTextEditorCodeExecutionToolResultBlockParamContent(UnknownVariant value)
     {
         Value = value;
     }
 
-    public static Content6 CreateUnknownVariant(JsonElement value)
+    public static BetaTextEditorCodeExecutionToolResultBlockParamContent CreateUnknownVariant(
+        JsonElement value
+    )
     {
         return new(new UnknownVariant(value));
     }
@@ -269,7 +282,7 @@ public record class Content6
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of Content6"
+                    "Data did not match any variant of BetaTextEditorCodeExecutionToolResultBlockParamContent"
                 );
         }
     }
@@ -304,24 +317,24 @@ public record class Content6
             BetaTextEditorCodeExecutionStrReplaceResultBlockParam value =>
                 betaTextEditorCodeExecutionStrReplaceResultBlockParam(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Content6"
+                "Data did not match any variant of BetaTextEditorCodeExecutionToolResultBlockParamContent"
             ),
         };
     }
 
-    public static implicit operator Content6(
+    public static implicit operator BetaTextEditorCodeExecutionToolResultBlockParamContent(
         BetaTextEditorCodeExecutionToolResultErrorParam value
     ) => new(value);
 
-    public static implicit operator Content6(
+    public static implicit operator BetaTextEditorCodeExecutionToolResultBlockParamContent(
         BetaTextEditorCodeExecutionViewResultBlockParam value
     ) => new(value);
 
-    public static implicit operator Content6(
+    public static implicit operator BetaTextEditorCodeExecutionToolResultBlockParamContent(
         BetaTextEditorCodeExecutionCreateResultBlockParam value
     ) => new(value);
 
-    public static implicit operator Content6(
+    public static implicit operator BetaTextEditorCodeExecutionToolResultBlockParamContent(
         BetaTextEditorCodeExecutionStrReplaceResultBlockParam value
     ) => new(value);
 
@@ -329,16 +342,19 @@ public record class Content6
     {
         if (this.Value is UnknownVariant)
         {
-            throw new AnthropicInvalidDataException("Data did not match any variant of Content6");
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaTextEditorCodeExecutionToolResultBlockParamContent"
+            );
         }
     }
 
     record struct UnknownVariant(JsonElement value);
 }
 
-sealed class Content6Converter : JsonConverter<Content6>
+sealed class BetaTextEditorCodeExecutionToolResultBlockParamContentConverter
+    : JsonConverter<BetaTextEditorCodeExecutionToolResultBlockParamContent>
 {
-    public override Content6? Read(
+    public override BetaTextEditorCodeExecutionToolResultBlockParamContent? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -356,7 +372,7 @@ sealed class Content6Converter : JsonConverter<Content6>
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new Content6(deserialized);
+                return new BetaTextEditorCodeExecutionToolResultBlockParamContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -379,7 +395,7 @@ sealed class Content6Converter : JsonConverter<Content6>
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new Content6(deserialized);
+                return new BetaTextEditorCodeExecutionToolResultBlockParamContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -402,7 +418,7 @@ sealed class Content6Converter : JsonConverter<Content6>
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new Content6(deserialized);
+                return new BetaTextEditorCodeExecutionToolResultBlockParamContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -425,7 +441,7 @@ sealed class Content6Converter : JsonConverter<Content6>
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new Content6(deserialized);
+                return new BetaTextEditorCodeExecutionToolResultBlockParamContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -441,7 +457,11 @@ sealed class Content6Converter : JsonConverter<Content6>
         throw new System::AggregateException(exceptions);
     }
 
-    public override void Write(Utf8JsonWriter writer, Content6 value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaTextEditorCodeExecutionToolResultBlockParamContent value,
+        JsonSerializerOptions options
+    )
     {
         object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);

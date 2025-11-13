@@ -86,14 +86,17 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
         }
     }
 
-    public Content7? Content
+    public BetaToolResultBlockParamContent? Content
     {
         get
         {
             if (!this._properties.TryGetValue("content", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<Content7?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<BetaToolResultBlockParamContent?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         init
         {
@@ -184,27 +187,27 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
     }
 }
 
-[JsonConverter(typeof(Content7Converter))]
-public record class Content7
+[JsonConverter(typeof(BetaToolResultBlockParamContentConverter))]
+public record class BetaToolResultBlockParamContent
 {
     public object Value { get; private init; }
 
-    public Content7(string value)
+    public BetaToolResultBlockParamContent(string value)
     {
         Value = value;
     }
 
-    public Content7(IReadOnlyList<Block> value)
+    public BetaToolResultBlockParamContent(IReadOnlyList<Block> value)
     {
         Value = ImmutableArray.ToImmutableArray(value);
     }
 
-    Content7(UnknownVariant value)
+    BetaToolResultBlockParamContent(UnknownVariant value)
     {
         Value = value;
     }
 
-    public static Content7 CreateUnknownVariant(JsonElement value)
+    public static BetaToolResultBlockParamContent CreateUnknownVariant(JsonElement value)
     {
         return new(new UnknownVariant(value));
     }
@@ -233,7 +236,7 @@ public record class Content7
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of Content7"
+                    "Data did not match any variant of BetaToolResultBlockParamContent"
                 );
         }
     }
@@ -245,29 +248,33 @@ public record class Content7
             string value => @string(value),
             IReadOnlyList<Block> value => blocks(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Content7"
+                "Data did not match any variant of BetaToolResultBlockParamContent"
             ),
         };
     }
 
-    public static implicit operator Content7(string value) => new(value);
+    public static implicit operator BetaToolResultBlockParamContent(string value) => new(value);
 
-    public static implicit operator Content7(List<Block> value) => new((IReadOnlyList<Block>)value);
+    public static implicit operator BetaToolResultBlockParamContent(List<Block> value) =>
+        new((IReadOnlyList<Block>)value);
 
     public void Validate()
     {
         if (this.Value is UnknownVariant)
         {
-            throw new AnthropicInvalidDataException("Data did not match any variant of Content7");
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaToolResultBlockParamContent"
+            );
         }
     }
 
     record struct UnknownVariant(JsonElement value);
 }
 
-sealed class Content7Converter : JsonConverter<Content7>
+sealed class BetaToolResultBlockParamContentConverter
+    : JsonConverter<BetaToolResultBlockParamContent>
 {
-    public override Content7? Read(
+    public override BetaToolResultBlockParamContent? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -280,7 +287,7 @@ sealed class Content7Converter : JsonConverter<Content7>
             var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
             if (deserialized != null)
             {
-                return new Content7(deserialized);
+                return new BetaToolResultBlockParamContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -295,7 +302,7 @@ sealed class Content7Converter : JsonConverter<Content7>
             var deserialized = JsonSerializer.Deserialize<List<Block>>(ref reader, options);
             if (deserialized != null)
             {
-                return new Content7(deserialized);
+                return new BetaToolResultBlockParamContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -311,7 +318,11 @@ sealed class Content7Converter : JsonConverter<Content7>
         throw new System::AggregateException(exceptions);
     }
 
-    public override void Write(Utf8JsonWriter writer, Content7 value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaToolResultBlockParamContent value,
+        JsonSerializerOptions options
+    )
     {
         object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);

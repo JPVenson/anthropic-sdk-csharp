@@ -13,7 +13,7 @@ namespace Anthropic.Client.Models.Messages;
 [JsonConverter(typeof(ModelConverter<MessageParam>))]
 public sealed record class MessageParam : ModelBase, IFromRaw<MessageParam>
 {
-    public required ContentModel Content
+    public required MessageParamContent Content
     {
         get
         {
@@ -23,7 +23,10 @@ public sealed record class MessageParam : ModelBase, IFromRaw<MessageParam>
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<ContentModel>(element, ModelBase.SerializerOptions)
+            return JsonSerializer.Deserialize<MessageParamContent>(
+                    element,
+                    ModelBase.SerializerOptions
+                )
                 ?? throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentNullException("content")
@@ -89,27 +92,27 @@ public sealed record class MessageParam : ModelBase, IFromRaw<MessageParam>
     }
 }
 
-[JsonConverter(typeof(ContentModelConverter))]
-public record class ContentModel
+[JsonConverter(typeof(MessageParamContentConverter))]
+public record class MessageParamContent
 {
     public object Value { get; private init; }
 
-    public ContentModel(string value)
+    public MessageParamContent(string value)
     {
         Value = value;
     }
 
-    public ContentModel(IReadOnlyList<ContentBlockParam> value)
+    public MessageParamContent(IReadOnlyList<ContentBlockParam> value)
     {
         Value = ImmutableArray.ToImmutableArray(value);
     }
 
-    ContentModel(UnknownVariant value)
+    MessageParamContent(UnknownVariant value)
     {
         Value = value;
     }
 
-    public static ContentModel CreateUnknownVariant(JsonElement value)
+    public static MessageParamContent CreateUnknownVariant(JsonElement value)
     {
         return new(new UnknownVariant(value));
     }
@@ -143,7 +146,7 @@ public record class ContentModel
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of ContentModel"
+                    "Data did not match any variant of MessageParamContent"
                 );
         }
     }
@@ -158,14 +161,14 @@ public record class ContentModel
             string value => @string(value),
             IReadOnlyList<ContentBlockParam> value => contentBlockParams(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of ContentModel"
+                "Data did not match any variant of MessageParamContent"
             ),
         };
     }
 
-    public static implicit operator ContentModel(string value) => new(value);
+    public static implicit operator MessageParamContent(string value) => new(value);
 
-    public static implicit operator ContentModel(List<ContentBlockParam> value) =>
+    public static implicit operator MessageParamContent(List<ContentBlockParam> value) =>
         new((IReadOnlyList<ContentBlockParam>)value);
 
     public void Validate()
@@ -173,7 +176,7 @@ public record class ContentModel
         if (this.Value is UnknownVariant)
         {
             throw new AnthropicInvalidDataException(
-                "Data did not match any variant of ContentModel"
+                "Data did not match any variant of MessageParamContent"
             );
         }
     }
@@ -181,9 +184,9 @@ public record class ContentModel
     record struct UnknownVariant(JsonElement value);
 }
 
-sealed class ContentModelConverter : JsonConverter<ContentModel>
+sealed class MessageParamContentConverter : JsonConverter<MessageParamContent>
 {
-    public override ContentModel? Read(
+    public override MessageParamContent? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -196,7 +199,7 @@ sealed class ContentModelConverter : JsonConverter<ContentModel>
             var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
             if (deserialized != null)
             {
-                return new ContentModel(deserialized);
+                return new MessageParamContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -214,7 +217,7 @@ sealed class ContentModelConverter : JsonConverter<ContentModel>
             );
             if (deserialized != null)
             {
-                return new ContentModel(deserialized);
+                return new MessageParamContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -232,7 +235,7 @@ sealed class ContentModelConverter : JsonConverter<ContentModel>
 
     public override void Write(
         Utf8JsonWriter writer,
-        ContentModel value,
+        MessageParamContent value,
         JsonSerializerOptions options
     )
     {

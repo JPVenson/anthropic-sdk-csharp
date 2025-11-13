@@ -14,7 +14,7 @@ public sealed record class BetaBashCodeExecutionToolResultErrorParam
     : ModelBase,
         IFromRaw<BetaBashCodeExecutionToolResultErrorParam>
 {
-    public required ApiEnum<string, ErrorCodeModel> ErrorCode
+    public required ApiEnum<string, BetaBashCodeExecutionToolResultErrorParamErrorCode> ErrorCode
     {
         get
         {
@@ -27,10 +27,9 @@ public sealed record class BetaBashCodeExecutionToolResultErrorParam
                     )
                 );
 
-            return JsonSerializer.Deserialize<ApiEnum<string, ErrorCodeModel>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return JsonSerializer.Deserialize<
+                ApiEnum<string, BetaBashCodeExecutionToolResultErrorParamErrorCode>
+            >(element, ModelBase.SerializerOptions);
         }
         init
         {
@@ -110,15 +109,17 @@ public sealed record class BetaBashCodeExecutionToolResultErrorParam
     }
 
     [SetsRequiredMembers]
-    public BetaBashCodeExecutionToolResultErrorParam(ApiEnum<string, ErrorCodeModel> errorCode)
+    public BetaBashCodeExecutionToolResultErrorParam(
+        ApiEnum<string, BetaBashCodeExecutionToolResultErrorParamErrorCode> errorCode
+    )
         : this()
     {
         this.ErrorCode = errorCode;
     }
 }
 
-[JsonConverter(typeof(ErrorCodeModelConverter))]
-public enum ErrorCodeModel
+[JsonConverter(typeof(BetaBashCodeExecutionToolResultErrorParamErrorCodeConverter))]
+public enum BetaBashCodeExecutionToolResultErrorParamErrorCode
 {
     InvalidToolInput,
     Unavailable,
@@ -127,9 +128,10 @@ public enum ErrorCodeModel
     OutputFileTooLarge,
 }
 
-sealed class ErrorCodeModelConverter : JsonConverter<ErrorCodeModel>
+sealed class BetaBashCodeExecutionToolResultErrorParamErrorCodeConverter
+    : JsonConverter<BetaBashCodeExecutionToolResultErrorParamErrorCode>
 {
-    public override ErrorCodeModel Read(
+    public override BetaBashCodeExecutionToolResultErrorParamErrorCode Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -137,18 +139,22 @@ sealed class ErrorCodeModelConverter : JsonConverter<ErrorCodeModel>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "invalid_tool_input" => ErrorCodeModel.InvalidToolInput,
-            "unavailable" => ErrorCodeModel.Unavailable,
-            "too_many_requests" => ErrorCodeModel.TooManyRequests,
-            "execution_time_exceeded" => ErrorCodeModel.ExecutionTimeExceeded,
-            "output_file_too_large" => ErrorCodeModel.OutputFileTooLarge,
-            _ => (ErrorCodeModel)(-1),
+            "invalid_tool_input" =>
+                BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput,
+            "unavailable" => BetaBashCodeExecutionToolResultErrorParamErrorCode.Unavailable,
+            "too_many_requests" =>
+                BetaBashCodeExecutionToolResultErrorParamErrorCode.TooManyRequests,
+            "execution_time_exceeded" =>
+                BetaBashCodeExecutionToolResultErrorParamErrorCode.ExecutionTimeExceeded,
+            "output_file_too_large" =>
+                BetaBashCodeExecutionToolResultErrorParamErrorCode.OutputFileTooLarge,
+            _ => (BetaBashCodeExecutionToolResultErrorParamErrorCode)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        ErrorCodeModel value,
+        BetaBashCodeExecutionToolResultErrorParamErrorCode value,
         JsonSerializerOptions options
     )
     {
@@ -156,11 +162,15 @@ sealed class ErrorCodeModelConverter : JsonConverter<ErrorCodeModel>
             writer,
             value switch
             {
-                ErrorCodeModel.InvalidToolInput => "invalid_tool_input",
-                ErrorCodeModel.Unavailable => "unavailable",
-                ErrorCodeModel.TooManyRequests => "too_many_requests",
-                ErrorCodeModel.ExecutionTimeExceeded => "execution_time_exceeded",
-                ErrorCodeModel.OutputFileTooLarge => "output_file_too_large",
+                BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput =>
+                    "invalid_tool_input",
+                BetaBashCodeExecutionToolResultErrorParamErrorCode.Unavailable => "unavailable",
+                BetaBashCodeExecutionToolResultErrorParamErrorCode.TooManyRequests =>
+                    "too_many_requests",
+                BetaBashCodeExecutionToolResultErrorParamErrorCode.ExecutionTimeExceeded =>
+                    "execution_time_exceeded",
+                BetaBashCodeExecutionToolResultErrorParamErrorCode.OutputFileTooLarge =>
+                    "output_file_too_large",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

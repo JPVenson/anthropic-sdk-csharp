@@ -13,7 +13,7 @@ namespace Anthropic.Client.Models.Beta.Messages;
 [JsonConverter(typeof(ModelConverter<BetaMessageParam>))]
 public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessageParam>
 {
-    public required Content3 Content
+    public required BetaMessageParamContent Content
     {
         get
         {
@@ -23,7 +23,10 @@ public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessagePar
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<Content3>(element, ModelBase.SerializerOptions)
+            return JsonSerializer.Deserialize<BetaMessageParamContent>(
+                    element,
+                    ModelBase.SerializerOptions
+                )
                 ?? throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentNullException("content")
@@ -91,27 +94,27 @@ public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessagePar
     }
 }
 
-[JsonConverter(typeof(Content3Converter))]
-public record class Content3
+[JsonConverter(typeof(BetaMessageParamContentConverter))]
+public record class BetaMessageParamContent
 {
     public object Value { get; private init; }
 
-    public Content3(string value)
+    public BetaMessageParamContent(string value)
     {
         Value = value;
     }
 
-    public Content3(IReadOnlyList<BetaContentBlockParam> value)
+    public BetaMessageParamContent(IReadOnlyList<BetaContentBlockParam> value)
     {
         Value = ImmutableArray.ToImmutableArray(value);
     }
 
-    Content3(UnknownVariant value)
+    BetaMessageParamContent(UnknownVariant value)
     {
         Value = value;
     }
 
-    public static Content3 CreateUnknownVariant(JsonElement value)
+    public static BetaMessageParamContent CreateUnknownVariant(JsonElement value)
     {
         return new(new UnknownVariant(value));
     }
@@ -145,7 +148,7 @@ public record class Content3
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of Content3"
+                    "Data did not match any variant of BetaMessageParamContent"
                 );
         }
     }
@@ -160,30 +163,32 @@ public record class Content3
             string value => @string(value),
             IReadOnlyList<BetaContentBlockParam> value => betaContentBlockParams(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Content3"
+                "Data did not match any variant of BetaMessageParamContent"
             ),
         };
     }
 
-    public static implicit operator Content3(string value) => new(value);
+    public static implicit operator BetaMessageParamContent(string value) => new(value);
 
-    public static implicit operator Content3(List<BetaContentBlockParam> value) =>
+    public static implicit operator BetaMessageParamContent(List<BetaContentBlockParam> value) =>
         new((IReadOnlyList<BetaContentBlockParam>)value);
 
     public void Validate()
     {
         if (this.Value is UnknownVariant)
         {
-            throw new AnthropicInvalidDataException("Data did not match any variant of Content3");
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaMessageParamContent"
+            );
         }
     }
 
     record struct UnknownVariant(JsonElement value);
 }
 
-sealed class Content3Converter : JsonConverter<Content3>
+sealed class BetaMessageParamContentConverter : JsonConverter<BetaMessageParamContent>
 {
-    public override Content3? Read(
+    public override BetaMessageParamContent? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -196,7 +201,7 @@ sealed class Content3Converter : JsonConverter<Content3>
             var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
             if (deserialized != null)
             {
-                return new Content3(deserialized);
+                return new BetaMessageParamContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -214,7 +219,7 @@ sealed class Content3Converter : JsonConverter<Content3>
             );
             if (deserialized != null)
             {
-                return new Content3(deserialized);
+                return new BetaMessageParamContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -230,7 +235,11 @@ sealed class Content3Converter : JsonConverter<Content3>
         throw new System::AggregateException(exceptions);
     }
 
-    public override void Write(Utf8JsonWriter writer, Content3 value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaMessageParamContent value,
+        JsonSerializerOptions options
+    )
     {
         object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);

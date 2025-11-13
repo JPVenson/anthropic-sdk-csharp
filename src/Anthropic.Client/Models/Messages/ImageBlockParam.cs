@@ -12,7 +12,7 @@ namespace Anthropic.Client.Models.Messages;
 [JsonConverter(typeof(ModelConverter<ImageBlockParam>))]
 public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam>
 {
-    public required SourceModel Source
+    public required ImageBlockParamSource Source
     {
         get
         {
@@ -22,7 +22,10 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
                     new System::ArgumentOutOfRangeException("source", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<SourceModel>(element, ModelBase.SerializerOptions)
+            return JsonSerializer.Deserialize<ImageBlockParamSource>(
+                    element,
+                    ModelBase.SerializerOptions
+                )
                 ?? throw new AnthropicInvalidDataException(
                     "'source' cannot be null",
                     new System::ArgumentNullException("source")
@@ -122,15 +125,15 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
     }
 
     [SetsRequiredMembers]
-    public ImageBlockParam(SourceModel source)
+    public ImageBlockParam(ImageBlockParamSource source)
         : this()
     {
         this.Source = source;
     }
 }
 
-[JsonConverter(typeof(SourceModelConverter))]
-public record class SourceModel
+[JsonConverter(typeof(ImageBlockParamSourceConverter))]
+public record class ImageBlockParamSource
 {
     public object Value { get; private init; }
 
@@ -139,22 +142,22 @@ public record class SourceModel
         get { return Match(base64Image: (x) => x.Type, urlImage: (x) => x.Type); }
     }
 
-    public SourceModel(Base64ImageSource value)
+    public ImageBlockParamSource(Base64ImageSource value)
     {
         Value = value;
     }
 
-    public SourceModel(URLImageSource value)
+    public ImageBlockParamSource(URLImageSource value)
     {
         Value = value;
     }
 
-    SourceModel(UnknownVariant value)
+    ImageBlockParamSource(UnknownVariant value)
     {
         Value = value;
     }
 
-    public static SourceModel CreateUnknownVariant(JsonElement value)
+    public static ImageBlockParamSource CreateUnknownVariant(JsonElement value)
     {
         return new(new UnknownVariant(value));
     }
@@ -186,7 +189,7 @@ public record class SourceModel
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of SourceModel"
+                    "Data did not match any variant of ImageBlockParamSource"
                 );
         }
     }
@@ -201,21 +204,21 @@ public record class SourceModel
             Base64ImageSource value => base64Image(value),
             URLImageSource value => urlImage(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of SourceModel"
+                "Data did not match any variant of ImageBlockParamSource"
             ),
         };
     }
 
-    public static implicit operator SourceModel(Base64ImageSource value) => new(value);
+    public static implicit operator ImageBlockParamSource(Base64ImageSource value) => new(value);
 
-    public static implicit operator SourceModel(URLImageSource value) => new(value);
+    public static implicit operator ImageBlockParamSource(URLImageSource value) => new(value);
 
     public void Validate()
     {
         if (this.Value is UnknownVariant)
         {
             throw new AnthropicInvalidDataException(
-                "Data did not match any variant of SourceModel"
+                "Data did not match any variant of ImageBlockParamSource"
             );
         }
     }
@@ -223,9 +226,9 @@ public record class SourceModel
     record struct UnknownVariant(JsonElement value);
 }
 
-sealed class SourceModelConverter : JsonConverter<SourceModel>
+sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSource>
 {
-    public override SourceModel? Read(
+    public override ImageBlockParamSource? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -254,7 +257,7 @@ sealed class SourceModelConverter : JsonConverter<SourceModel>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new SourceModel(deserialized);
+                        return new ImageBlockParamSource(deserialized);
                     }
                 }
                 catch (System::Exception e)
@@ -280,7 +283,7 @@ sealed class SourceModelConverter : JsonConverter<SourceModel>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new SourceModel(deserialized);
+                        return new ImageBlockParamSource(deserialized);
                     }
                 }
                 catch (System::Exception e)
@@ -307,7 +310,7 @@ sealed class SourceModelConverter : JsonConverter<SourceModel>
 
     public override void Write(
         Utf8JsonWriter writer,
-        SourceModel value,
+        ImageBlockParamSource value,
         JsonSerializerOptions options
     )
     {

@@ -13,7 +13,7 @@ namespace Anthropic.Client.Models.Beta.Messages;
 [JsonConverter(typeof(ModelConverter<BetaMCPToolResultBlock>))]
 public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPToolResultBlock>
 {
-    public required Content2 Content
+    public required BetaMCPToolResultBlockContent Content
     {
         get
         {
@@ -23,7 +23,10 @@ public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPT
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<Content2>(element, ModelBase.SerializerOptions)
+            return JsonSerializer.Deserialize<BetaMCPToolResultBlockContent>(
+                    element,
+                    ModelBase.SerializerOptions
+                )
                 ?? throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentNullException("content")
@@ -152,27 +155,27 @@ public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPT
     }
 }
 
-[JsonConverter(typeof(Content2Converter))]
-public record class Content2
+[JsonConverter(typeof(BetaMCPToolResultBlockContentConverter))]
+public record class BetaMCPToolResultBlockContent
 {
     public object Value { get; private init; }
 
-    public Content2(string value)
+    public BetaMCPToolResultBlockContent(string value)
     {
         Value = value;
     }
 
-    public Content2(IReadOnlyList<BetaTextBlock> value)
+    public BetaMCPToolResultBlockContent(IReadOnlyList<BetaTextBlock> value)
     {
         Value = ImmutableArray.ToImmutableArray(value);
     }
 
-    Content2(UnknownVariant value)
+    BetaMCPToolResultBlockContent(UnknownVariant value)
     {
         Value = value;
     }
 
-    public static Content2 CreateUnknownVariant(JsonElement value)
+    public static BetaMCPToolResultBlockContent CreateUnknownVariant(JsonElement value)
     {
         return new(new UnknownVariant(value));
     }
@@ -206,7 +209,7 @@ public record class Content2
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of Content2"
+                    "Data did not match any variant of BetaMCPToolResultBlockContent"
                 );
         }
     }
@@ -221,30 +224,32 @@ public record class Content2
             string value => @string(value),
             IReadOnlyList<BetaTextBlock> value => betaMCPToolResultBlockContent(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Content2"
+                "Data did not match any variant of BetaMCPToolResultBlockContent"
             ),
         };
     }
 
-    public static implicit operator Content2(string value) => new(value);
+    public static implicit operator BetaMCPToolResultBlockContent(string value) => new(value);
 
-    public static implicit operator Content2(List<BetaTextBlock> value) =>
+    public static implicit operator BetaMCPToolResultBlockContent(List<BetaTextBlock> value) =>
         new((IReadOnlyList<BetaTextBlock>)value);
 
     public void Validate()
     {
         if (this.Value is UnknownVariant)
         {
-            throw new AnthropicInvalidDataException("Data did not match any variant of Content2");
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaMCPToolResultBlockContent"
+            );
         }
     }
 
     record struct UnknownVariant(JsonElement value);
 }
 
-sealed class Content2Converter : JsonConverter<Content2>
+sealed class BetaMCPToolResultBlockContentConverter : JsonConverter<BetaMCPToolResultBlockContent>
 {
-    public override Content2? Read(
+    public override BetaMCPToolResultBlockContent? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -257,7 +262,7 @@ sealed class Content2Converter : JsonConverter<Content2>
             var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
             if (deserialized != null)
             {
-                return new Content2(deserialized);
+                return new BetaMCPToolResultBlockContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -272,7 +277,7 @@ sealed class Content2Converter : JsonConverter<Content2>
             var deserialized = JsonSerializer.Deserialize<List<BetaTextBlock>>(ref reader, options);
             if (deserialized != null)
             {
-                return new Content2(deserialized);
+                return new BetaMCPToolResultBlockContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -288,7 +293,11 @@ sealed class Content2Converter : JsonConverter<Content2>
         throw new System::AggregateException(exceptions);
     }
 
-    public override void Write(Utf8JsonWriter writer, Content2 value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaMCPToolResultBlockContent value,
+        JsonSerializerOptions options
+    )
     {
         object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);

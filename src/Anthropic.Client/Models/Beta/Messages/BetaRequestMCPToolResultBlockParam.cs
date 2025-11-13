@@ -88,14 +88,17 @@ public sealed record class BetaRequestMCPToolResultBlockParam
         }
     }
 
-    public Content4? Content
+    public BetaRequestMCPToolResultBlockParamContent? Content
     {
         get
         {
             if (!this._properties.TryGetValue("content", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<Content4?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<BetaRequestMCPToolResultBlockParamContent?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         init
         {
@@ -186,27 +189,27 @@ public sealed record class BetaRequestMCPToolResultBlockParam
     }
 }
 
-[JsonConverter(typeof(Content4Converter))]
-public record class Content4
+[JsonConverter(typeof(BetaRequestMCPToolResultBlockParamContentConverter))]
+public record class BetaRequestMCPToolResultBlockParamContent
 {
     public object Value { get; private init; }
 
-    public Content4(string value)
+    public BetaRequestMCPToolResultBlockParamContent(string value)
     {
         Value = value;
     }
 
-    public Content4(IReadOnlyList<BetaTextBlockParam> value)
+    public BetaRequestMCPToolResultBlockParamContent(IReadOnlyList<BetaTextBlockParam> value)
     {
         Value = ImmutableArray.ToImmutableArray(value);
     }
 
-    Content4(UnknownVariant value)
+    BetaRequestMCPToolResultBlockParamContent(UnknownVariant value)
     {
         Value = value;
     }
 
-    public static Content4 CreateUnknownVariant(JsonElement value)
+    public static BetaRequestMCPToolResultBlockParamContent CreateUnknownVariant(JsonElement value)
     {
         return new(new UnknownVariant(value));
     }
@@ -240,7 +243,7 @@ public record class Content4
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of Content4"
+                    "Data did not match any variant of BetaRequestMCPToolResultBlockParamContent"
                 );
         }
     }
@@ -255,30 +258,35 @@ public record class Content4
             string value => @string(value),
             IReadOnlyList<BetaTextBlockParam> value => betaMCPToolResultBlockParamContent(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Content4"
+                "Data did not match any variant of BetaRequestMCPToolResultBlockParamContent"
             ),
         };
     }
 
-    public static implicit operator Content4(string value) => new(value);
+    public static implicit operator BetaRequestMCPToolResultBlockParamContent(string value) =>
+        new(value);
 
-    public static implicit operator Content4(List<BetaTextBlockParam> value) =>
-        new((IReadOnlyList<BetaTextBlockParam>)value);
+    public static implicit operator BetaRequestMCPToolResultBlockParamContent(
+        List<BetaTextBlockParam> value
+    ) => new((IReadOnlyList<BetaTextBlockParam>)value);
 
     public void Validate()
     {
         if (this.Value is UnknownVariant)
         {
-            throw new AnthropicInvalidDataException("Data did not match any variant of Content4");
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaRequestMCPToolResultBlockParamContent"
+            );
         }
     }
 
     record struct UnknownVariant(JsonElement value);
 }
 
-sealed class Content4Converter : JsonConverter<Content4>
+sealed class BetaRequestMCPToolResultBlockParamContentConverter
+    : JsonConverter<BetaRequestMCPToolResultBlockParamContent>
 {
-    public override Content4? Read(
+    public override BetaRequestMCPToolResultBlockParamContent? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -291,7 +299,7 @@ sealed class Content4Converter : JsonConverter<Content4>
             var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
             if (deserialized != null)
             {
-                return new Content4(deserialized);
+                return new BetaRequestMCPToolResultBlockParamContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -309,7 +317,7 @@ sealed class Content4Converter : JsonConverter<Content4>
             );
             if (deserialized != null)
             {
-                return new Content4(deserialized);
+                return new BetaRequestMCPToolResultBlockParamContent(deserialized);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -325,7 +333,11 @@ sealed class Content4Converter : JsonConverter<Content4>
         throw new System::AggregateException(exceptions);
     }
 
-    public override void Write(Utf8JsonWriter writer, Content4 value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaRequestMCPToolResultBlockParamContent value,
+        JsonSerializerOptions options
+    )
     {
         object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);

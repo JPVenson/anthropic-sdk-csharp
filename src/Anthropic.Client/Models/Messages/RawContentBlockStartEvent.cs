@@ -14,7 +14,7 @@ public sealed record class RawContentBlockStartEvent
     : ModelBase,
         IFromRaw<RawContentBlockStartEvent>
 {
-    public required ContentBlockModel ContentBlock
+    public required RawContentBlockStartEventContentBlock ContentBlock
     {
         get
         {
@@ -27,7 +27,7 @@ public sealed record class RawContentBlockStartEvent
                     )
                 );
 
-            return JsonSerializer.Deserialize<ContentBlockModel>(
+            return JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
                     element,
                     ModelBase.SerializerOptions
                 )
@@ -130,8 +130,8 @@ public sealed record class RawContentBlockStartEvent
     }
 }
 
-[JsonConverter(typeof(ContentBlockModelConverter))]
-public record class ContentBlockModel
+[JsonConverter(typeof(RawContentBlockStartEventContentBlockConverter))]
+public record class RawContentBlockStartEventContentBlock
 {
     public object Value { get; private init; }
 
@@ -165,42 +165,42 @@ public record class ContentBlockModel
         }
     }
 
-    public ContentBlockModel(TextBlock value)
+    public RawContentBlockStartEventContentBlock(TextBlock value)
     {
         Value = value;
     }
 
-    public ContentBlockModel(ThinkingBlock value)
+    public RawContentBlockStartEventContentBlock(ThinkingBlock value)
     {
         Value = value;
     }
 
-    public ContentBlockModel(RedactedThinkingBlock value)
+    public RawContentBlockStartEventContentBlock(RedactedThinkingBlock value)
     {
         Value = value;
     }
 
-    public ContentBlockModel(ToolUseBlock value)
+    public RawContentBlockStartEventContentBlock(ToolUseBlock value)
     {
         Value = value;
     }
 
-    public ContentBlockModel(ServerToolUseBlock value)
+    public RawContentBlockStartEventContentBlock(ServerToolUseBlock value)
     {
         Value = value;
     }
 
-    public ContentBlockModel(WebSearchToolResultBlock value)
+    public RawContentBlockStartEventContentBlock(WebSearchToolResultBlock value)
     {
         Value = value;
     }
 
-    ContentBlockModel(UnknownVariant value)
+    RawContentBlockStartEventContentBlock(UnknownVariant value)
     {
         Value = value;
     }
 
-    public static ContentBlockModel CreateUnknownVariant(JsonElement value)
+    public static RawContentBlockStartEventContentBlock CreateUnknownVariant(JsonElement value)
     {
         return new(new UnknownVariant(value));
     }
@@ -272,7 +272,7 @@ public record class ContentBlockModel
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of ContentBlockModel"
+                    "Data did not match any variant of RawContentBlockStartEventContentBlock"
                 );
         }
     }
@@ -295,29 +295,38 @@ public record class ContentBlockModel
             ServerToolUseBlock value => serverToolUse(value),
             WebSearchToolResultBlock value => webSearchToolResult(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of ContentBlockModel"
+                "Data did not match any variant of RawContentBlockStartEventContentBlock"
             ),
         };
     }
 
-    public static implicit operator ContentBlockModel(TextBlock value) => new(value);
+    public static implicit operator RawContentBlockStartEventContentBlock(TextBlock value) =>
+        new(value);
 
-    public static implicit operator ContentBlockModel(ThinkingBlock value) => new(value);
+    public static implicit operator RawContentBlockStartEventContentBlock(ThinkingBlock value) =>
+        new(value);
 
-    public static implicit operator ContentBlockModel(RedactedThinkingBlock value) => new(value);
+    public static implicit operator RawContentBlockStartEventContentBlock(
+        RedactedThinkingBlock value
+    ) => new(value);
 
-    public static implicit operator ContentBlockModel(ToolUseBlock value) => new(value);
+    public static implicit operator RawContentBlockStartEventContentBlock(ToolUseBlock value) =>
+        new(value);
 
-    public static implicit operator ContentBlockModel(ServerToolUseBlock value) => new(value);
+    public static implicit operator RawContentBlockStartEventContentBlock(
+        ServerToolUseBlock value
+    ) => new(value);
 
-    public static implicit operator ContentBlockModel(WebSearchToolResultBlock value) => new(value);
+    public static implicit operator RawContentBlockStartEventContentBlock(
+        WebSearchToolResultBlock value
+    ) => new(value);
 
     public void Validate()
     {
         if (this.Value is UnknownVariant)
         {
             throw new AnthropicInvalidDataException(
-                "Data did not match any variant of ContentBlockModel"
+                "Data did not match any variant of RawContentBlockStartEventContentBlock"
             );
         }
     }
@@ -325,9 +334,10 @@ public record class ContentBlockModel
     record struct UnknownVariant(JsonElement value);
 }
 
-sealed class ContentBlockModelConverter : JsonConverter<ContentBlockModel>
+sealed class RawContentBlockStartEventContentBlockConverter
+    : JsonConverter<RawContentBlockStartEventContentBlock>
 {
-    public override ContentBlockModel? Read(
+    public override RawContentBlockStartEventContentBlock? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -356,7 +366,7 @@ sealed class ContentBlockModelConverter : JsonConverter<ContentBlockModel>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlockModel(deserialized);
+                        return new RawContentBlockStartEventContentBlock(deserialized);
                     }
                 }
                 catch (System::Exception e)
@@ -382,7 +392,7 @@ sealed class ContentBlockModelConverter : JsonConverter<ContentBlockModel>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlockModel(deserialized);
+                        return new RawContentBlockStartEventContentBlock(deserialized);
                     }
                 }
                 catch (System::Exception e)
@@ -411,7 +421,7 @@ sealed class ContentBlockModelConverter : JsonConverter<ContentBlockModel>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlockModel(deserialized);
+                        return new RawContentBlockStartEventContentBlock(deserialized);
                     }
                 }
                 catch (System::Exception e)
@@ -437,7 +447,7 @@ sealed class ContentBlockModelConverter : JsonConverter<ContentBlockModel>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlockModel(deserialized);
+                        return new RawContentBlockStartEventContentBlock(deserialized);
                     }
                 }
                 catch (System::Exception e)
@@ -466,7 +476,7 @@ sealed class ContentBlockModelConverter : JsonConverter<ContentBlockModel>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlockModel(deserialized);
+                        return new RawContentBlockStartEventContentBlock(deserialized);
                     }
                 }
                 catch (System::Exception e)
@@ -495,7 +505,7 @@ sealed class ContentBlockModelConverter : JsonConverter<ContentBlockModel>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlockModel(deserialized);
+                        return new RawContentBlockStartEventContentBlock(deserialized);
                     }
                 }
                 catch (System::Exception e)
@@ -522,7 +532,7 @@ sealed class ContentBlockModelConverter : JsonConverter<ContentBlockModel>
 
     public override void Write(
         Utf8JsonWriter writer,
-        ContentBlockModel value,
+        RawContentBlockStartEventContentBlock value,
         JsonSerializerOptions options
     )
     {

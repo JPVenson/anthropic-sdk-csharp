@@ -12,7 +12,7 @@ namespace Anthropic.Client.Models.Beta.Messages;
 [JsonConverter(typeof(ModelConverter<BetaRequestDocumentBlock>))]
 public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRequestDocumentBlock>
 {
-    public required Source1 Source
+    public required BetaRequestDocumentBlockSource Source
     {
         get
         {
@@ -22,7 +22,10 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
                     new System::ArgumentOutOfRangeException("source", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<Source1>(element, ModelBase.SerializerOptions)
+            return JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(
+                    element,
+                    ModelBase.SerializerOptions
+                )
                 ?? throw new AnthropicInvalidDataException(
                     "'source' cannot be null",
                     new System::ArgumentNullException("source")
@@ -185,15 +188,15 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
     }
 
     [SetsRequiredMembers]
-    public BetaRequestDocumentBlock(Source1 source)
+    public BetaRequestDocumentBlock(BetaRequestDocumentBlockSource source)
         : this()
     {
         this.Source = source;
     }
 }
 
-[JsonConverter(typeof(Source1Converter))]
-public record class Source1
+[JsonConverter(typeof(BetaRequestDocumentBlockSourceConverter))]
+public record class BetaRequestDocumentBlockSource
 {
     public object Value { get; private init; }
 
@@ -239,37 +242,37 @@ public record class Source1
         }
     }
 
-    public Source1(BetaBase64PDFSource value)
+    public BetaRequestDocumentBlockSource(BetaBase64PDFSource value)
     {
         Value = value;
     }
 
-    public Source1(BetaPlainTextSource value)
+    public BetaRequestDocumentBlockSource(BetaPlainTextSource value)
     {
         Value = value;
     }
 
-    public Source1(BetaContentBlockSource value)
+    public BetaRequestDocumentBlockSource(BetaContentBlockSource value)
     {
         Value = value;
     }
 
-    public Source1(BetaURLPDFSource value)
+    public BetaRequestDocumentBlockSource(BetaURLPDFSource value)
     {
         Value = value;
     }
 
-    public Source1(BetaFileDocumentSource value)
+    public BetaRequestDocumentBlockSource(BetaFileDocumentSource value)
     {
         Value = value;
     }
 
-    Source1(UnknownVariant value)
+    BetaRequestDocumentBlockSource(UnknownVariant value)
     {
         Value = value;
     }
 
-    public static Source1 CreateUnknownVariant(JsonElement value)
+    public static BetaRequestDocumentBlockSource CreateUnknownVariant(JsonElement value)
     {
         return new(new UnknownVariant(value));
     }
@@ -331,7 +334,7 @@ public record class Source1
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of Source1"
+                    "Data did not match any variant of BetaRequestDocumentBlockSource"
                 );
         }
     }
@@ -352,35 +355,42 @@ public record class Source1
             BetaURLPDFSource value => betaURLPDF(value),
             BetaFileDocumentSource value => betaFileDocument(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Source1"
+                "Data did not match any variant of BetaRequestDocumentBlockSource"
             ),
         };
     }
 
-    public static implicit operator Source1(BetaBase64PDFSource value) => new(value);
+    public static implicit operator BetaRequestDocumentBlockSource(BetaBase64PDFSource value) =>
+        new(value);
 
-    public static implicit operator Source1(BetaPlainTextSource value) => new(value);
+    public static implicit operator BetaRequestDocumentBlockSource(BetaPlainTextSource value) =>
+        new(value);
 
-    public static implicit operator Source1(BetaContentBlockSource value) => new(value);
+    public static implicit operator BetaRequestDocumentBlockSource(BetaContentBlockSource value) =>
+        new(value);
 
-    public static implicit operator Source1(BetaURLPDFSource value) => new(value);
+    public static implicit operator BetaRequestDocumentBlockSource(BetaURLPDFSource value) =>
+        new(value);
 
-    public static implicit operator Source1(BetaFileDocumentSource value) => new(value);
+    public static implicit operator BetaRequestDocumentBlockSource(BetaFileDocumentSource value) =>
+        new(value);
 
     public void Validate()
     {
         if (this.Value is UnknownVariant)
         {
-            throw new AnthropicInvalidDataException("Data did not match any variant of Source1");
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaRequestDocumentBlockSource"
+            );
         }
     }
 
     record struct UnknownVariant(JsonElement value);
 }
 
-sealed class Source1Converter : JsonConverter<Source1>
+sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequestDocumentBlockSource>
 {
-    public override Source1? Read(
+    public override BetaRequestDocumentBlockSource? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -412,7 +422,7 @@ sealed class Source1Converter : JsonConverter<Source1>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new Source1(deserialized);
+                        return new BetaRequestDocumentBlockSource(deserialized);
                     }
                 }
                 catch (System::Exception e)
@@ -441,7 +451,7 @@ sealed class Source1Converter : JsonConverter<Source1>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new Source1(deserialized);
+                        return new BetaRequestDocumentBlockSource(deserialized);
                     }
                 }
                 catch (System::Exception e)
@@ -470,7 +480,7 @@ sealed class Source1Converter : JsonConverter<Source1>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new Source1(deserialized);
+                        return new BetaRequestDocumentBlockSource(deserialized);
                     }
                 }
                 catch (System::Exception e)
@@ -496,7 +506,7 @@ sealed class Source1Converter : JsonConverter<Source1>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new Source1(deserialized);
+                        return new BetaRequestDocumentBlockSource(deserialized);
                     }
                 }
                 catch (System::Exception e)
@@ -525,7 +535,7 @@ sealed class Source1Converter : JsonConverter<Source1>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new Source1(deserialized);
+                        return new BetaRequestDocumentBlockSource(deserialized);
                     }
                 }
                 catch (System::Exception e)
@@ -550,7 +560,11 @@ sealed class Source1Converter : JsonConverter<Source1>
         }
     }
 
-    public override void Write(Utf8JsonWriter writer, Source1 value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaRequestDocumentBlockSource value,
+        JsonSerializerOptions options
+    )
     {
         object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);

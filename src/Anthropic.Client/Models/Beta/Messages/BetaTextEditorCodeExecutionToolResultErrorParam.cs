@@ -14,7 +14,10 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam
     : ModelBase,
         IFromRaw<BetaTextEditorCodeExecutionToolResultErrorParam>
 {
-    public required ApiEnum<string, ErrorCode2> ErrorCode
+    public required ApiEnum<
+        string,
+        BetaTextEditorCodeExecutionToolResultErrorParamErrorCode
+    > ErrorCode
     {
         get
         {
@@ -27,10 +30,9 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam
                     )
                 );
 
-            return JsonSerializer.Deserialize<ApiEnum<string, ErrorCode2>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return JsonSerializer.Deserialize<
+                ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorParamErrorCode>
+            >(element, ModelBase.SerializerOptions);
         }
         init
         {
@@ -133,15 +135,17 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam
     }
 
     [SetsRequiredMembers]
-    public BetaTextEditorCodeExecutionToolResultErrorParam(ApiEnum<string, ErrorCode2> errorCode)
+    public BetaTextEditorCodeExecutionToolResultErrorParam(
+        ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorParamErrorCode> errorCode
+    )
         : this()
     {
         this.ErrorCode = errorCode;
     }
 }
 
-[JsonConverter(typeof(ErrorCode2Converter))]
-public enum ErrorCode2
+[JsonConverter(typeof(BetaTextEditorCodeExecutionToolResultErrorParamErrorCodeConverter))]
+public enum BetaTextEditorCodeExecutionToolResultErrorParamErrorCode
 {
     InvalidToolInput,
     Unavailable,
@@ -150,9 +154,10 @@ public enum ErrorCode2
     FileNotFound,
 }
 
-sealed class ErrorCode2Converter : JsonConverter<ErrorCode2>
+sealed class BetaTextEditorCodeExecutionToolResultErrorParamErrorCodeConverter
+    : JsonConverter<BetaTextEditorCodeExecutionToolResultErrorParamErrorCode>
 {
-    public override ErrorCode2 Read(
+    public override BetaTextEditorCodeExecutionToolResultErrorParamErrorCode Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -160,18 +165,22 @@ sealed class ErrorCode2Converter : JsonConverter<ErrorCode2>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "invalid_tool_input" => ErrorCode2.InvalidToolInput,
-            "unavailable" => ErrorCode2.Unavailable,
-            "too_many_requests" => ErrorCode2.TooManyRequests,
-            "execution_time_exceeded" => ErrorCode2.ExecutionTimeExceeded,
-            "file_not_found" => ErrorCode2.FileNotFound,
-            _ => (ErrorCode2)(-1),
+            "invalid_tool_input" =>
+                BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput,
+            "unavailable" => BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.Unavailable,
+            "too_many_requests" =>
+                BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.TooManyRequests,
+            "execution_time_exceeded" =>
+                BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.ExecutionTimeExceeded,
+            "file_not_found" =>
+                BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.FileNotFound,
+            _ => (BetaTextEditorCodeExecutionToolResultErrorParamErrorCode)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        ErrorCode2 value,
+        BetaTextEditorCodeExecutionToolResultErrorParamErrorCode value,
         JsonSerializerOptions options
     )
     {
@@ -179,11 +188,16 @@ sealed class ErrorCode2Converter : JsonConverter<ErrorCode2>
             writer,
             value switch
             {
-                ErrorCode2.InvalidToolInput => "invalid_tool_input",
-                ErrorCode2.Unavailable => "unavailable",
-                ErrorCode2.TooManyRequests => "too_many_requests",
-                ErrorCode2.ExecutionTimeExceeded => "execution_time_exceeded",
-                ErrorCode2.FileNotFound => "file_not_found",
+                BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput =>
+                    "invalid_tool_input",
+                BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.Unavailable =>
+                    "unavailable",
+                BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.TooManyRequests =>
+                    "too_many_requests",
+                BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.ExecutionTimeExceeded =>
+                    "execution_time_exceeded",
+                BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.FileNotFound =>
+                    "file_not_found",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

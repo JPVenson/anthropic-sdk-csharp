@@ -12,7 +12,7 @@ namespace Anthropic.Client.Models.Messages;
 [JsonConverter(typeof(ModelConverter<WebSearchToolResultError>))]
 public sealed record class WebSearchToolResultError : ModelBase, IFromRaw<WebSearchToolResultError>
 {
-    public required ApiEnum<string, ErrorCodeModel> ErrorCode
+    public required ApiEnum<string, WebSearchToolResultErrorErrorCode> ErrorCode
     {
         get
         {
@@ -25,7 +25,7 @@ public sealed record class WebSearchToolResultError : ModelBase, IFromRaw<WebSea
                     )
                 );
 
-            return JsonSerializer.Deserialize<ApiEnum<string, ErrorCodeModel>>(
+            return JsonSerializer.Deserialize<ApiEnum<string, WebSearchToolResultErrorErrorCode>>(
                 element,
                 ModelBase.SerializerOptions
             );
@@ -102,15 +102,15 @@ public sealed record class WebSearchToolResultError : ModelBase, IFromRaw<WebSea
     }
 
     [SetsRequiredMembers]
-    public WebSearchToolResultError(ApiEnum<string, ErrorCodeModel> errorCode)
+    public WebSearchToolResultError(ApiEnum<string, WebSearchToolResultErrorErrorCode> errorCode)
         : this()
     {
         this.ErrorCode = errorCode;
     }
 }
 
-[JsonConverter(typeof(ErrorCodeModelConverter))]
-public enum ErrorCodeModel
+[JsonConverter(typeof(WebSearchToolResultErrorErrorCodeConverter))]
+public enum WebSearchToolResultErrorErrorCode
 {
     InvalidToolInput,
     Unavailable,
@@ -119,9 +119,10 @@ public enum ErrorCodeModel
     QueryTooLong,
 }
 
-sealed class ErrorCodeModelConverter : JsonConverter<ErrorCodeModel>
+sealed class WebSearchToolResultErrorErrorCodeConverter
+    : JsonConverter<WebSearchToolResultErrorErrorCode>
 {
-    public override ErrorCodeModel Read(
+    public override WebSearchToolResultErrorErrorCode Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -129,18 +130,18 @@ sealed class ErrorCodeModelConverter : JsonConverter<ErrorCodeModel>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "invalid_tool_input" => ErrorCodeModel.InvalidToolInput,
-            "unavailable" => ErrorCodeModel.Unavailable,
-            "max_uses_exceeded" => ErrorCodeModel.MaxUsesExceeded,
-            "too_many_requests" => ErrorCodeModel.TooManyRequests,
-            "query_too_long" => ErrorCodeModel.QueryTooLong,
-            _ => (ErrorCodeModel)(-1),
+            "invalid_tool_input" => WebSearchToolResultErrorErrorCode.InvalidToolInput,
+            "unavailable" => WebSearchToolResultErrorErrorCode.Unavailable,
+            "max_uses_exceeded" => WebSearchToolResultErrorErrorCode.MaxUsesExceeded,
+            "too_many_requests" => WebSearchToolResultErrorErrorCode.TooManyRequests,
+            "query_too_long" => WebSearchToolResultErrorErrorCode.QueryTooLong,
+            _ => (WebSearchToolResultErrorErrorCode)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        ErrorCodeModel value,
+        WebSearchToolResultErrorErrorCode value,
         JsonSerializerOptions options
     )
     {
@@ -148,11 +149,11 @@ sealed class ErrorCodeModelConverter : JsonConverter<ErrorCodeModel>
             writer,
             value switch
             {
-                ErrorCodeModel.InvalidToolInput => "invalid_tool_input",
-                ErrorCodeModel.Unavailable => "unavailable",
-                ErrorCodeModel.MaxUsesExceeded => "max_uses_exceeded",
-                ErrorCodeModel.TooManyRequests => "too_many_requests",
-                ErrorCodeModel.QueryTooLong => "query_too_long",
+                WebSearchToolResultErrorErrorCode.InvalidToolInput => "invalid_tool_input",
+                WebSearchToolResultErrorErrorCode.Unavailable => "unavailable",
+                WebSearchToolResultErrorErrorCode.MaxUsesExceeded => "max_uses_exceeded",
+                WebSearchToolResultErrorErrorCode.TooManyRequests => "too_many_requests",
+                WebSearchToolResultErrorErrorCode.QueryTooLong => "query_too_long",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

@@ -131,14 +131,14 @@ public sealed record class BetaTool : ModelBase, IFromRaw<BetaTool>
         }
     }
 
-    public ApiEnum<string, Type1>? Type
+    public ApiEnum<string, BetaToolType>? Type
     {
         get
         {
             if (!this._properties.TryGetValue("type", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<ApiEnum<string, Type1>?>(
+            return JsonSerializer.Deserialize<ApiEnum<string, BetaToolType>?>(
                 element,
                 ModelBase.SerializerOptions
             );
@@ -292,15 +292,15 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
     }
 }
 
-[JsonConverter(typeof(Type1Converter))]
-public enum Type1
+[JsonConverter(typeof(BetaToolTypeConverter))]
+public enum BetaToolType
 {
     Custom,
 }
 
-sealed class Type1Converter : JsonConverter<Type1>
+sealed class BetaToolTypeConverter : JsonConverter<BetaToolType>
 {
-    public override Type1 Read(
+    public override BetaToolType Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -308,18 +308,22 @@ sealed class Type1Converter : JsonConverter<Type1>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "custom" => Type1.Custom,
-            _ => (Type1)(-1),
+            "custom" => BetaToolType.Custom,
+            _ => (BetaToolType)(-1),
         };
     }
 
-    public override void Write(Utf8JsonWriter writer, Type1 value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaToolType value,
+        JsonSerializerOptions options
+    )
     {
         JsonSerializer.Serialize(
             writer,
             value switch
             {
-                Type1.Custom => "custom",
+                BetaToolType.Custom => "custom",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

@@ -46,7 +46,7 @@ public sealed record class BetaSkillParams : ModelBase, IFromRaw<BetaSkillParams
     /// <summary>
     /// Type of skill - either 'anthropic' (built-in) or 'custom' (user-defined)
     /// </summary>
-    public required ApiEnum<string, TypeModel> Type
+    public required ApiEnum<string, BetaSkillParamsType> Type
     {
         get
         {
@@ -56,7 +56,7 @@ public sealed record class BetaSkillParams : ModelBase, IFromRaw<BetaSkillParams
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<ApiEnum<string, TypeModel>>(
+            return JsonSerializer.Deserialize<ApiEnum<string, BetaSkillParamsType>>(
                 element,
                 ModelBase.SerializerOptions
             );
@@ -129,16 +129,16 @@ public sealed record class BetaSkillParams : ModelBase, IFromRaw<BetaSkillParams
 /// <summary>
 /// Type of skill - either 'anthropic' (built-in) or 'custom' (user-defined)
 /// </summary>
-[JsonConverter(typeof(TypeModelConverter))]
-public enum TypeModel
+[JsonConverter(typeof(BetaSkillParamsTypeConverter))]
+public enum BetaSkillParamsType
 {
     Anthropic,
     Custom,
 }
 
-sealed class TypeModelConverter : JsonConverter<TypeModel>
+sealed class BetaSkillParamsTypeConverter : JsonConverter<BetaSkillParamsType>
 {
-    public override TypeModel Read(
+    public override BetaSkillParamsType Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -146,15 +146,15 @@ sealed class TypeModelConverter : JsonConverter<TypeModel>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "anthropic" => TypeModel.Anthropic,
-            "custom" => TypeModel.Custom,
-            _ => (TypeModel)(-1),
+            "anthropic" => BetaSkillParamsType.Anthropic,
+            "custom" => BetaSkillParamsType.Custom,
+            _ => (BetaSkillParamsType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        TypeModel value,
+        BetaSkillParamsType value,
         JsonSerializerOptions options
     )
     {
@@ -162,8 +162,8 @@ sealed class TypeModelConverter : JsonConverter<TypeModel>
             writer,
             value switch
             {
-                TypeModel.Anthropic => "anthropic",
-                TypeModel.Custom => "custom",
+                BetaSkillParamsType.Anthropic => "anthropic",
+                BetaSkillParamsType.Custom => "custom",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

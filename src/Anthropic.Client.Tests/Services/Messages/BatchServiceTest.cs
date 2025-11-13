@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Anthropic.Client.Models.Messages;
-using Batches = Anthropic.Client.Models.Messages.Batches;
+using Anthropic.Client.Models.Messages.Batches;
+using Messages = Anthropic.Client.Models.Messages;
 
 namespace Anthropic.Client.Tests.Services.Messages;
 
@@ -22,10 +22,13 @@ public class BatchServiceTest : TestBase
                         Params = new()
                         {
                             MaxTokens = 1024,
-                            Messages = [new() { Content = "Hello, world", Role = Role.User }],
-                            Model = Model.Claude3_7SonnetLatest,
+                            Messages =
+                            [
+                                new() { Content = "Hello, world", Role = Messages::Role.User },
+                            ],
+                            Model = Messages::Model.Claude3_7SonnetLatest,
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                            ServiceTier = Batches::ServiceTier.Auto,
+                            ServiceTier = ServiceTier.Auto,
                             StopSequences = ["string"],
                             Stream = true,
                             System = new(
@@ -33,10 +36,10 @@ public class BatchServiceTest : TestBase
                                     new()
                                     {
                                         Text = "Today's date is 2024-06-01.",
-                                        CacheControl = new() { TTL = TTL.TTL5m },
+                                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
                                         Citations =
                                         [
-                                            new CitationCharLocationParam()
+                                            new Messages::CitationCharLocationParam()
                                             {
                                                 CitedText = "cited_text",
                                                 DocumentIndex = 0,
@@ -49,11 +52,14 @@ public class BatchServiceTest : TestBase
                                 ]
                             ),
                             Temperature = 1,
-                            Thinking = new ThinkingConfigEnabled(1024),
-                            ToolChoice = new ToolChoiceAuto() { DisableParallelToolUse = true },
+                            Thinking = new Messages::ThinkingConfigEnabled(1024),
+                            ToolChoice = new Messages::ToolChoiceAuto()
+                            {
+                                DisableParallelToolUse = true,
+                            },
                             Tools =
                             [
-                                new Tool()
+                                new Messages::Tool()
                                 {
                                     InputSchema = new()
                                     {
@@ -68,9 +74,9 @@ public class BatchServiceTest : TestBase
                                         Required = ["location"],
                                     },
                                     Name = "name",
-                                    CacheControl = new() { TTL = TTL.TTL5m },
+                                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
                                     Description = "Get the current weather in a given location",
-                                    Type = Type.Custom,
+                                    Type = Messages::Type.Custom,
                                 },
                             ],
                             TopK = 5,

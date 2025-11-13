@@ -14,7 +14,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError
     : ModelBase,
         IFromRaw<BetaTextEditorCodeExecutionToolResultError>
 {
-    public required ApiEnum<string, ErrorCode1> ErrorCode
+    public required ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorErrorCode> ErrorCode
     {
         get
         {
@@ -27,10 +27,9 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError
                     )
                 );
 
-            return JsonSerializer.Deserialize<ApiEnum<string, ErrorCode1>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return JsonSerializer.Deserialize<
+                ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorErrorCode>
+            >(element, ModelBase.SerializerOptions);
         }
         init
         {
@@ -131,8 +130,8 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError
     }
 }
 
-[JsonConverter(typeof(ErrorCode1Converter))]
-public enum ErrorCode1
+[JsonConverter(typeof(BetaTextEditorCodeExecutionToolResultErrorErrorCodeConverter))]
+public enum BetaTextEditorCodeExecutionToolResultErrorErrorCode
 {
     InvalidToolInput,
     Unavailable,
@@ -141,9 +140,10 @@ public enum ErrorCode1
     FileNotFound,
 }
 
-sealed class ErrorCode1Converter : JsonConverter<ErrorCode1>
+sealed class BetaTextEditorCodeExecutionToolResultErrorErrorCodeConverter
+    : JsonConverter<BetaTextEditorCodeExecutionToolResultErrorErrorCode>
 {
-    public override ErrorCode1 Read(
+    public override BetaTextEditorCodeExecutionToolResultErrorErrorCode Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -151,18 +151,21 @@ sealed class ErrorCode1Converter : JsonConverter<ErrorCode1>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "invalid_tool_input" => ErrorCode1.InvalidToolInput,
-            "unavailable" => ErrorCode1.Unavailable,
-            "too_many_requests" => ErrorCode1.TooManyRequests,
-            "execution_time_exceeded" => ErrorCode1.ExecutionTimeExceeded,
-            "file_not_found" => ErrorCode1.FileNotFound,
-            _ => (ErrorCode1)(-1),
+            "invalid_tool_input" =>
+                BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
+            "unavailable" => BetaTextEditorCodeExecutionToolResultErrorErrorCode.Unavailable,
+            "too_many_requests" =>
+                BetaTextEditorCodeExecutionToolResultErrorErrorCode.TooManyRequests,
+            "execution_time_exceeded" =>
+                BetaTextEditorCodeExecutionToolResultErrorErrorCode.ExecutionTimeExceeded,
+            "file_not_found" => BetaTextEditorCodeExecutionToolResultErrorErrorCode.FileNotFound,
+            _ => (BetaTextEditorCodeExecutionToolResultErrorErrorCode)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        ErrorCode1 value,
+        BetaTextEditorCodeExecutionToolResultErrorErrorCode value,
         JsonSerializerOptions options
     )
     {
@@ -170,11 +173,15 @@ sealed class ErrorCode1Converter : JsonConverter<ErrorCode1>
             writer,
             value switch
             {
-                ErrorCode1.InvalidToolInput => "invalid_tool_input",
-                ErrorCode1.Unavailable => "unavailable",
-                ErrorCode1.TooManyRequests => "too_many_requests",
-                ErrorCode1.ExecutionTimeExceeded => "execution_time_exceeded",
-                ErrorCode1.FileNotFound => "file_not_found",
+                BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput =>
+                    "invalid_tool_input",
+                BetaTextEditorCodeExecutionToolResultErrorErrorCode.Unavailable => "unavailable",
+                BetaTextEditorCodeExecutionToolResultErrorErrorCode.TooManyRequests =>
+                    "too_many_requests",
+                BetaTextEditorCodeExecutionToolResultErrorErrorCode.ExecutionTimeExceeded =>
+                    "execution_time_exceeded",
+                BetaTextEditorCodeExecutionToolResultErrorErrorCode.FileNotFound =>
+                    "file_not_found",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

@@ -39,7 +39,10 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlockParam
         }
     }
 
-    public required ApiEnum<string, FileTypeModel> FileType
+    public required ApiEnum<
+        string,
+        BetaTextEditorCodeExecutionViewResultBlockParamFileType
+    > FileType
     {
         get
         {
@@ -52,10 +55,9 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlockParam
                     )
                 );
 
-            return JsonSerializer.Deserialize<ApiEnum<string, FileTypeModel>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return JsonSerializer.Deserialize<
+                ApiEnum<string, BetaTextEditorCodeExecutionViewResultBlockParamFileType>
+            >(element, ModelBase.SerializerOptions);
         }
         init
         {
@@ -197,17 +199,18 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlockParam
     }
 }
 
-[JsonConverter(typeof(FileTypeModelConverter))]
-public enum FileTypeModel
+[JsonConverter(typeof(BetaTextEditorCodeExecutionViewResultBlockParamFileTypeConverter))]
+public enum BetaTextEditorCodeExecutionViewResultBlockParamFileType
 {
     Text,
     Image,
     PDF,
 }
 
-sealed class FileTypeModelConverter : JsonConverter<FileTypeModel>
+sealed class BetaTextEditorCodeExecutionViewResultBlockParamFileTypeConverter
+    : JsonConverter<BetaTextEditorCodeExecutionViewResultBlockParamFileType>
 {
-    public override FileTypeModel Read(
+    public override BetaTextEditorCodeExecutionViewResultBlockParamFileType Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -215,16 +218,16 @@ sealed class FileTypeModelConverter : JsonConverter<FileTypeModel>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "text" => FileTypeModel.Text,
-            "image" => FileTypeModel.Image,
-            "pdf" => FileTypeModel.PDF,
-            _ => (FileTypeModel)(-1),
+            "text" => BetaTextEditorCodeExecutionViewResultBlockParamFileType.Text,
+            "image" => BetaTextEditorCodeExecutionViewResultBlockParamFileType.Image,
+            "pdf" => BetaTextEditorCodeExecutionViewResultBlockParamFileType.PDF,
+            _ => (BetaTextEditorCodeExecutionViewResultBlockParamFileType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        FileTypeModel value,
+        BetaTextEditorCodeExecutionViewResultBlockParamFileType value,
         JsonSerializerOptions options
     )
     {
@@ -232,9 +235,9 @@ sealed class FileTypeModelConverter : JsonConverter<FileTypeModel>
             writer,
             value switch
             {
-                FileTypeModel.Text => "text",
-                FileTypeModel.Image => "image",
-                FileTypeModel.PDF => "pdf",
+                BetaTextEditorCodeExecutionViewResultBlockParamFileType.Text => "text",
+                BetaTextEditorCodeExecutionViewResultBlockParamFileType.Image => "image",
+                BetaTextEditorCodeExecutionViewResultBlockParamFileType.PDF => "pdf",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

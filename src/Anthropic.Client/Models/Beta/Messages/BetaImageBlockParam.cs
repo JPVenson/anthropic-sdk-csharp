@@ -12,7 +12,7 @@ namespace Anthropic.Client.Models.Beta.Messages;
 [JsonConverter(typeof(ModelConverter<BetaImageBlockParam>))]
 public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBlockParam>
 {
-    public required SourceModel Source
+    public required BetaImageBlockParamSource Source
     {
         get
         {
@@ -22,7 +22,10 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
                     new System::ArgumentOutOfRangeException("source", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<SourceModel>(element, ModelBase.SerializerOptions)
+            return JsonSerializer.Deserialize<BetaImageBlockParamSource>(
+                    element,
+                    ModelBase.SerializerOptions
+                )
                 ?? throw new AnthropicInvalidDataException(
                     "'source' cannot be null",
                     new System::ArgumentNullException("source")
@@ -122,15 +125,15 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
     }
 
     [SetsRequiredMembers]
-    public BetaImageBlockParam(SourceModel source)
+    public BetaImageBlockParam(BetaImageBlockParamSource source)
         : this()
     {
         this.Source = source;
     }
 }
 
-[JsonConverter(typeof(SourceModelConverter))]
-public record class SourceModel
+[JsonConverter(typeof(BetaImageBlockParamSourceConverter))]
+public record class BetaImageBlockParamSource
 {
     public object Value { get; private init; }
 
@@ -146,27 +149,27 @@ public record class SourceModel
         }
     }
 
-    public SourceModel(BetaBase64ImageSource value)
+    public BetaImageBlockParamSource(BetaBase64ImageSource value)
     {
         Value = value;
     }
 
-    public SourceModel(BetaURLImageSource value)
+    public BetaImageBlockParamSource(BetaURLImageSource value)
     {
         Value = value;
     }
 
-    public SourceModel(BetaFileImageSource value)
+    public BetaImageBlockParamSource(BetaFileImageSource value)
     {
         Value = value;
     }
 
-    SourceModel(UnknownVariant value)
+    BetaImageBlockParamSource(UnknownVariant value)
     {
         Value = value;
     }
 
-    public static SourceModel CreateUnknownVariant(JsonElement value)
+    public static BetaImageBlockParamSource CreateUnknownVariant(JsonElement value)
     {
         return new(new UnknownVariant(value));
     }
@@ -208,7 +211,7 @@ public record class SourceModel
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of SourceModel"
+                    "Data did not match any variant of BetaImageBlockParamSource"
                 );
         }
     }
@@ -225,23 +228,26 @@ public record class SourceModel
             BetaURLImageSource value => betaURLImage(value),
             BetaFileImageSource value => betaFileImage(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of SourceModel"
+                "Data did not match any variant of BetaImageBlockParamSource"
             ),
         };
     }
 
-    public static implicit operator SourceModel(BetaBase64ImageSource value) => new(value);
+    public static implicit operator BetaImageBlockParamSource(BetaBase64ImageSource value) =>
+        new(value);
 
-    public static implicit operator SourceModel(BetaURLImageSource value) => new(value);
+    public static implicit operator BetaImageBlockParamSource(BetaURLImageSource value) =>
+        new(value);
 
-    public static implicit operator SourceModel(BetaFileImageSource value) => new(value);
+    public static implicit operator BetaImageBlockParamSource(BetaFileImageSource value) =>
+        new(value);
 
     public void Validate()
     {
         if (this.Value is UnknownVariant)
         {
             throw new AnthropicInvalidDataException(
-                "Data did not match any variant of SourceModel"
+                "Data did not match any variant of BetaImageBlockParamSource"
             );
         }
     }
@@ -249,9 +255,9 @@ public record class SourceModel
     record struct UnknownVariant(JsonElement value);
 }
 
-sealed class SourceModelConverter : JsonConverter<SourceModel>
+sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockParamSource>
 {
-    public override SourceModel? Read(
+    public override BetaImageBlockParamSource? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -283,7 +289,7 @@ sealed class SourceModelConverter : JsonConverter<SourceModel>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new SourceModel(deserialized);
+                        return new BetaImageBlockParamSource(deserialized);
                     }
                 }
                 catch (System::Exception e)
@@ -312,7 +318,7 @@ sealed class SourceModelConverter : JsonConverter<SourceModel>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new SourceModel(deserialized);
+                        return new BetaImageBlockParamSource(deserialized);
                     }
                 }
                 catch (System::Exception e)
@@ -341,7 +347,7 @@ sealed class SourceModelConverter : JsonConverter<SourceModel>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new SourceModel(deserialized);
+                        return new BetaImageBlockParamSource(deserialized);
                     }
                 }
                 catch (System::Exception e)
@@ -368,7 +374,7 @@ sealed class SourceModelConverter : JsonConverter<SourceModel>
 
     public override void Write(
         Utf8JsonWriter writer,
-        SourceModel value,
+        BetaImageBlockParamSource value,
         JsonSerializerOptions options
     )
     {
