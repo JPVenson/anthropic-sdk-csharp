@@ -1,5 +1,7 @@
 using System;
+using System.Net;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Anthropic.Client;
@@ -35,7 +37,7 @@ public class BedrockAnthropicClient : AnthropicClient
 
     private readonly IBedrockCredentials _bedrockCredentials;
 
-    public BedrockAnthropicClient(IBedrockCredentials bedrockCredentials, string region)
+    public BedrockAnthropicClient(IBedrockCredentials bedrockCredentials, string region) : base()
     {
         _bedrockCredentials = bedrockCredentials;
         BaseUrl = new Uri($"https://{ServiceName}.{region}.amazonaws.com");
@@ -55,10 +57,11 @@ public class BedrockAnthropicClient : AnthropicClient
 
         var bodyContent = JsonNode.Parse(await requestMessage.Content!.ReadAsStringAsync().ConfigureAwait(false));
 
-        if (bodyContent["model"] == null)
+        if (bodyContent?["model"] == null)
         {
             throw new AnthropicInvalidDataException("Expected to find property model in request json but found none.");
         }
+
         var modelValue = bodyContent["model"];
         bodyContent["model"] = null;
         var parsedStreamValue = ((bool?)bodyContent["stream"]?.AsValue()) ?? false;
@@ -74,7 +77,7 @@ public class BedrockAnthropicClient : AnthropicClient
         uriBuilder.Path = string.Join('/', [.. uriBuilder.Path.Split("/").Select(e => e == "model" ? modelValue.ToString() : e), (parsedStreamValue ? "invoke-with-response-stream" : "invoke")]);
 
         requestMessage.RequestUri = uriBuilder.Uri;
-        requestMessage.Headers.TryAddWithoutValidation("Host", uriBuilder.Uri.Host);      
+        requestMessage.Headers.TryAddWithoutValidation("Host", uriBuilder.Uri.Host);
 
         _bedrockCredentials.Apply(requestMessage);
     }
@@ -111,9 +114,82 @@ public class BedrockAnthropicClient : AnthropicClient
 
         var headerPayloads = httpResponseMessage.Headers.GetValues(HEADER_PAYLOAD_CONTENT_TYPE);
 
-        if(!headerPayloads.Any(f => f.Equals("application/json", StringComparison.OrdinalIgnoreCase)))
+        if (!headerPayloads.Any(f => f.Equals("application/json", StringComparison.OrdinalIgnoreCase)))
         {
             throw new AnthropicInvalidDataException($"Expected streaming bedrock events to have content type of application/json but found {string.Join(", ", headerPayloads)}");
+        }
+
+        // A decoded AWS EventStream message's payload is JSON. It might look like this (abridged):
+        //
+        //   {"bytes":"eyJ0eXBlIjoi...ZXJlIn19","p":"abcdefghijkl"}
+        //
+        // The value of the "bytes" field is a base-64 encoded JSON string (UTF-8). When decoded, it
+        // might look like this:
+        //
+        //   {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hello"}}
+        //
+        // Parse the "type" field to allow the construction of a server-sent event (SSE) that might
+        // look like this:
+        //
+        //   event: content_block_delta
+        //   data:
+        // {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hello"}}
+        //
+        // Print the SSE (with a blank line after) to the piped output stream to complete the
+        // translation process.
+
+        var originalStream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
+        httpResponseMessage.Content = new SseEventContentWrapper(originalStream);
+    }
+
+    private class SseEventContentWrapper : HttpContent
+    {
+        private Stream _originalStream;
+
+        public SseEventContentWrapper(Stream originalStream)
+        {
+            _originalStream = originalStream;
+        }
+
+        protected override async Task SerializeToStreamAsync(Stream stream, TransportContext? context)
+        {
+            var nodeOptions = new JsonNodeOptions();
+            var documentOption = new JsonDocumentOptions();
+            var eventBuilder = new StringBuilder();
+
+            using var streamReader = new StreamReader(_originalStream, true);
+            while (!streamReader.EndOfStream)
+            {
+                var line = await streamReader.ReadLineAsync().ConfigureAwait(false);
+                if (line is null)
+                {
+                    continue;
+                }
+
+                var eventLine = JsonNode.Parse(line, nodeOptions, documentOption);
+                var eventContents = eventLine?["bytes"]?.AsValue().GetValue<string>();
+                if (string.IsNullOrWhiteSpace(eventContents))
+                {
+                    continue;
+                }
+
+                var parsedEvent = JsonNode.Parse(Convert.FromBase64String(eventContents), nodeOptions, documentOption);
+                if (parsedEvent is null)
+                {
+                    continue;
+                }
+
+                eventBuilder.AppendLine($"event: {parsedEvent["type"]}\ndata: {parsedEvent}");
+
+                await stream.WriteAsync(Encoding.UTF8.GetBytes(eventBuilder.ToString())).ConfigureAwait(false);
+                eventBuilder.Clear();
+            }
+        }
+
+        protected override bool TryComputeLength(out long length)
+        {
+            length = -1;
+            return false;
         }
     }
 }
