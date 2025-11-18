@@ -49,13 +49,13 @@
       - Streaming:
       Use the streaming helpers to receive partial tokens as they are produced for responsive UIs.
       - Authentication:
-      Support for environment API key (`ANTHROPIC_API_KEY` environment variable) and Azure Identity
+      Support for environment API key (`ANTHROPIC_FOUNDRY_API_KEY` environment variable) and Azure Identity
       (DefaultAzureCredential).
       - Samples:
       See the repository's samples/ directory for complete examples (console app, ASP.NET
       integration, and streaming examples).
       - Install:
-      dotnet add package Anthropic.Foundry --version 0.0.1
+      dotnet add package Anthropic.Foundry
     </Description>
   </PropertyGroup>
   <ItemGroup>
