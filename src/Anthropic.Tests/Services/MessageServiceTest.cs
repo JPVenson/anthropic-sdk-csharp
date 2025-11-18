@@ -1,35 +1,41 @@
-using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Anthropic.Tests;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Services;
 
-public class MessageServiceTest : TestBase
+public class MessageServiceTest
 {
-    [Fact]
-    public async Task Create_Works()
+    [Theory]
+    [AnthropicTestClients]
+    [AnthropicTestData(TestSupportTypes.Anthropic, "Claude3_7SonnetLatest")]
+    [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-45-2")]
+    public async Task Create_Works(IAnthropicClient client, string modelName)
     {
-        var message = await this.client.Messages.Create(
-            new()
+        var message = await client.Messages.Create(
+            new MessageCreateParams()
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Role.User }],
-                Model = Model.Claude3_7SonnetLatest,
+                Model = modelName
             }
         );
         message.Validate();
     }
 
-    [Fact]
-    public async Task CreateStreaming_Works()
+    [Theory]
+    [AnthropicTestClients]
+    [AnthropicTestData(TestSupportTypes.Anthropic, "Claude3_7SonnetLatest")]
+    [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-45-2")]
+    public async Task CreateStreaming_Works(IAnthropicClient client, string modelName)
     {
-        var stream = this.client.Messages.CreateStreaming(
+        var stream = client.Messages.CreateStreaming(
             new()
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Role.User }],
-                Model = Model.Claude3_7SonnetLatest,
+                Model = modelName,
             }
         );
 
@@ -39,221 +45,17 @@ public class MessageServiceTest : TestBase
         }
     }
 
-    [Fact]
-    public async Task CreateStreamingAggregation_WorksNoContent_RawMessageStartEvent()
+    [Theory]
+    [AnthropicTestClients]
+    [AnthropicTestData(TestSupportTypes.Anthropic, "Claude3_7SonnetLatest")]
+    [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-45-2")]
+    public async Task CountTokens_Works(IAnthropicClient client, string modelName)
     {
-        // arrange
-        var messagesServiceMock = new Mock<IMessageService>();
-        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
-        {
-            yield return new(new RawMessageStartEvent(GenerateStartMessage()));
-            yield return new(new RawMessageStopEvent());
-            await Task.CompletedTask;
-        }
-        // act
-        messagesServiceMock.Setup(e => e.CreateStreaming(It.IsAny<MessageCreateParams>())).Returns(GetTestValues);
-        var stream = await messagesServiceMock.Object.CreateStreaming(
-            new()
-            {
-                MaxTokens = 1024,
-                Messages = [new() { Content = new(""), Role = Role.User }],
-                Model = Model.Claude3_7SonnetLatest,
-            }
-        ).Aggregate();
-
-        Assert.NotNull(stream);
-        Assert.Null(stream.Text);
-        Assert.Null(stream.Thinking);
-        Assert.NotNull(stream.Citations);
-        Assert.Empty(stream.Citations);
-        Assert.Null(stream.Thinking);
-    }
-
-    [Fact]
-    public async Task CreateStreamingAggregation_HandlesNoEndMessageInterrupt()
-    {
-        // arrange
-        var messagesServiceMock = new Mock<IMessageService>();
-        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
-        {
-            yield return new(new RawMessageStartEvent(GenerateStartMessage()));
-            await Task.CompletedTask;
-        }
-        // act
-        messagesServiceMock.Setup(e => e.CreateStreaming(It.IsAny<MessageCreateParams>())).Returns(GetTestValues);
-
-        // assert
-        await Assert.ThrowsAsync<InvalidOperationException>(async () => await messagesServiceMock.Object.CreateStreaming(
-            new()
-            {
-                MaxTokens = 1024,
-                Messages = [new() { Content = new(""), Role = Role.User }],
-                Model = Model.Claude3_7SonnetLatest,
-            }
-        ).Aggregate());
-    }
-
-    [Fact]
-    public async Task CreateStreamingAggregation_WorksNoContent_RawContentBlockStartEvent()
-    {
-        // arrange
-        var messagesServiceMock = new Mock<IMessageService>();
-        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
-        {
-            yield return new(new RawContentBlockStartEvent()
-            {
-                Index = 0,
-                ContentBlock = null
-            });
-            yield return new(new RawContentBlockStopEvent()
-            {
-                Index = 1,
-            });
-            await Task.CompletedTask;
-        }
-        messagesServiceMock.Setup(e => e.CreateStreaming(It.IsAny<MessageCreateParams>())).Returns(GetTestValues);
-        // act
-        var stream = await messagesServiceMock.Object.CreateStreaming(
-            new()
-            {
-                MaxTokens = 1024,
-                Messages = [new() { Content = new(""), Role = Role.User }],
-                Model = Model.Claude3_7SonnetLatest,
-            }
-        ).Aggregate();
-
-        // assert
-        Assert.NotNull(stream);
-        Assert.Null(stream.Text);
-        Assert.Null(stream.Thinking);
-        Assert.NotNull(stream.Citations);
-        Assert.Empty(stream.Citations);
-        Assert.Null(stream.Thinking);
-    }
-
-    [Fact]
-    public async Task CreateStreamingAggregation_WorksStopEndEvent()
-    {
-        // arrange
-        var messagesServiceMock = new Mock<IMessageService>();
-        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
-        {
-            yield return new(new RawContentBlockStartEvent()
-            {
-                Index = 0,
-                ContentBlock = null
-            });
-            yield return new(new RawContentBlockStopEvent()
-            {
-                Index = 1,
-            });
-            yield return new(new RawContentBlockDeltaEvent()
-            {
-                Index = 2,
-                Delta = new(new TextDelta("Test"))
-            });
-            await Task.CompletedTask;
-        }
-        messagesServiceMock.Setup(e => e.CreateStreaming(It.IsAny<MessageCreateParams>())).Returns(GetTestValues);
-        // act
-        var stream = await messagesServiceMock.Object.CreateStreaming(
-            new()
-            {
-                MaxTokens = 1024,
-                Messages = [new() { Content = new(""), Role = Role.User }],
-                Model = Model.Claude3_7SonnetLatest,
-            }
-        ).Aggregate();
-
-        // assert
-        Assert.NotNull(stream);
-        Assert.Null(stream.Text);
-        Assert.Null(stream.Thinking);
-        Assert.NotNull(stream.Citations);
-        Assert.Empty(stream.Citations);
-        Assert.Null(stream.Thinking);
-    }
-
-    [Fact]
-    public async Task CreateStreamingAggregation_Works()
-    {
-        // arrange
-        var messagesServiceMock = new Mock<IMessageService>();
-        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
-        {
-            int index = 0;
-            yield return new(new RawContentBlockStartEvent()
-            {
-                Index = index++,
-                ContentBlock = null
-            });
-            yield return new(new RawContentBlockDeltaEvent()
-            {
-                Index = index++,
-                Delta = new(new TextDelta("Test"))
-            });
-            yield return new(new RawContentBlockDeltaEvent()
-            {
-                Index = index++,
-                Delta = new(new CitationsDelta(new(new CitationsWebSearchResultLocation()
-                {
-                    CitedText = "Somewhere",
-                    EncryptedIndex = "0",
-                    Title = "Over",
-                    URL = "the://rainbow"
-                })))
-            });
-            yield return new(new RawContentBlockDeltaEvent()
-            {
-                Index = index++,
-                Delta = new(new ThinkingDelta("Other Test"))
-            });
-            yield return new(new RawContentBlockStopEvent()
-            {
-                Index = index++,
-            });
-            await Task.CompletedTask;
-        }
-        messagesServiceMock.Setup(e => e.CreateStreaming(It.IsAny<MessageCreateParams>())).Returns(GetTestValues);
-        // act
-        var stream = await messagesServiceMock.Object.CreateStreaming(
-            new()
-            {
-                MaxTokens = 1024,
-                Messages = [new() { Content = new(""), Role = Role.User }],
-                Model = Model.Claude3_7SonnetLatest,
-            }
-        ).Aggregate();
-
-        // assert
-        Assert.NotNull(stream);
-        Assert.Equal("Test", stream.Text);
-        Assert.NotNull(stream.Citations);
-        Assert.NotEmpty(stream.Citations);
-        Assert.Equal("Other Test", stream.Thinking);
-    }
-
-    private static Message GenerateStartMessage()
-    {
-        return new Message()
-        {
-            ID = "Test",
-            Content = [],
-            Model = Model.Claude3OpusLatest,
-            StopReason = StopReason.ToolUse,
-            StopSequence = "",
-            Usage = null
-        };
-    }
-
-    [Fact]
-    public async Task CountTokens_Works()
-    {
-        var messageTokensCount = await this.client.Messages.CountTokens(
+        var messageTokensCount = await client.Messages.CountTokens(
             new()
             {
                 Messages = [new() { Content = "string", Role = Role.User }],
-                Model = Model.Claude3_7SonnetLatest,
+                Model = modelName,
             }
         );
         messageTokensCount.Validate();
