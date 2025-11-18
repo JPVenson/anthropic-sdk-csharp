@@ -3,11 +3,13 @@
 Lightweight C# bindings for the Anthropic Foundry surface in the Anthropic SDK for .NET. This project contains the Anthropic.Foundry library used by the solution to interact with Foundry APIs, plus helpers and models used across samples and integrations.
 
 ## Contents
+
 - Library source: src/Anthropic.Foundry
 - Unit/integration tests: tests (if present)
 - Samples and usage examples: examples (if present)
 
 ## Requirements
+
 - .NET SDK (installed and available on PATH)
 - An Anthropic API key (set via environment variable or configuration). See example down below.
 
@@ -16,6 +18,7 @@ Lightweight C# bindings for the Anthropic Foundry surface in the Anthropic SDK f
 `dotnet add package Anthropic.Foundry`
 
 ## Quick start
+
 Set your API key in the environment before running:
 
 - Linux/macOS
