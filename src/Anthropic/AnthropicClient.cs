@@ -301,7 +301,7 @@ public class AnthropicClient : IAnthropicClient
     {
         return e is IOException || e is AnthropicIOException;
     }
-    
+
     public AnthropicClient()
     {
         _options = new();
