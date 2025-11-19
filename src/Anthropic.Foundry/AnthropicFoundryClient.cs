@@ -43,7 +43,7 @@ public class AnthropicFoundryClient : AnthropicClient
 
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new AnthropicFoundryClient(_azureCredentials, modifier(this._options));
+        return new AnthropicFoundryClient(_azureCredentials, modifier(_options));
     }
 
     protected override ValueTask BeforeSend<T>(HttpRequest<T> request, HttpRequestMessage requestMessage, CancellationToken cancellationToken)
