@@ -48,12 +48,11 @@ internal static class ModelConverterConstructionShim
         Assembly
             .GetCallingAssembly()
             .GetTypes()
-            .Where(t => t.IsSubclassOf(typeof(ModelBase)))
+            .Where(t => typeof(ModelBase).IsAssignableFrom(t))
             .ToList()
             .ForEach(t =>
-            {
-                var converterType = typeof(ModelConverter<>).MakeGenericType(t);
-                var converterMethod = converterType.GetMethod(
+            {                
+                var converterMethod = t.GetMethod(
                     FromRawUncheckedMethodName,
                     BindingFlags.Static | BindingFlags.Public
                 );
