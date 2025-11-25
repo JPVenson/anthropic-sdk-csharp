@@ -1,3 +1,4 @@
+#if !NET
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -967,3 +968,4 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.Equal("ExecutionTimeExceeded", errorContent.ErrorCode);
     }
 }
+#endif

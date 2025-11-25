@@ -1,3 +1,4 @@
+#if !NET // the dotnet ai framework is not available for net standard in this usecase as we can only shim our own records but its impossible to shim the actual required code generation for the init keyword which is used for at least the initialization of the AIJsonSchemaTransformOptions class.
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -1194,3 +1195,4 @@ public static class AnthropicBetaClientExtensions
                 : base.GetService(serviceType!, serviceKey);
     }
 }
+#endif
