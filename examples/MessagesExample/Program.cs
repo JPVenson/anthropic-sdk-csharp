@@ -19,7 +19,7 @@ MessageCreateParams parameters = new()
 
 var response = await client.Messages.Create(parameters);
 
-var message = String.Join(
+var message = string.Join(
     "",
     response
         .Content.Where(message => message.Value is TextBlock)

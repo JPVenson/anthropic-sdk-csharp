@@ -29,7 +29,7 @@ foreach (ContentBlock block in response.Content)
     }
 }
 
-var message = String.Join(
+var message = string.Join(
     "",
     response.Content.Select(e => e.Value).OfType<TextBlock>().Select((textBlock) => textBlock.Text)
 );
