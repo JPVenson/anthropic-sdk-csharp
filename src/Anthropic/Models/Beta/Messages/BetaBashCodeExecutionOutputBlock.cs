@@ -9,16 +9,19 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaBashCodeExecutionOutputBlock>))]
-public sealed record class BetaBashCodeExecutionOutputBlock
-    : ModelBase,
-        IFromRaw<BetaBashCodeExecutionOutputBlock>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaBashCodeExecutionOutputBlock,
+        BetaBashCodeExecutionOutputBlockFromRaw
+    >)
+)]
+public sealed record class BetaBashCodeExecutionOutputBlock : ModelBase
 {
     public required string FileID
     {
         get
         {
-            if (!this._properties.TryGetValue("file_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("file_id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'file_id' cannot be null",
                     new ArgumentOutOfRangeException("file_id", "Missing required argument")
@@ -32,7 +35,7 @@ public sealed record class BetaBashCodeExecutionOutputBlock
         }
         init
         {
-            this._properties["file_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["file_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -43,7 +46,7 @@ public sealed record class BetaBashCodeExecutionOutputBlock
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -53,7 +56,7 @@ public sealed record class BetaBashCodeExecutionOutputBlock
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -79,26 +82,26 @@ public sealed record class BetaBashCodeExecutionOutputBlock
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_output\"");
     }
 
-    public BetaBashCodeExecutionOutputBlock(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaBashCodeExecutionOutputBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_output\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaBashCodeExecutionOutputBlock(FrozenDictionary<string, JsonElement> properties)
+    BetaBashCodeExecutionOutputBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaBashCodeExecutionOutputBlock FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -107,4 +110,11 @@ public sealed record class BetaBashCodeExecutionOutputBlock
     {
         this.FileID = fileID;
     }
+}
+
+class BetaBashCodeExecutionOutputBlockFromRaw : IFromRaw<BetaBashCodeExecutionOutputBlock>
+{
+    public BetaBashCodeExecutionOutputBlock FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaBashCodeExecutionOutputBlock.FromRawUnchecked(rawData);
 }

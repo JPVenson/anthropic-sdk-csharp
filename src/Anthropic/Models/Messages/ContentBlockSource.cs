@@ -10,14 +10,14 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ContentBlockSource>))]
-public sealed record class ContentBlockSource : ModelBase, IFromRaw<ContentBlockSource>
+[JsonConverter(typeof(ModelConverter<ContentBlockSource, ContentBlockSourceFromRaw>))]
+public sealed record class ContentBlockSource : ModelBase
 {
     public required Content Content
     {
         get
         {
-            if (!this._properties.TryGetValue("content", out JsonElement element))
+            if (!this._rawData.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
@@ -31,7 +31,7 @@ public sealed record class ContentBlockSource : ModelBase, IFromRaw<ContentBlock
         }
         init
         {
-            this._properties["content"] = JsonSerializer.SerializeToElement(
+            this._rawData["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -42,7 +42,7 @@ public sealed record class ContentBlockSource : ModelBase, IFromRaw<ContentBlock
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -52,7 +52,7 @@ public sealed record class ContentBlockSource : ModelBase, IFromRaw<ContentBlock
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -78,26 +78,26 @@ public sealed record class ContentBlockSource : ModelBase, IFromRaw<ContentBlock
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
     }
 
-    public ContentBlockSource(IReadOnlyDictionary<string, JsonElement> properties)
+    public ContentBlockSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ContentBlockSource(FrozenDictionary<string, JsonElement> properties)
+    ContentBlockSource(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static ContentBlockSource FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -108,29 +108,39 @@ public sealed record class ContentBlockSource : ModelBase, IFromRaw<ContentBlock
     }
 }
 
+class ContentBlockSourceFromRaw : IFromRaw<ContentBlockSource>
+{
+    public ContentBlockSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        ContentBlockSource.FromRawUnchecked(rawData);
+}
+
 [JsonConverter(typeof(ContentConverter))]
 public record class Content
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
 
-    public Content(string value)
+    JsonElement? _json = null;
+
+    public JsonElement Json
     {
-        Value = value;
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public Content(IReadOnlyList<ContentBlockSourceContent> value)
+    public Content(string value, JsonElement? json = null)
     {
-        Value = ImmutableArray.ToImmutableArray(value);
+        this.Value = value;
+        this._json = json;
     }
 
-    Content(UnknownVariant value)
+    public Content(IReadOnlyList<ContentBlockSourceContent> value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = ImmutableArray.ToImmutableArray(value);
+        this._json = json;
     }
 
-    public static Content CreateUnknownVariant(JsonElement value)
+    public Content(JsonElement json)
     {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickString([NotNullWhen(true)] out string? value)
@@ -189,13 +199,11 @@ public record class Content
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Content");
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ContentConverter : JsonConverter<Content>
@@ -206,50 +214,41 @@ sealed class ContentConverter : JsonConverter<Content>
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<string>(json, options);
             if (deserialized != null)
             {
-                return new Content(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException("Data does not match union variant 'string'", e)
-            );
+            // ignore
         }
 
         try
         {
             var deserialized = JsonSerializer.Deserialize<List<ContentBlockSourceContent>>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
-                return new Content(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'List<ContentBlockSourceContent>'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(Utf8JsonWriter writer, Content value, JsonSerializerOptions options)
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

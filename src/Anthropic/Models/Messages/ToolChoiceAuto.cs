@@ -12,14 +12,14 @@ namespace Anthropic.Models.Messages;
 /// <summary>
 /// The model will automatically decide whether to use tools.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<ToolChoiceAuto>))]
-public sealed record class ToolChoiceAuto : ModelBase, IFromRaw<ToolChoiceAuto>
+[JsonConverter(typeof(ModelConverter<ToolChoiceAuto, ToolChoiceAutoFromRaw>))]
+public sealed record class ToolChoiceAuto : ModelBase
 {
     public JsonElement Type
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -29,7 +29,7 @@ public sealed record class ToolChoiceAuto : ModelBase, IFromRaw<ToolChoiceAuto>
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -46,7 +46,7 @@ public sealed record class ToolChoiceAuto : ModelBase, IFromRaw<ToolChoiceAuto>
     {
         get
         {
-            if (!this._properties.TryGetValue("disable_parallel_tool_use", out JsonElement element))
+            if (!this._rawData.TryGetValue("disable_parallel_tool_use", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
@@ -58,7 +58,7 @@ public sealed record class ToolChoiceAuto : ModelBase, IFromRaw<ToolChoiceAuto>
                 return;
             }
 
-            this._properties["disable_parallel_tool_use"] = JsonSerializer.SerializeToElement(
+            this._rawData["disable_parallel_tool_use"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -79,25 +79,29 @@ public sealed record class ToolChoiceAuto : ModelBase, IFromRaw<ToolChoiceAuto>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"auto\"");
     }
 
-    public ToolChoiceAuto(IReadOnlyDictionary<string, JsonElement> properties)
+    public ToolChoiceAuto(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"auto\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ToolChoiceAuto(FrozenDictionary<string, JsonElement> properties)
+    ToolChoiceAuto(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static ToolChoiceAuto FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
-    )
+    public static ToolChoiceAuto FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class ToolChoiceAutoFromRaw : IFromRaw<ToolChoiceAuto>
+{
+    public ToolChoiceAuto FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        ToolChoiceAuto.FromRawUnchecked(rawData);
 }

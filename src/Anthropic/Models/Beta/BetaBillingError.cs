@@ -9,14 +9,14 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta;
 
-[JsonConverter(typeof(ModelConverter<BetaBillingError>))]
-public sealed record class BetaBillingError : ModelBase, IFromRaw<BetaBillingError>
+[JsonConverter(typeof(ModelConverter<BetaBillingError, BetaBillingErrorFromRaw>))]
+public sealed record class BetaBillingError : ModelBase
 {
     public required string Message
     {
         get
         {
-            if (!this._properties.TryGetValue("message", out JsonElement element))
+            if (!this._rawData.TryGetValue("message", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'message' cannot be null",
                     new ArgumentOutOfRangeException("message", "Missing required argument")
@@ -30,7 +30,7 @@ public sealed record class BetaBillingError : ModelBase, IFromRaw<BetaBillingErr
         }
         init
         {
-            this._properties["message"] = JsonSerializer.SerializeToElement(
+            this._rawData["message"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +41,7 @@ public sealed record class BetaBillingError : ModelBase, IFromRaw<BetaBillingErr
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -51,7 +51,7 @@ public sealed record class BetaBillingError : ModelBase, IFromRaw<BetaBillingErr
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -77,26 +77,26 @@ public sealed record class BetaBillingError : ModelBase, IFromRaw<BetaBillingErr
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"billing_error\"");
     }
 
-    public BetaBillingError(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaBillingError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"billing_error\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaBillingError(FrozenDictionary<string, JsonElement> properties)
+    BetaBillingError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaBillingError FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -105,4 +105,10 @@ public sealed record class BetaBillingError : ModelBase, IFromRaw<BetaBillingErr
     {
         this.Message = message;
     }
+}
+
+class BetaBillingErrorFromRaw : IFromRaw<BetaBillingError>
+{
+    public BetaBillingError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaBillingError.FromRawUnchecked(rawData);
 }

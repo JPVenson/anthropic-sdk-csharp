@@ -7,14 +7,14 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<CitationsConfigParam>))]
-public sealed record class CitationsConfigParam : ModelBase, IFromRaw<CitationsConfigParam>
+[JsonConverter(typeof(ModelConverter<CitationsConfigParam, CitationsConfigParamFromRaw>))]
+public sealed record class CitationsConfigParam : ModelBase
 {
     public bool? Enabled
     {
         get
         {
-            if (!this._properties.TryGetValue("enabled", out JsonElement element))
+            if (!this._rawData.TryGetValue("enabled", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
@@ -26,7 +26,7 @@ public sealed record class CitationsConfigParam : ModelBase, IFromRaw<CitationsC
                 return;
             }
 
-            this._properties["enabled"] = JsonSerializer.SerializeToElement(
+            this._rawData["enabled"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -40,23 +40,30 @@ public sealed record class CitationsConfigParam : ModelBase, IFromRaw<CitationsC
 
     public CitationsConfigParam() { }
 
-    public CitationsConfigParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public CitationsConfigParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    CitationsConfigParam(FrozenDictionary<string, JsonElement> properties)
+    CitationsConfigParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static CitationsConfigParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class CitationsConfigParamFromRaw : IFromRaw<CitationsConfigParam>
+{
+    public CitationsConfigParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => CitationsConfigParam.FromRawUnchecked(rawData);
 }

@@ -10,14 +10,14 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaContentBlockSource>))]
-public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaContentBlockSource>
+[JsonConverter(typeof(ModelConverter<BetaContentBlockSource, BetaContentBlockSourceFromRaw>))]
+public sealed record class BetaContentBlockSource : ModelBase
 {
     public required BetaContentBlockSourceContent Content
     {
         get
         {
-            if (!this._properties.TryGetValue("content", out JsonElement element))
+            if (!this._rawData.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
@@ -34,7 +34,7 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
         }
         init
         {
-            this._properties["content"] = JsonSerializer.SerializeToElement(
+            this._rawData["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -45,7 +45,7 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -55,7 +55,7 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -81,26 +81,26 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
     }
 
-    public BetaContentBlockSource(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaContentBlockSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaContentBlockSource(FrozenDictionary<string, JsonElement> properties)
+    BetaContentBlockSource(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaContentBlockSource FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -111,29 +111,43 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
     }
 }
 
+class BetaContentBlockSourceFromRaw : IFromRaw<BetaContentBlockSource>
+{
+    public BetaContentBlockSource FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaContentBlockSource.FromRawUnchecked(rawData);
+}
+
 [JsonConverter(typeof(BetaContentBlockSourceContentConverter))]
 public record class BetaContentBlockSourceContent
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
 
-    public BetaContentBlockSourceContent(string value)
+    JsonElement? _json = null;
+
+    public JsonElement Json
     {
-        Value = value;
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public BetaContentBlockSourceContent(IReadOnlyList<MessageBetaContentBlockSourceContent> value)
+    public BetaContentBlockSourceContent(string value, JsonElement? json = null)
     {
-        Value = ImmutableArray.ToImmutableArray(value);
+        this.Value = value;
+        this._json = json;
     }
 
-    BetaContentBlockSourceContent(UnknownVariant value)
+    public BetaContentBlockSourceContent(
+        IReadOnlyList<MessageBetaContentBlockSourceContent> value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = ImmutableArray.ToImmutableArray(value);
+        this._json = json;
     }
 
-    public static BetaContentBlockSourceContent CreateUnknownVariant(JsonElement value)
+    public BetaContentBlockSourceContent(JsonElement json)
     {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickString([NotNullWhen(true)] out string? value)
@@ -199,15 +213,13 @@ public record class BetaContentBlockSourceContent
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaContentBlockSourceContent"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentBlockSourceContent>
@@ -218,44 +230,36 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<string>(json, options);
             if (deserialized != null)
             {
-                return new BetaContentBlockSourceContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException("Data does not match union variant 'string'", e)
-            );
+            // ignore
         }
 
         try
         {
             var deserialized = JsonSerializer.Deserialize<
                 List<MessageBetaContentBlockSourceContent>
-            >(ref reader, options);
+            >(json, options);
             if (deserialized != null)
             {
-                return new BetaContentBlockSourceContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'List<MessageBetaContentBlockSourceContent>'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(
@@ -264,7 +268,6 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

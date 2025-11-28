@@ -10,14 +10,14 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMCPToolResultBlock>))]
-public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPToolResultBlock>
+[JsonConverter(typeof(ModelConverter<BetaMCPToolResultBlock, BetaMCPToolResultBlockFromRaw>))]
+public sealed record class BetaMCPToolResultBlock : ModelBase
 {
     public required BetaMCPToolResultBlockContent Content
     {
         get
         {
-            if (!this._properties.TryGetValue("content", out JsonElement element))
+            if (!this._rawData.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
@@ -34,7 +34,7 @@ public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPT
         }
         init
         {
-            this._properties["content"] = JsonSerializer.SerializeToElement(
+            this._rawData["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -45,7 +45,7 @@ public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPT
     {
         get
         {
-            if (!this._properties.TryGetValue("is_error", out JsonElement element))
+            if (!this._rawData.TryGetValue("is_error", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'is_error' cannot be null",
                     new System::ArgumentOutOfRangeException("is_error", "Missing required argument")
@@ -55,7 +55,7 @@ public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPT
         }
         init
         {
-            this._properties["is_error"] = JsonSerializer.SerializeToElement(
+            this._rawData["is_error"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -66,7 +66,7 @@ public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPT
     {
         get
         {
-            if (!this._properties.TryGetValue("tool_use_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("tool_use_id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'tool_use_id' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -83,7 +83,7 @@ public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPT
         }
         init
         {
-            this._properties["tool_use_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["tool_use_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -94,7 +94,7 @@ public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPT
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -104,7 +104,7 @@ public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPT
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -132,52 +132,66 @@ public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPT
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_result\"");
     }
 
-    public BetaMCPToolResultBlock(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaMCPToolResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_result\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMCPToolResultBlock(FrozenDictionary<string, JsonElement> properties)
+    BetaMCPToolResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaMCPToolResultBlock FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaMCPToolResultBlockFromRaw : IFromRaw<BetaMCPToolResultBlock>
+{
+    public BetaMCPToolResultBlock FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaMCPToolResultBlock.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(BetaMCPToolResultBlockContentConverter))]
 public record class BetaMCPToolResultBlockContent
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
 
-    public BetaMCPToolResultBlockContent(string value)
+    JsonElement? _json = null;
+
+    public JsonElement Json
     {
-        Value = value;
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public BetaMCPToolResultBlockContent(IReadOnlyList<BetaTextBlock> value)
+    public BetaMCPToolResultBlockContent(string value, JsonElement? json = null)
     {
-        Value = ImmutableArray.ToImmutableArray(value);
+        this.Value = value;
+        this._json = json;
     }
 
-    BetaMCPToolResultBlockContent(UnknownVariant value)
+    public BetaMCPToolResultBlockContent(
+        IReadOnlyList<BetaTextBlock> value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = ImmutableArray.ToImmutableArray(value);
+        this._json = json;
     }
 
-    public static BetaMCPToolResultBlockContent CreateUnknownVariant(JsonElement value)
+    public BetaMCPToolResultBlockContent(JsonElement json)
     {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickString([NotNullWhen(true)] out string? value)
@@ -236,15 +250,13 @@ public record class BetaMCPToolResultBlockContent
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaMCPToolResultBlockContent"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaMCPToolResultBlockContentConverter : JsonConverter<BetaMCPToolResultBlockContent>
@@ -255,42 +267,34 @@ sealed class BetaMCPToolResultBlockContentConverter : JsonConverter<BetaMCPToolR
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<string>(json, options);
             if (deserialized != null)
             {
-                return new BetaMCPToolResultBlockContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException("Data does not match union variant 'string'", e)
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<BetaTextBlock>>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<List<BetaTextBlock>>(json, options);
             if (deserialized != null)
             {
-                return new BetaMCPToolResultBlockContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'List<BetaTextBlock>'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(
@@ -299,7 +303,6 @@ sealed class BetaMCPToolResultBlockContentConverter : JsonConverter<BetaMCPToolR
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

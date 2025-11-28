@@ -22,10 +22,10 @@ namespace Anthropic.Models.Messages;
 /// </summary>
 public sealed record class MessageCountTokensParams : ParamsBase
 {
-    readonly FreezableDictionary<string, JsonElement> _bodyProperties = [];
-    public IReadOnlyDictionary<string, JsonElement> BodyProperties
+    readonly FreezableDictionary<string, JsonElement> _rawBodyData = [];
+    public IReadOnlyDictionary<string, JsonElement> RawBodyData
     {
-        get { return this._bodyProperties.Freeze(); }
+        get { return this._rawBodyData.Freeze(); }
     }
 
     /// <summary>
@@ -79,11 +79,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
     ///
     /// <para>There is a limit of 100,000 messages in a single request.</para>
     /// </summary>
-    public required List<MessageParam> Messages
+    public required IReadOnlyList<MessageParam> Messages
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("messages", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("messages", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'messages' cannot be null",
                     new System::ArgumentOutOfRangeException("messages", "Missing required argument")
@@ -100,7 +100,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
         }
         init
         {
-            this._bodyProperties["messages"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["messages"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -115,7 +115,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("model", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("model", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'model' cannot be null",
                     new System::ArgumentOutOfRangeException("model", "Missing required argument")
@@ -128,7 +128,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
         }
         init
         {
-            this._bodyProperties["model"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["model"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -145,7 +145,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("system", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("system", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<System1?>(element, ModelBase.SerializerOptions);
@@ -157,7 +157,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            this._bodyProperties["system"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["system"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -178,7 +178,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("thinking", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("thinking", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ThinkingConfigParam?>(
@@ -193,7 +193,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            this._bodyProperties["thinking"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["thinking"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -208,7 +208,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("tool_choice", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("tool_choice", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ToolChoice?>(element, ModelBase.SerializerOptions);
@@ -220,7 +220,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            this._bodyProperties["tool_choice"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["tool_choice"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -274,11 +274,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
     ///
     /// <para>See our [guide](https://docs.claude.com/en/docs/tool-use) for more details.</para>
     /// </summary>
-    public List<MessageCountTokensTool>? Tools
+    public IReadOnlyList<MessageCountTokensTool>? Tools
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("tools", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("tools", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<MessageCountTokensTool>?>(
@@ -293,7 +293,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            this._bodyProperties["tools"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["tools"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -303,40 +303,40 @@ public sealed record class MessageCountTokensParams : ParamsBase
     public MessageCountTokensParams() { }
 
     public MessageCountTokensParams(
-        IReadOnlyDictionary<string, JsonElement> headerProperties,
-        IReadOnlyDictionary<string, JsonElement> queryProperties,
-        IReadOnlyDictionary<string, JsonElement> bodyProperties
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData,
+        IReadOnlyDictionary<string, JsonElement> rawBodyData
     )
     {
-        this._headerProperties = [.. headerProperties];
-        this._queryProperties = [.. queryProperties];
-        this._bodyProperties = [.. bodyProperties];
+        this._rawHeaderData = [.. rawHeaderData];
+        this._rawQueryData = [.. rawQueryData];
+        this._rawBodyData = [.. rawBodyData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     MessageCountTokensParams(
-        FrozenDictionary<string, JsonElement> headerProperties,
-        FrozenDictionary<string, JsonElement> queryProperties,
-        FrozenDictionary<string, JsonElement> bodyProperties
+        FrozenDictionary<string, JsonElement> rawHeaderData,
+        FrozenDictionary<string, JsonElement> rawQueryData,
+        FrozenDictionary<string, JsonElement> rawBodyData
     )
     {
-        this._headerProperties = [.. headerProperties];
-        this._queryProperties = [.. queryProperties];
-        this._bodyProperties = [.. bodyProperties];
+        this._rawHeaderData = [.. rawHeaderData];
+        this._rawQueryData = [.. rawQueryData];
+        this._rawBodyData = [.. rawBodyData];
     }
 #pragma warning restore CS8618
 
     public static MessageCountTokensParams FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> headerProperties,
-        IReadOnlyDictionary<string, JsonElement> queryProperties,
-        IReadOnlyDictionary<string, JsonElement> bodyProperties
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData,
+        IReadOnlyDictionary<string, JsonElement> rawBodyData
     )
     {
         return new(
-            FrozenDictionary.ToFrozenDictionary(headerProperties),
-            FrozenDictionary.ToFrozenDictionary(queryProperties),
-            FrozenDictionary.ToFrozenDictionary(bodyProperties)
+            FrozenDictionary.ToFrozenDictionary(rawHeaderData),
+            FrozenDictionary.ToFrozenDictionary(rawQueryData),
+            FrozenDictionary.ToFrozenDictionary(rawBodyData)
         );
     }
 
@@ -352,17 +352,13 @@ public sealed record class MessageCountTokensParams : ParamsBase
 
     internal override StringContent? BodyContent()
     {
-        return new(
-            JsonSerializer.Serialize(this.BodyProperties),
-            Encoding.UTF8,
-            "application/json"
-        );
+        return new(JsonSerializer.Serialize(this.RawBodyData), Encoding.UTF8, "application/json");
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
-        foreach (var item in this.HeaderProperties)
+        foreach (var item in this.RawHeaderData)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
@@ -378,26 +374,30 @@ public sealed record class MessageCountTokensParams : ParamsBase
 [JsonConverter(typeof(System1Converter))]
 public record class System1
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
 
-    public System1(string value)
+    JsonElement? _json = null;
+
+    public JsonElement Json
     {
-        Value = value;
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public System1(IReadOnlyList<TextBlockParam> value)
+    public System1(string value, JsonElement? json = null)
     {
-        Value = ImmutableArray.ToImmutableArray(value);
+        this.Value = value;
+        this._json = json;
     }
 
-    System1(UnknownVariant value)
+    public System1(IReadOnlyList<TextBlockParam> value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = ImmutableArray.ToImmutableArray(value);
+        this._json = json;
     }
 
-    public static System1 CreateUnknownVariant(JsonElement value)
+    public System1(JsonElement json)
     {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickString([NotNullWhen(true)] out string? value)
@@ -454,13 +454,11 @@ public record class System1
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of System1");
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class System1Converter : JsonConverter<System1>
@@ -471,50 +469,38 @@ sealed class System1Converter : JsonConverter<System1>
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<string>(json, options);
             if (deserialized != null)
             {
-                return new System1(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException("Data does not match union variant 'string'", e)
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<TextBlockParam>>(
-                ref reader,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<List<TextBlockParam>>(json, options);
             if (deserialized != null)
             {
-                return new System1(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'List<TextBlockParam>'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(Utf8JsonWriter writer, System1 value, JsonSerializerOptions options)
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

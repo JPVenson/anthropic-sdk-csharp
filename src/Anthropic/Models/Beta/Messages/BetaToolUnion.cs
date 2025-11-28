@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -7,10 +6,23 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
+/// <summary>
+/// Configuration for a group of tools from an MCP server.
+///
+/// <para>Allows configuring enabled status and defer_loading for all tools from
+/// an MCP server, with optional per-tool overrides.</para>
+/// </summary>
 [JsonConverter(typeof(BetaToolUnionConverter))]
 public record class BetaToolUnion
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public BetaCacheControlEphemeral? CacheControl
     {
@@ -26,11 +38,42 @@ public record class BetaToolUnion
                 memoryTool20250818: (x) => x.CacheControl,
                 computerUse20250124: (x) => x.CacheControl,
                 textEditor20241022: (x) => x.CacheControl,
+                computerUse20251124: (x) => x.CacheControl,
                 textEditor20250124: (x) => x.CacheControl,
                 textEditor20250429: (x) => x.CacheControl,
                 textEditor20250728: (x) => x.CacheControl,
                 webSearchTool20250305: (x) => x.CacheControl,
-                webFetchTool20250910: (x) => x.CacheControl
+                webFetchTool20250910: (x) => x.CacheControl,
+                searchToolBm25_20251119: (x) => x.CacheControl,
+                searchToolRegex20251119: (x) => x.CacheControl,
+                mcpToolset: (x) => x.CacheControl
+            );
+        }
+    }
+
+    public bool? DeferLoading
+    {
+        get
+        {
+            return Match<bool?>(
+                betaTool: (x) => x.DeferLoading,
+                bash20241022: (x) => x.DeferLoading,
+                bash20250124: (x) => x.DeferLoading,
+                codeExecutionTool20250522: (x) => x.DeferLoading,
+                codeExecutionTool20250825: (x) => x.DeferLoading,
+                computerUse20241022: (x) => x.DeferLoading,
+                memoryTool20250818: (x) => x.DeferLoading,
+                computerUse20250124: (x) => x.DeferLoading,
+                textEditor20241022: (x) => x.DeferLoading,
+                computerUse20251124: (x) => x.DeferLoading,
+                textEditor20250124: (x) => x.DeferLoading,
+                textEditor20250429: (x) => x.DeferLoading,
+                textEditor20250728: (x) => x.DeferLoading,
+                webSearchTool20250305: (x) => x.DeferLoading,
+                webFetchTool20250910: (x) => x.DeferLoading,
+                searchToolBm25_20251119: (x) => x.DeferLoading,
+                searchToolRegex20251119: (x) => x.DeferLoading,
+                mcpToolset: (_) => null
             );
         }
     }
@@ -49,11 +92,15 @@ public record class BetaToolUnion
                 memoryTool20250818: (x) => x.Strict,
                 computerUse20250124: (x) => x.Strict,
                 textEditor20241022: (x) => x.Strict,
+                computerUse20251124: (x) => x.Strict,
                 textEditor20250124: (x) => x.Strict,
                 textEditor20250429: (x) => x.Strict,
                 textEditor20250728: (x) => x.Strict,
                 webSearchTool20250305: (x) => x.Strict,
-                webFetchTool20250910: (x) => x.Strict
+                webFetchTool20250910: (x) => x.Strict,
+                searchToolBm25_20251119: (x) => x.Strict,
+                searchToolRegex20251119: (x) => x.Strict,
+                mcpToolset: (_) => null
             );
         }
     }
@@ -72,11 +119,15 @@ public record class BetaToolUnion
                 memoryTool20250818: (_) => null,
                 computerUse20250124: (x) => x.DisplayHeightPx,
                 textEditor20241022: (_) => null,
+                computerUse20251124: (x) => x.DisplayHeightPx,
                 textEditor20250124: (_) => null,
                 textEditor20250429: (_) => null,
                 textEditor20250728: (_) => null,
                 webSearchTool20250305: (_) => null,
-                webFetchTool20250910: (_) => null
+                webFetchTool20250910: (_) => null,
+                searchToolBm25_20251119: (_) => null,
+                searchToolRegex20251119: (_) => null,
+                mcpToolset: (_) => null
             );
         }
     }
@@ -95,11 +146,15 @@ public record class BetaToolUnion
                 memoryTool20250818: (_) => null,
                 computerUse20250124: (x) => x.DisplayWidthPx,
                 textEditor20241022: (_) => null,
+                computerUse20251124: (x) => x.DisplayWidthPx,
                 textEditor20250124: (_) => null,
                 textEditor20250429: (_) => null,
                 textEditor20250728: (_) => null,
                 webSearchTool20250305: (_) => null,
-                webFetchTool20250910: (_) => null
+                webFetchTool20250910: (_) => null,
+                searchToolBm25_20251119: (_) => null,
+                searchToolRegex20251119: (_) => null,
+                mcpToolset: (_) => null
             );
         }
     }
@@ -118,11 +173,15 @@ public record class BetaToolUnion
                 memoryTool20250818: (_) => null,
                 computerUse20250124: (x) => x.DisplayNumber,
                 textEditor20241022: (_) => null,
+                computerUse20251124: (x) => x.DisplayNumber,
                 textEditor20250124: (_) => null,
                 textEditor20250429: (_) => null,
                 textEditor20250728: (_) => null,
                 webSearchTool20250305: (_) => null,
-                webFetchTool20250910: (_) => null
+                webFetchTool20250910: (_) => null,
+                searchToolBm25_20251119: (_) => null,
+                searchToolRegex20251119: (_) => null,
+                mcpToolset: (_) => null
             );
         }
     }
@@ -141,93 +200,130 @@ public record class BetaToolUnion
                 memoryTool20250818: (_) => null,
                 computerUse20250124: (_) => null,
                 textEditor20241022: (_) => null,
+                computerUse20251124: (_) => null,
                 textEditor20250124: (_) => null,
                 textEditor20250429: (_) => null,
                 textEditor20250728: (_) => null,
                 webSearchTool20250305: (x) => x.MaxUses,
-                webFetchTool20250910: (x) => x.MaxUses
+                webFetchTool20250910: (x) => x.MaxUses,
+                searchToolBm25_20251119: (_) => null,
+                searchToolRegex20251119: (_) => null,
+                mcpToolset: (_) => null
             );
         }
     }
 
-    public BetaToolUnion(BetaTool value)
+    public BetaToolUnion(BetaTool value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaToolUnion(BetaToolBash20241022 value)
+    public BetaToolUnion(BetaToolBash20241022 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaToolUnion(BetaToolBash20250124 value)
+    public BetaToolUnion(BetaToolBash20250124 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaToolUnion(BetaCodeExecutionTool20250522 value)
+    public BetaToolUnion(BetaCodeExecutionTool20250522 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaToolUnion(BetaCodeExecutionTool20250825 value)
+    public BetaToolUnion(BetaCodeExecutionTool20250825 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaToolUnion(BetaToolComputerUse20241022 value)
+    public BetaToolUnion(BetaToolComputerUse20241022 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaToolUnion(BetaMemoryTool20250818 value)
+    public BetaToolUnion(BetaMemoryTool20250818 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaToolUnion(BetaToolComputerUse20250124 value)
+    public BetaToolUnion(BetaToolComputerUse20250124 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaToolUnion(BetaToolTextEditor20241022 value)
+    public BetaToolUnion(BetaToolTextEditor20241022 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaToolUnion(BetaToolTextEditor20250124 value)
+    public BetaToolUnion(BetaToolComputerUse20251124 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaToolUnion(BetaToolTextEditor20250429 value)
+    public BetaToolUnion(BetaToolTextEditor20250124 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaToolUnion(BetaToolTextEditor20250728 value)
+    public BetaToolUnion(BetaToolTextEditor20250429 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaToolUnion(BetaWebSearchTool20250305 value)
+    public BetaToolUnion(BetaToolTextEditor20250728 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaToolUnion(BetaWebFetchTool20250910 value)
+    public BetaToolUnion(BetaWebSearchTool20250305 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    BetaToolUnion(UnknownVariant value)
+    public BetaToolUnion(BetaWebFetchTool20250910 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public static BetaToolUnion CreateUnknownVariant(JsonElement value)
+    public BetaToolUnion(BetaToolSearchToolBm25_20251119 value, JsonElement? json = null)
     {
-        return new(new UnknownVariant(value));
+        this.Value = value;
+        this._json = json;
+    }
+
+    public BetaToolUnion(BetaToolSearchToolRegex20251119 value, JsonElement? json = null)
+    {
+        this.Value = value;
+        this._json = json;
+    }
+
+    public BetaToolUnion(BetaMCPToolset value, JsonElement? json = null)
+    {
+        this.Value = value;
+        this._json = json;
+    }
+
+    public BetaToolUnion(JsonElement json)
+    {
+        this._json = json;
     }
 
     public bool TryPickBetaTool([NotNullWhen(true)] out BetaTool? value)
@@ -292,6 +388,14 @@ public record class BetaToolUnion
         return value != null;
     }
 
+    public bool TryPickComputerUse20251124(
+        [NotNullWhen(true)] out BetaToolComputerUse20251124? value
+    )
+    {
+        value = this.Value as BetaToolComputerUse20251124;
+        return value != null;
+    }
+
     public bool TryPickTextEditor20250124([NotNullWhen(true)] out BetaToolTextEditor20250124? value)
     {
         value = this.Value as BetaToolTextEditor20250124;
@@ -324,6 +428,28 @@ public record class BetaToolUnion
         return value != null;
     }
 
+    public bool TryPickSearchToolBm25_20251119(
+        [NotNullWhen(true)] out BetaToolSearchToolBm25_20251119? value
+    )
+    {
+        value = this.Value as BetaToolSearchToolBm25_20251119;
+        return value != null;
+    }
+
+    public bool TryPickSearchToolRegex20251119(
+        [NotNullWhen(true)] out BetaToolSearchToolRegex20251119? value
+    )
+    {
+        value = this.Value as BetaToolSearchToolRegex20251119;
+        return value != null;
+    }
+
+    public bool TryPickMCPToolset([NotNullWhen(true)] out BetaMCPToolset? value)
+    {
+        value = this.Value as BetaMCPToolset;
+        return value != null;
+    }
+
     public void Switch(
         System::Action<BetaTool> betaTool,
         System::Action<BetaToolBash20241022> bash20241022,
@@ -334,11 +460,15 @@ public record class BetaToolUnion
         System::Action<BetaMemoryTool20250818> memoryTool20250818,
         System::Action<BetaToolComputerUse20250124> computerUse20250124,
         System::Action<BetaToolTextEditor20241022> textEditor20241022,
+        System::Action<BetaToolComputerUse20251124> computerUse20251124,
         System::Action<BetaToolTextEditor20250124> textEditor20250124,
         System::Action<BetaToolTextEditor20250429> textEditor20250429,
         System::Action<BetaToolTextEditor20250728> textEditor20250728,
         System::Action<BetaWebSearchTool20250305> webSearchTool20250305,
-        System::Action<BetaWebFetchTool20250910> webFetchTool20250910
+        System::Action<BetaWebFetchTool20250910> webFetchTool20250910,
+        System::Action<BetaToolSearchToolBm25_20251119> searchToolBm25_20251119,
+        System::Action<BetaToolSearchToolRegex20251119> searchToolRegex20251119,
+        System::Action<BetaMCPToolset> mcpToolset
     )
     {
         switch (this.Value)
@@ -370,6 +500,9 @@ public record class BetaToolUnion
             case BetaToolTextEditor20241022 value:
                 textEditor20241022(value);
                 break;
+            case BetaToolComputerUse20251124 value:
+                computerUse20251124(value);
+                break;
             case BetaToolTextEditor20250124 value:
                 textEditor20250124(value);
                 break;
@@ -384,6 +517,15 @@ public record class BetaToolUnion
                 break;
             case BetaWebFetchTool20250910 value:
                 webFetchTool20250910(value);
+                break;
+            case BetaToolSearchToolBm25_20251119 value:
+                searchToolBm25_20251119(value);
+                break;
+            case BetaToolSearchToolRegex20251119 value:
+                searchToolRegex20251119(value);
+                break;
+            case BetaMCPToolset value:
+                mcpToolset(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -402,11 +544,15 @@ public record class BetaToolUnion
         System::Func<BetaMemoryTool20250818, T> memoryTool20250818,
         System::Func<BetaToolComputerUse20250124, T> computerUse20250124,
         System::Func<BetaToolTextEditor20241022, T> textEditor20241022,
+        System::Func<BetaToolComputerUse20251124, T> computerUse20251124,
         System::Func<BetaToolTextEditor20250124, T> textEditor20250124,
         System::Func<BetaToolTextEditor20250429, T> textEditor20250429,
         System::Func<BetaToolTextEditor20250728, T> textEditor20250728,
         System::Func<BetaWebSearchTool20250305, T> webSearchTool20250305,
-        System::Func<BetaWebFetchTool20250910, T> webFetchTool20250910
+        System::Func<BetaWebFetchTool20250910, T> webFetchTool20250910,
+        System::Func<BetaToolSearchToolBm25_20251119, T> searchToolBm25_20251119,
+        System::Func<BetaToolSearchToolRegex20251119, T> searchToolRegex20251119,
+        System::Func<BetaMCPToolset, T> mcpToolset
     )
     {
         return this.Value switch
@@ -420,11 +566,15 @@ public record class BetaToolUnion
             BetaMemoryTool20250818 value => memoryTool20250818(value),
             BetaToolComputerUse20250124 value => computerUse20250124(value),
             BetaToolTextEditor20241022 value => textEditor20241022(value),
+            BetaToolComputerUse20251124 value => computerUse20251124(value),
             BetaToolTextEditor20250124 value => textEditor20250124(value),
             BetaToolTextEditor20250429 value => textEditor20250429(value),
             BetaToolTextEditor20250728 value => textEditor20250728(value),
             BetaWebSearchTool20250305 value => webSearchTool20250305(value),
             BetaWebFetchTool20250910 value => webFetchTool20250910(value),
+            BetaToolSearchToolBm25_20251119 value => searchToolBm25_20251119(value),
+            BetaToolSearchToolRegex20251119 value => searchToolRegex20251119(value),
+            BetaMCPToolset value => mcpToolset(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaToolUnion"
             ),
@@ -451,6 +601,8 @@ public record class BetaToolUnion
 
     public static implicit operator BetaToolUnion(BetaToolTextEditor20241022 value) => new(value);
 
+    public static implicit operator BetaToolUnion(BetaToolComputerUse20251124 value) => new(value);
+
     public static implicit operator BetaToolUnion(BetaToolTextEditor20250124 value) => new(value);
 
     public static implicit operator BetaToolUnion(BetaToolTextEditor20250429 value) => new(value);
@@ -461,17 +613,23 @@ public record class BetaToolUnion
 
     public static implicit operator BetaToolUnion(BetaWebFetchTool20250910 value) => new(value);
 
+    public static implicit operator BetaToolUnion(BetaToolSearchToolBm25_20251119 value) =>
+        new(value);
+
+    public static implicit operator BetaToolUnion(BetaToolSearchToolRegex20251119 value) =>
+        new(value);
+
+    public static implicit operator BetaToolUnion(BetaMCPToolset value) => new(value);
+
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaToolUnion"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
@@ -482,311 +640,293 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaTool>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<BetaTool>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException("Data does not match union variant 'BetaTool'", e)
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaToolBash20241022>(
-                ref reader,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<BetaToolBash20241022>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaToolBash20241022'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaToolBash20250124>(
-                ref reader,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<BetaToolBash20250124>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaToolBash20250124'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250522>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaCodeExecutionTool20250522'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250825>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaCodeExecutionTool20250825'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20241022>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaToolComputerUse20241022'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818>(
-                ref reader,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaMemoryTool20250818'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20250124>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaToolComputerUse20250124'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20241022>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaToolTextEditor20241022'",
-                    e
-                )
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20251124>(
+                json,
+                options
             );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, json);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
         }
 
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250124>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaToolTextEditor20250124'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250429>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaToolTextEditor20250429'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250728>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaToolTextEditor20250728'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20250305>(
-                ref reader,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20250305>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaWebSearchTool20250305'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(
-                ref reader,
+            var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(json, options);
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, json);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolBm25_20251119>(
+                json,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaWebFetchTool20250910'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolRegex20251119>(
+                json,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, json);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaMCPToolset>(json, options);
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, json);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        return new(json);
     }
 
     public override void Write(
@@ -795,7 +935,6 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

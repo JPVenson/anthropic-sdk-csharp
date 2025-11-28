@@ -9,16 +9,19 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCodeExecutionToolResultErrorParam>))]
-public sealed record class BetaCodeExecutionToolResultErrorParam
-    : ModelBase,
-        IFromRaw<BetaCodeExecutionToolResultErrorParam>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaCodeExecutionToolResultErrorParam,
+        BetaCodeExecutionToolResultErrorParamFromRaw
+    >)
+)]
+public sealed record class BetaCodeExecutionToolResultErrorParam : ModelBase
 {
     public required ApiEnum<string, BetaCodeExecutionToolResultErrorCode> ErrorCode
     {
         get
         {
-            if (!this._properties.TryGetValue("error_code", out JsonElement element))
+            if (!this._rawData.TryGetValue("error_code", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'error_code' cannot be null",
                     new ArgumentOutOfRangeException("error_code", "Missing required argument")
@@ -30,7 +33,7 @@ public sealed record class BetaCodeExecutionToolResultErrorParam
         }
         init
         {
-            this._properties["error_code"] = JsonSerializer.SerializeToElement(
+            this._rawData["error_code"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +44,7 @@ public sealed record class BetaCodeExecutionToolResultErrorParam
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -51,7 +54,7 @@ public sealed record class BetaCodeExecutionToolResultErrorParam
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -77,28 +80,26 @@ public sealed record class BetaCodeExecutionToolResultErrorParam
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_tool_result_error\"");
     }
 
-    public BetaCodeExecutionToolResultErrorParam(
-        IReadOnlyDictionary<string, JsonElement> properties
-    )
+    public BetaCodeExecutionToolResultErrorParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_tool_result_error\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaCodeExecutionToolResultErrorParam(FrozenDictionary<string, JsonElement> properties)
+    BetaCodeExecutionToolResultErrorParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaCodeExecutionToolResultErrorParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -109,4 +110,11 @@ public sealed record class BetaCodeExecutionToolResultErrorParam
     {
         this.ErrorCode = errorCode;
     }
+}
+
+class BetaCodeExecutionToolResultErrorParamFromRaw : IFromRaw<BetaCodeExecutionToolResultErrorParam>
+{
+    public BetaCodeExecutionToolResultErrorParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaCodeExecutionToolResultErrorParam.FromRawUnchecked(rawData);
 }

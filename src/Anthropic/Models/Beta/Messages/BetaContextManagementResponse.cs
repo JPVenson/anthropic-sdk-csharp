@@ -9,19 +9,19 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaContextManagementResponse>))]
-public sealed record class BetaContextManagementResponse
-    : ModelBase,
-        IFromRaw<BetaContextManagementResponse>
+[JsonConverter(
+    typeof(ModelConverter<BetaContextManagementResponse, BetaContextManagementResponseFromRaw>)
+)]
+public sealed record class BetaContextManagementResponse : ModelBase
 {
     /// <summary>
     /// List of context management edits that were applied.
     /// </summary>
-    public required List<AppliedEdit> AppliedEdits
+    public required IReadOnlyList<AppliedEdit> AppliedEdits
     {
         get
         {
-            if (!this._properties.TryGetValue("applied_edits", out JsonElement element))
+            if (!this._rawData.TryGetValue("applied_edits", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'applied_edits' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -41,7 +41,7 @@ public sealed record class BetaContextManagementResponse
         }
         init
         {
-            this._properties["applied_edits"] = JsonSerializer.SerializeToElement(
+            this._rawData["applied_edits"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -58,24 +58,24 @@ public sealed record class BetaContextManagementResponse
 
     public BetaContextManagementResponse() { }
 
-    public BetaContextManagementResponse(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaContextManagementResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaContextManagementResponse(FrozenDictionary<string, JsonElement> properties)
+    BetaContextManagementResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaContextManagementResponse FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -86,10 +86,24 @@ public sealed record class BetaContextManagementResponse
     }
 }
 
+class BetaContextManagementResponseFromRaw : IFromRaw<BetaContextManagementResponse>
+{
+    public BetaContextManagementResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaContextManagementResponse.FromRawUnchecked(rawData);
+}
+
 [JsonConverter(typeof(AppliedEditConverter))]
 public record class AppliedEdit
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public long ClearedInputTokens
     {
@@ -113,24 +127,21 @@ public record class AppliedEdit
         }
     }
 
-    public AppliedEdit(BetaClearToolUses20250919EditResponse value)
+    public AppliedEdit(BetaClearToolUses20250919EditResponse value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public AppliedEdit(BetaClearThinking20251015EditResponse value)
+    public AppliedEdit(BetaClearThinking20251015EditResponse value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    AppliedEdit(UnknownVariant value)
+    public AppliedEdit(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static AppliedEdit CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBetaClearToolUses20250919EditResponse(
@@ -199,15 +210,13 @@ public record class AppliedEdit
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of AppliedEdit"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class AppliedEditConverter : JsonConverter<AppliedEdit>
@@ -233,8 +242,6 @@ sealed class AppliedEditConverter : JsonConverter<AppliedEdit>
         {
             case "clear_tool_uses_20250919":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -245,26 +252,19 @@ sealed class AppliedEditConverter : JsonConverter<AppliedEdit>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new AppliedEdit(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaClearToolUses20250919EditResponse'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "clear_thinking_20251015":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -275,27 +275,20 @@ sealed class AppliedEditConverter : JsonConverter<AppliedEdit>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new AppliedEdit(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaClearThinking20251015EditResponse'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new AppliedEdit(json);
             }
         }
     }
@@ -306,7 +299,6 @@ sealed class AppliedEditConverter : JsonConverter<AppliedEdit>
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

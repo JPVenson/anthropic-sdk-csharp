@@ -9,16 +9,19 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaBashCodeExecutionToolResultBlockParam>))]
-public sealed record class BetaBashCodeExecutionToolResultBlockParam
-    : ModelBase,
-        IFromRaw<BetaBashCodeExecutionToolResultBlockParam>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaBashCodeExecutionToolResultBlockParam,
+        BetaBashCodeExecutionToolResultBlockParamFromRaw
+    >)
+)]
+public sealed record class BetaBashCodeExecutionToolResultBlockParam : ModelBase
 {
     public required BetaBashCodeExecutionToolResultBlockParamContent Content
     {
         get
         {
-            if (!this._properties.TryGetValue("content", out JsonElement element))
+            if (!this._rawData.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
@@ -35,7 +38,7 @@ public sealed record class BetaBashCodeExecutionToolResultBlockParam
         }
         init
         {
-            this._properties["content"] = JsonSerializer.SerializeToElement(
+            this._rawData["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -46,7 +49,7 @@ public sealed record class BetaBashCodeExecutionToolResultBlockParam
     {
         get
         {
-            if (!this._properties.TryGetValue("tool_use_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("tool_use_id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'tool_use_id' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -63,7 +66,7 @@ public sealed record class BetaBashCodeExecutionToolResultBlockParam
         }
         init
         {
-            this._properties["tool_use_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["tool_use_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -74,7 +77,7 @@ public sealed record class BetaBashCodeExecutionToolResultBlockParam
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -84,7 +87,7 @@ public sealed record class BetaBashCodeExecutionToolResultBlockParam
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -98,7 +101,7 @@ public sealed record class BetaBashCodeExecutionToolResultBlockParam
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
@@ -108,7 +111,7 @@ public sealed record class BetaBashCodeExecutionToolResultBlockParam
         }
         init
         {
-            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -137,34 +140,49 @@ public sealed record class BetaBashCodeExecutionToolResultBlockParam
     }
 
     public BetaBashCodeExecutionToolResultBlockParam(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_tool_result\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaBashCodeExecutionToolResultBlockParam(FrozenDictionary<string, JsonElement> properties)
+    BetaBashCodeExecutionToolResultBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaBashCodeExecutionToolResultBlockParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaBashCodeExecutionToolResultBlockParamFromRaw
+    : IFromRaw<BetaBashCodeExecutionToolResultBlockParam>
+{
+    public BetaBashCodeExecutionToolResultBlockParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaBashCodeExecutionToolResultBlockParam.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(BetaBashCodeExecutionToolResultBlockParamContentConverter))]
 public record class BetaBashCodeExecutionToolResultBlockParamContent
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -178,29 +196,26 @@ public record class BetaBashCodeExecutionToolResultBlockParamContent
     }
 
     public BetaBashCodeExecutionToolResultBlockParamContent(
-        BetaBashCodeExecutionToolResultErrorParam value
+        BetaBashCodeExecutionToolResultErrorParam value,
+        JsonElement? json = null
     )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
     public BetaBashCodeExecutionToolResultBlockParamContent(
-        BetaBashCodeExecutionResultBlockParam value
+        BetaBashCodeExecutionResultBlockParam value,
+        JsonElement? json = null
     )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    BetaBashCodeExecutionToolResultBlockParamContent(UnknownVariant value)
+    public BetaBashCodeExecutionToolResultBlockParamContent(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static BetaBashCodeExecutionToolResultBlockParamContent CreateUnknownVariant(
-        JsonElement value
-    )
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBetaBashCodeExecutionToolResultErrorParam(
@@ -270,15 +285,13 @@ public record class BetaBashCodeExecutionToolResultBlockParamContent
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaBashCodeExecutionToolResultBlockParamContent"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaBashCodeExecutionToolResultBlockParamContentConverter
@@ -290,54 +303,43 @@ sealed class BetaBashCodeExecutionToolResultBlockParamContentConverter
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
             var deserialized =
                 JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultErrorParam>(
-                    ref reader,
+                    json,
                     options
                 );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaBashCodeExecutionToolResultBlockParamContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaBashCodeExecutionToolResultErrorParam'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionResultBlockParam>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaBashCodeExecutionToolResultBlockParamContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaBashCodeExecutionResultBlockParam'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(
@@ -346,7 +348,6 @@ sealed class BetaBashCodeExecutionToolResultBlockParamContentConverter
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

@@ -23,7 +23,7 @@ public sealed class MessageService : global::Anthropic.Services.Beta.IMessageSer
         );
     }
 
-    readonly IAnthropicClient _client;
+    internal readonly IAnthropicClient _client;
 
     public MessageService(IAnthropicClient client)
     {
@@ -71,15 +71,14 @@ public sealed class MessageService : global::Anthropic.Services.Beta.IMessageSer
         [EnumeratorCancellation] CancellationToken cancellationToken = default
     )
     {
-#if NET5_0_OR_GREATER
-        Dictionary<string, JsonElement> bodyProperties = new(parameters.BodyProperties)
-        {
-            ["stream"] = JsonSerializer.Deserialize<JsonElement>("true"),
-        };
-#else
-        var bodyProperties = parameters.BodyProperties.ToDictionary(e => e.Key, e => e.Value);
-        bodyProperties["stream"] = JsonSerializer.Deserialize<JsonElement>("true");
-#endif
+        var rawBodyData = Enumerable.ToDictionary(parameters.RawBodyData, e => e.Key, e => e.Value);
+        rawBodyData["stream"] = JsonSerializer.Deserialize<JsonElement>("true");
+        parameters = MessageCreateParams.FromRawUnchecked(
+            parameters.RawHeaderData,
+            parameters.RawQueryData,
+            rawBodyData
+        );
+
         HttpRequest<MessageCreateParams> request = new()
         {
             Method = HttpMethod.Post,

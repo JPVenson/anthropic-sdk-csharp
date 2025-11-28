@@ -9,16 +9,16 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<BetaMessageBatchCanceledResult>))]
-public sealed record class BetaMessageBatchCanceledResult
-    : ModelBase,
-        IFromRaw<BetaMessageBatchCanceledResult>
+[JsonConverter(
+    typeof(ModelConverter<BetaMessageBatchCanceledResult, BetaMessageBatchCanceledResultFromRaw>)
+)]
+public sealed record class BetaMessageBatchCanceledResult : ModelBase
 {
     public JsonElement Type
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -28,7 +28,7 @@ public sealed record class BetaMessageBatchCanceledResult
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -53,25 +53,32 @@ public sealed record class BetaMessageBatchCanceledResult
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"canceled\"");
     }
 
-    public BetaMessageBatchCanceledResult(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaMessageBatchCanceledResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"canceled\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMessageBatchCanceledResult(FrozenDictionary<string, JsonElement> properties)
+    BetaMessageBatchCanceledResult(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaMessageBatchCanceledResult FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaMessageBatchCanceledResultFromRaw : IFromRaw<BetaMessageBatchCanceledResult>
+{
+    public BetaMessageBatchCanceledResult FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaMessageBatchCanceledResult.FromRawUnchecked(rawData);
 }

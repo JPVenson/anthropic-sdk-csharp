@@ -9,14 +9,14 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaInputTokensTrigger>))]
-public sealed record class BetaInputTokensTrigger : ModelBase, IFromRaw<BetaInputTokensTrigger>
+[JsonConverter(typeof(ModelConverter<BetaInputTokensTrigger, BetaInputTokensTriggerFromRaw>))]
+public sealed record class BetaInputTokensTrigger : ModelBase
 {
     public JsonElement Type
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -26,7 +26,7 @@ public sealed record class BetaInputTokensTrigger : ModelBase, IFromRaw<BetaInpu
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -37,7 +37,7 @@ public sealed record class BetaInputTokensTrigger : ModelBase, IFromRaw<BetaInpu
     {
         get
         {
-            if (!this._properties.TryGetValue("value", out JsonElement element))
+            if (!this._rawData.TryGetValue("value", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'value' cannot be null",
                     new ArgumentOutOfRangeException("value", "Missing required argument")
@@ -47,7 +47,7 @@ public sealed record class BetaInputTokensTrigger : ModelBase, IFromRaw<BetaInpu
         }
         init
         {
-            this._properties["value"] = JsonSerializer.SerializeToElement(
+            this._rawData["value"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -73,26 +73,26 @@ public sealed record class BetaInputTokensTrigger : ModelBase, IFromRaw<BetaInpu
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"input_tokens\"");
     }
 
-    public BetaInputTokensTrigger(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaInputTokensTrigger(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"input_tokens\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaInputTokensTrigger(FrozenDictionary<string, JsonElement> properties)
+    BetaInputTokensTrigger(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaInputTokensTrigger FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -101,4 +101,11 @@ public sealed record class BetaInputTokensTrigger : ModelBase, IFromRaw<BetaInpu
     {
         this.Value = value;
     }
+}
+
+class BetaInputTokensTriggerFromRaw : IFromRaw<BetaInputTokensTrigger>
+{
+    public BetaInputTokensTrigger FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaInputTokensTrigger.FromRawUnchecked(rawData);
 }

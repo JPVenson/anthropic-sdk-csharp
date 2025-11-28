@@ -9,16 +9,19 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCodeExecutionToolResultBlock>))]
-public sealed record class BetaCodeExecutionToolResultBlock
-    : ModelBase,
-        IFromRaw<BetaCodeExecutionToolResultBlock>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaCodeExecutionToolResultBlock,
+        BetaCodeExecutionToolResultBlockFromRaw
+    >)
+)]
+public sealed record class BetaCodeExecutionToolResultBlock : ModelBase
 {
     public required BetaCodeExecutionToolResultBlockContent Content
     {
         get
         {
-            if (!this._properties.TryGetValue("content", out JsonElement element))
+            if (!this._rawData.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new ArgumentOutOfRangeException("content", "Missing required argument")
@@ -35,7 +38,7 @@ public sealed record class BetaCodeExecutionToolResultBlock
         }
         init
         {
-            this._properties["content"] = JsonSerializer.SerializeToElement(
+            this._rawData["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -46,7 +49,7 @@ public sealed record class BetaCodeExecutionToolResultBlock
     {
         get
         {
-            if (!this._properties.TryGetValue("tool_use_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("tool_use_id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'tool_use_id' cannot be null",
                     new ArgumentOutOfRangeException("tool_use_id", "Missing required argument")
@@ -60,7 +63,7 @@ public sealed record class BetaCodeExecutionToolResultBlock
         }
         init
         {
-            this._properties["tool_use_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["tool_use_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -71,7 +74,7 @@ public sealed record class BetaCodeExecutionToolResultBlock
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -81,7 +84,7 @@ public sealed record class BetaCodeExecutionToolResultBlock
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -108,25 +111,32 @@ public sealed record class BetaCodeExecutionToolResultBlock
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_tool_result\"");
     }
 
-    public BetaCodeExecutionToolResultBlock(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaCodeExecutionToolResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_tool_result\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaCodeExecutionToolResultBlock(FrozenDictionary<string, JsonElement> properties)
+    BetaCodeExecutionToolResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaCodeExecutionToolResultBlock FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaCodeExecutionToolResultBlockFromRaw : IFromRaw<BetaCodeExecutionToolResultBlock>
+{
+    public BetaCodeExecutionToolResultBlock FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaCodeExecutionToolResultBlock.FromRawUnchecked(rawData);
 }

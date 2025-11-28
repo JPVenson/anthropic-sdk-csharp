@@ -9,10 +9,10 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRawContentBlockStartEvent>))]
-public sealed record class BetaRawContentBlockStartEvent
-    : ModelBase,
-        IFromRaw<BetaRawContentBlockStartEvent>
+[JsonConverter(
+    typeof(ModelConverter<BetaRawContentBlockStartEvent, BetaRawContentBlockStartEventFromRaw>)
+)]
+public sealed record class BetaRawContentBlockStartEvent : ModelBase
 {
     /// <summary>
     /// Response model for a file uploaded to the container.
@@ -21,7 +21,7 @@ public sealed record class BetaRawContentBlockStartEvent
     {
         get
         {
-            if (!this._properties.TryGetValue("content_block", out JsonElement element))
+            if (!this._rawData.TryGetValue("content_block", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content_block' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -38,7 +38,7 @@ public sealed record class BetaRawContentBlockStartEvent
         }
         init
         {
-            this._properties["content_block"] = JsonSerializer.SerializeToElement(
+            this._rawData["content_block"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -49,7 +49,7 @@ public sealed record class BetaRawContentBlockStartEvent
     {
         get
         {
-            if (!this._properties.TryGetValue("index", out JsonElement element))
+            if (!this._rawData.TryGetValue("index", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'index' cannot be null",
                     new System::ArgumentOutOfRangeException("index", "Missing required argument")
@@ -59,7 +59,7 @@ public sealed record class BetaRawContentBlockStartEvent
         }
         init
         {
-            this._properties["index"] = JsonSerializer.SerializeToElement(
+            this._rawData["index"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -70,7 +70,7 @@ public sealed record class BetaRawContentBlockStartEvent
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -80,7 +80,7 @@ public sealed record class BetaRawContentBlockStartEvent
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -107,27 +107,34 @@ public sealed record class BetaRawContentBlockStartEvent
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"");
     }
 
-    public BetaRawContentBlockStartEvent(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaRawContentBlockStartEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaRawContentBlockStartEvent(FrozenDictionary<string, JsonElement> properties)
+    BetaRawContentBlockStartEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaRawContentBlockStartEvent FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaRawContentBlockStartEventFromRaw : IFromRaw<BetaRawContentBlockStartEvent>
+{
+    public BetaRawContentBlockStartEvent FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaRawContentBlockStartEvent.FromRawUnchecked(rawData);
 }
 
 /// <summary>
@@ -136,7 +143,14 @@ public sealed record class BetaRawContentBlockStartEvent
 [JsonConverter(typeof(ContentBlockConverter))]
 public record class ContentBlock
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -153,6 +167,7 @@ public record class ContentBlock
                 betaCodeExecutionToolResult: (x) => x.Type,
                 betaBashCodeExecutionToolResult: (x) => x.Type,
                 betaTextEditorCodeExecutionToolResult: (x) => x.Type,
+                betaToolSearchToolResult: (x) => x.Type,
                 betaMCPToolUse: (x) => x.Type,
                 betaMCPToolResult: (x) => x.Type,
                 betaContainerUpload: (x) => x.Type
@@ -175,6 +190,7 @@ public record class ContentBlock
                 betaCodeExecutionToolResult: (_) => null,
                 betaBashCodeExecutionToolResult: (_) => null,
                 betaTextEditorCodeExecutionToolResult: (_) => null,
+                betaToolSearchToolResult: (_) => null,
                 betaMCPToolUse: (x) => x.ID,
                 betaMCPToolResult: (_) => null,
                 betaContainerUpload: (_) => null
@@ -197,6 +213,7 @@ public record class ContentBlock
                 betaCodeExecutionToolResult: (x) => x.ToolUseID,
                 betaBashCodeExecutionToolResult: (x) => x.ToolUseID,
                 betaTextEditorCodeExecutionToolResult: (x) => x.ToolUseID,
+                betaToolSearchToolResult: (x) => x.ToolUseID,
                 betaMCPToolUse: (_) => null,
                 betaMCPToolResult: (x) => x.ToolUseID,
                 betaContainerUpload: (_) => null
@@ -204,79 +221,93 @@ public record class ContentBlock
         }
     }
 
-    public ContentBlock(BetaTextBlock value)
+    public ContentBlock(BetaTextBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlock(BetaThinkingBlock value)
+    public ContentBlock(BetaThinkingBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlock(BetaRedactedThinkingBlock value)
+    public ContentBlock(BetaRedactedThinkingBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlock(BetaToolUseBlock value)
+    public ContentBlock(BetaToolUseBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlock(BetaServerToolUseBlock value)
+    public ContentBlock(BetaServerToolUseBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlock(BetaWebSearchToolResultBlock value)
+    public ContentBlock(BetaWebSearchToolResultBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlock(BetaWebFetchToolResultBlock value)
+    public ContentBlock(BetaWebFetchToolResultBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlock(BetaCodeExecutionToolResultBlock value)
+    public ContentBlock(BetaCodeExecutionToolResultBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlock(BetaBashCodeExecutionToolResultBlock value)
+    public ContentBlock(BetaBashCodeExecutionToolResultBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlock(BetaTextEditorCodeExecutionToolResultBlock value)
+    public ContentBlock(BetaTextEditorCodeExecutionToolResultBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlock(BetaMCPToolUseBlock value)
+    public ContentBlock(BetaToolSearchToolResultBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlock(BetaMCPToolResultBlock value)
+    public ContentBlock(BetaMCPToolUseBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlock(BetaContainerUploadBlock value)
+    public ContentBlock(BetaMCPToolResultBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    ContentBlock(UnknownVariant value)
+    public ContentBlock(BetaContainerUploadBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public static ContentBlock CreateUnknownVariant(JsonElement value)
+    public ContentBlock(JsonElement json)
     {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBetaText([NotNullWhen(true)] out BetaTextBlock? value)
@@ -351,6 +382,14 @@ public record class ContentBlock
         return value != null;
     }
 
+    public bool TryPickBetaToolSearchToolResult(
+        [NotNullWhen(true)] out BetaToolSearchToolResultBlock? value
+    )
+    {
+        value = this.Value as BetaToolSearchToolResultBlock;
+        return value != null;
+    }
+
     public bool TryPickBetaMCPToolUse([NotNullWhen(true)] out BetaMCPToolUseBlock? value)
     {
         value = this.Value as BetaMCPToolUseBlock;
@@ -380,6 +419,7 @@ public record class ContentBlock
         System::Action<BetaCodeExecutionToolResultBlock> betaCodeExecutionToolResult,
         System::Action<BetaBashCodeExecutionToolResultBlock> betaBashCodeExecutionToolResult,
         System::Action<BetaTextEditorCodeExecutionToolResultBlock> betaTextEditorCodeExecutionToolResult,
+        System::Action<BetaToolSearchToolResultBlock> betaToolSearchToolResult,
         System::Action<BetaMCPToolUseBlock> betaMCPToolUse,
         System::Action<BetaMCPToolResultBlock> betaMCPToolResult,
         System::Action<BetaContainerUploadBlock> betaContainerUpload
@@ -417,6 +457,9 @@ public record class ContentBlock
             case BetaTextEditorCodeExecutionToolResultBlock value:
                 betaTextEditorCodeExecutionToolResult(value);
                 break;
+            case BetaToolSearchToolResultBlock value:
+                betaToolSearchToolResult(value);
+                break;
             case BetaMCPToolUseBlock value:
                 betaMCPToolUse(value);
                 break;
@@ -447,6 +490,7 @@ public record class ContentBlock
             BetaTextEditorCodeExecutionToolResultBlock,
             T
         > betaTextEditorCodeExecutionToolResult,
+        System::Func<BetaToolSearchToolResultBlock, T> betaToolSearchToolResult,
         System::Func<BetaMCPToolUseBlock, T> betaMCPToolUse,
         System::Func<BetaMCPToolResultBlock, T> betaMCPToolResult,
         System::Func<BetaContainerUploadBlock, T> betaContainerUpload
@@ -465,6 +509,7 @@ public record class ContentBlock
             BetaBashCodeExecutionToolResultBlock value => betaBashCodeExecutionToolResult(value),
             BetaTextEditorCodeExecutionToolResultBlock value =>
                 betaTextEditorCodeExecutionToolResult(value),
+            BetaToolSearchToolResultBlock value => betaToolSearchToolResult(value),
             BetaMCPToolUseBlock value => betaMCPToolUse(value),
             BetaMCPToolResultBlock value => betaMCPToolResult(value),
             BetaContainerUploadBlock value => betaContainerUpload(value),
@@ -498,6 +543,8 @@ public record class ContentBlock
         BetaTextEditorCodeExecutionToolResultBlock value
     ) => new(value);
 
+    public static implicit operator ContentBlock(BetaToolSearchToolResultBlock value) => new(value);
+
     public static implicit operator ContentBlock(BetaMCPToolUseBlock value) => new(value);
 
     public static implicit operator ContentBlock(BetaMCPToolResultBlock value) => new(value);
@@ -506,15 +553,13 @@ public record class ContentBlock
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ContentBlock"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ContentBlockConverter : JsonConverter<ContentBlock>
@@ -540,60 +585,44 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
         {
             case "text":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaTextBlock>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaTextBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "thinking":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaThinkingBlock>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaThinkingBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "redacted_thinking":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRedactedThinkingBlock>(
@@ -603,52 +632,38 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaRedactedThinkingBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "tool_use":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaToolUseBlock>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaToolUseBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "server_tool_use":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlock>(
@@ -658,26 +673,19 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaServerToolUseBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "web_search_tool_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlock>(
@@ -687,26 +695,19 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaWebSearchToolResultBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "web_fetch_tool_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlock>(
@@ -716,26 +717,19 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaWebFetchToolResultBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "code_execution_tool_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlock>(
@@ -745,26 +739,19 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaCodeExecutionToolResultBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "bash_code_execution_tool_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -775,26 +762,19 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaBashCodeExecutionToolResultBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "text_editor_code_execution_tool_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -805,26 +785,41 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaTextEditorCodeExecutionToolResultBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
+            }
+            case "tool_search_tool_result":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlock>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(json);
             }
             case "mcp_tool_use":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaMCPToolUseBlock>(
@@ -834,26 +829,19 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaMCPToolUseBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "mcp_tool_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaMCPToolResultBlock>(
@@ -863,26 +851,19 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaMCPToolResultBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "container_upload":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaContainerUploadBlock>(
@@ -892,27 +873,20 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaContainerUploadBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new ContentBlock(json);
             }
         }
     }
@@ -923,7 +897,6 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

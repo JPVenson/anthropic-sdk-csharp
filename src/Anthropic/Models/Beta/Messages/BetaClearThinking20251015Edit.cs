@@ -9,16 +9,16 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaClearThinking20251015Edit>))]
-public sealed record class BetaClearThinking20251015Edit
-    : ModelBase,
-        IFromRaw<BetaClearThinking20251015Edit>
+[JsonConverter(
+    typeof(ModelConverter<BetaClearThinking20251015Edit, BetaClearThinking20251015EditFromRaw>)
+)]
+public sealed record class BetaClearThinking20251015Edit : ModelBase
 {
     public JsonElement Type
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -28,7 +28,7 @@ public sealed record class BetaClearThinking20251015Edit
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -43,7 +43,7 @@ public sealed record class BetaClearThinking20251015Edit
     {
         get
         {
-            if (!this._properties.TryGetValue("keep", out JsonElement element))
+            if (!this._rawData.TryGetValue("keep", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<Keep?>(element, ModelBase.SerializerOptions);
@@ -55,7 +55,7 @@ public sealed record class BetaClearThinking20251015Edit
                 return;
             }
 
-            this._properties["keep"] = JsonSerializer.SerializeToElement(
+            this._rawData["keep"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -81,27 +81,34 @@ public sealed record class BetaClearThinking20251015Edit
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"");
     }
 
-    public BetaClearThinking20251015Edit(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaClearThinking20251015Edit(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaClearThinking20251015Edit(FrozenDictionary<string, JsonElement> properties)
+    BetaClearThinking20251015Edit(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaClearThinking20251015Edit FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaClearThinking20251015EditFromRaw : IFromRaw<BetaClearThinking20251015Edit>
+{
+    public BetaClearThinking20251015Edit FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaClearThinking20251015Edit.FromRawUnchecked(rawData);
 }
 
 /// <summary>
@@ -111,7 +118,14 @@ public sealed record class BetaClearThinking20251015Edit
 [JsonConverter(typeof(KeepConverter))]
 public record class Keep
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement? Type
     {
@@ -125,29 +139,27 @@ public record class Keep
         }
     }
 
-    public Keep(BetaThinkingTurns value)
+    public Keep(BetaThinkingTurns value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public Keep(BetaAllThinkingTurns value)
+    public Keep(BetaAllThinkingTurns value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public Keep(UnionMember2 value)
+    public Keep(UnionMember2 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    Keep(UnknownVariant value)
+    public Keep(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static Keep CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBetaThinkingTurns([NotNullWhen(true)] out BetaThinkingTurns? value)
@@ -213,13 +225,11 @@ public record class Keep
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Keep");
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class KeepConverter : JsonConverter<Keep>
@@ -230,75 +240,55 @@ sealed class KeepConverter : JsonConverter<Keep>
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<UnionMember2>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<UnionMember2>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new Keep(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'UnionMember2'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaThinkingTurns>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<BetaThinkingTurns>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new Keep(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaThinkingTurns'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaAllThinkingTurns>(
-                ref reader,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<BetaAllThinkingTurns>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new Keep(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaAllThinkingTurns'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(Utf8JsonWriter writer, Keep value, JsonSerializerOptions options)
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }
 

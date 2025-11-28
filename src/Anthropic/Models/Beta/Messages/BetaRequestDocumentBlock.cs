@@ -9,14 +9,14 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRequestDocumentBlock>))]
-public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRequestDocumentBlock>
+[JsonConverter(typeof(ModelConverter<BetaRequestDocumentBlock, BetaRequestDocumentBlockFromRaw>))]
+public sealed record class BetaRequestDocumentBlock : ModelBase
 {
     public required BetaRequestDocumentBlockSource Source
     {
         get
         {
-            if (!this._properties.TryGetValue("source", out JsonElement element))
+            if (!this._rawData.TryGetValue("source", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'source' cannot be null",
                     new System::ArgumentOutOfRangeException("source", "Missing required argument")
@@ -33,7 +33,7 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
         }
         init
         {
-            this._properties["source"] = JsonSerializer.SerializeToElement(
+            this._rawData["source"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -44,7 +44,7 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -54,7 +54,7 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -68,7 +68,7 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
@@ -78,7 +78,7 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
         }
         init
         {
-            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -89,7 +89,7 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
     {
         get
         {
-            if (!this._properties.TryGetValue("citations", out JsonElement element))
+            if (!this._rawData.TryGetValue("citations", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCitationsConfigParam?>(
@@ -99,7 +99,7 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
         }
         init
         {
-            this._properties["citations"] = JsonSerializer.SerializeToElement(
+            this._rawData["citations"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -110,14 +110,14 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
     {
         get
         {
-            if (!this._properties.TryGetValue("context", out JsonElement element))
+            if (!this._rawData.TryGetValue("context", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["context"] = JsonSerializer.SerializeToElement(
+            this._rawData["context"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -128,14 +128,14 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
     {
         get
         {
-            if (!this._properties.TryGetValue("title", out JsonElement element))
+            if (!this._rawData.TryGetValue("title", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["title"] = JsonSerializer.SerializeToElement(
+            this._rawData["title"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -165,26 +165,26 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"document\"");
     }
 
-    public BetaRequestDocumentBlock(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaRequestDocumentBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"document\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaRequestDocumentBlock(FrozenDictionary<string, JsonElement> properties)
+    BetaRequestDocumentBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaRequestDocumentBlock FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -195,10 +195,24 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
     }
 }
 
+class BetaRequestDocumentBlockFromRaw : IFromRaw<BetaRequestDocumentBlock>
+{
+    public BetaRequestDocumentBlock FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaRequestDocumentBlock.FromRawUnchecked(rawData);
+}
+
 [JsonConverter(typeof(BetaRequestDocumentBlockSourceConverter))]
 public record class BetaRequestDocumentBlockSource
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public string? Data
     {
@@ -242,39 +256,39 @@ public record class BetaRequestDocumentBlockSource
         }
     }
 
-    public BetaRequestDocumentBlockSource(BetaBase64PDFSource value)
+    public BetaRequestDocumentBlockSource(BetaBase64PDFSource value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaRequestDocumentBlockSource(BetaPlainTextSource value)
+    public BetaRequestDocumentBlockSource(BetaPlainTextSource value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaRequestDocumentBlockSource(BetaContentBlockSource value)
+    public BetaRequestDocumentBlockSource(BetaContentBlockSource value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaRequestDocumentBlockSource(BetaURLPDFSource value)
+    public BetaRequestDocumentBlockSource(BetaURLPDFSource value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaRequestDocumentBlockSource(BetaFileDocumentSource value)
+    public BetaRequestDocumentBlockSource(BetaFileDocumentSource value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    BetaRequestDocumentBlockSource(UnknownVariant value)
+    public BetaRequestDocumentBlockSource(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static BetaRequestDocumentBlockSource CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBetaBase64PDF([NotNullWhen(true)] out BetaBase64PDFSource? value)
@@ -377,15 +391,13 @@ public record class BetaRequestDocumentBlockSource
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaRequestDocumentBlockSource"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequestDocumentBlockSource>
@@ -411,8 +423,6 @@ sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequest
         {
             case "base64":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaBase64PDFSource>(
@@ -422,26 +432,19 @@ sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequest
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaRequestDocumentBlockSource(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaBase64PDFSource'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "text":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaPlainTextSource>(
@@ -451,26 +454,19 @@ sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequest
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaRequestDocumentBlockSource(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaPlainTextSource'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "content":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaContentBlockSource>(
@@ -480,52 +476,38 @@ sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequest
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaRequestDocumentBlockSource(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaContentBlockSource'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "url":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaURLPDFSource>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaRequestDocumentBlockSource(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaURLPDFSource'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "file":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaFileDocumentSource>(
@@ -535,27 +517,20 @@ sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequest
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaRequestDocumentBlockSource(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaFileDocumentSource'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new BetaRequestDocumentBlockSource(json);
             }
         }
     }
@@ -566,7 +541,6 @@ sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequest
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

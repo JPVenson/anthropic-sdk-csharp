@@ -9,16 +9,16 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<BetaMessageBatchExpiredResult>))]
-public sealed record class BetaMessageBatchExpiredResult
-    : ModelBase,
-        IFromRaw<BetaMessageBatchExpiredResult>
+[JsonConverter(
+    typeof(ModelConverter<BetaMessageBatchExpiredResult, BetaMessageBatchExpiredResultFromRaw>)
+)]
+public sealed record class BetaMessageBatchExpiredResult : ModelBase
 {
     public JsonElement Type
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -28,7 +28,7 @@ public sealed record class BetaMessageBatchExpiredResult
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -53,25 +53,32 @@ public sealed record class BetaMessageBatchExpiredResult
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"expired\"");
     }
 
-    public BetaMessageBatchExpiredResult(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaMessageBatchExpiredResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"expired\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMessageBatchExpiredResult(FrozenDictionary<string, JsonElement> properties)
+    BetaMessageBatchExpiredResult(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaMessageBatchExpiredResult FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaMessageBatchExpiredResultFromRaw : IFromRaw<BetaMessageBatchExpiredResult>
+{
+    public BetaMessageBatchExpiredResult FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaMessageBatchExpiredResult.FromRawUnchecked(rawData);
 }

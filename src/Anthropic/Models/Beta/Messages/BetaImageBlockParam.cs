@@ -9,14 +9,14 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaImageBlockParam>))]
-public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBlockParam>
+[JsonConverter(typeof(ModelConverter<BetaImageBlockParam, BetaImageBlockParamFromRaw>))]
+public sealed record class BetaImageBlockParam : ModelBase
 {
     public required BetaImageBlockParamSource Source
     {
         get
         {
-            if (!this._properties.TryGetValue("source", out JsonElement element))
+            if (!this._rawData.TryGetValue("source", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'source' cannot be null",
                     new System::ArgumentOutOfRangeException("source", "Missing required argument")
@@ -33,7 +33,7 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
         }
         init
         {
-            this._properties["source"] = JsonSerializer.SerializeToElement(
+            this._rawData["source"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -44,7 +44,7 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -54,7 +54,7 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -68,7 +68,7 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
@@ -78,7 +78,7 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
         }
         init
         {
-            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -102,26 +102,26 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"image\"");
     }
 
-    public BetaImageBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaImageBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"image\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaImageBlockParam(FrozenDictionary<string, JsonElement> properties)
+    BetaImageBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaImageBlockParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -132,10 +132,23 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
     }
 }
 
+class BetaImageBlockParamFromRaw : IFromRaw<BetaImageBlockParam>
+{
+    public BetaImageBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaImageBlockParam.FromRawUnchecked(rawData);
+}
+
 [JsonConverter(typeof(BetaImageBlockParamSourceConverter))]
 public record class BetaImageBlockParamSource
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -149,29 +162,27 @@ public record class BetaImageBlockParamSource
         }
     }
 
-    public BetaImageBlockParamSource(BetaBase64ImageSource value)
+    public BetaImageBlockParamSource(BetaBase64ImageSource value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaImageBlockParamSource(BetaURLImageSource value)
+    public BetaImageBlockParamSource(BetaURLImageSource value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaImageBlockParamSource(BetaFileImageSource value)
+    public BetaImageBlockParamSource(BetaFileImageSource value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    BetaImageBlockParamSource(UnknownVariant value)
+    public BetaImageBlockParamSource(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static BetaImageBlockParamSource CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBetaBase64Image([NotNullWhen(true)] out BetaBase64ImageSource? value)
@@ -244,15 +255,13 @@ public record class BetaImageBlockParamSource
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaImageBlockParamSource"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockParamSource>
@@ -278,8 +287,6 @@ sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockPa
         {
             case "base64":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaBase64ImageSource>(
@@ -289,26 +296,19 @@ sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockPa
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaImageBlockParamSource(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaBase64ImageSource'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "url":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaURLImageSource>(
@@ -318,26 +318,19 @@ sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockPa
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaImageBlockParamSource(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaURLImageSource'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "file":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaFileImageSource>(
@@ -347,27 +340,20 @@ sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockPa
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaImageBlockParamSource(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaFileImageSource'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new BetaImageBlockParamSource(json);
             }
         }
     }
@@ -378,7 +364,6 @@ sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockPa
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

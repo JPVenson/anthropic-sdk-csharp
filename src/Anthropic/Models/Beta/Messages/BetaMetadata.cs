@@ -7,8 +7,8 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMetadata>))]
-public sealed record class BetaMetadata : ModelBase, IFromRaw<BetaMetadata>
+[JsonConverter(typeof(ModelConverter<BetaMetadata, BetaMetadataFromRaw>))]
+public sealed record class BetaMetadata : ModelBase
 {
     /// <summary>
     /// An external identifier for the user who is associated with the request.
@@ -21,14 +21,14 @@ public sealed record class BetaMetadata : ModelBase, IFromRaw<BetaMetadata>
     {
         get
         {
-            if (!this._properties.TryGetValue("user_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("user_id", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["user_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["user_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -42,21 +42,27 @@ public sealed record class BetaMetadata : ModelBase, IFromRaw<BetaMetadata>
 
     public BetaMetadata() { }
 
-    public BetaMetadata(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaMetadata(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMetadata(FrozenDictionary<string, JsonElement> properties)
+    BetaMetadata(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static BetaMetadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    public static BetaMetadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaMetadataFromRaw : IFromRaw<BetaMetadata>
+{
+    public BetaMetadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaMetadata.FromRawUnchecked(rawData);
 }

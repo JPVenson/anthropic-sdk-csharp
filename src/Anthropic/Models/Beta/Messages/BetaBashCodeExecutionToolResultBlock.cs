@@ -9,16 +9,19 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaBashCodeExecutionToolResultBlock>))]
-public sealed record class BetaBashCodeExecutionToolResultBlock
-    : ModelBase,
-        IFromRaw<BetaBashCodeExecutionToolResultBlock>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaBashCodeExecutionToolResultBlock,
+        BetaBashCodeExecutionToolResultBlockFromRaw
+    >)
+)]
+public sealed record class BetaBashCodeExecutionToolResultBlock : ModelBase
 {
     public required Content Content
     {
         get
         {
-            if (!this._properties.TryGetValue("content", out JsonElement element))
+            if (!this._rawData.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
@@ -32,7 +35,7 @@ public sealed record class BetaBashCodeExecutionToolResultBlock
         }
         init
         {
-            this._properties["content"] = JsonSerializer.SerializeToElement(
+            this._rawData["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -43,7 +46,7 @@ public sealed record class BetaBashCodeExecutionToolResultBlock
     {
         get
         {
-            if (!this._properties.TryGetValue("tool_use_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("tool_use_id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'tool_use_id' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -60,7 +63,7 @@ public sealed record class BetaBashCodeExecutionToolResultBlock
         }
         init
         {
-            this._properties["tool_use_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["tool_use_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -71,7 +74,7 @@ public sealed record class BetaBashCodeExecutionToolResultBlock
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -81,7 +84,7 @@ public sealed record class BetaBashCodeExecutionToolResultBlock
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -108,33 +111,47 @@ public sealed record class BetaBashCodeExecutionToolResultBlock
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_tool_result\"");
     }
 
-    public BetaBashCodeExecutionToolResultBlock(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaBashCodeExecutionToolResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_tool_result\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaBashCodeExecutionToolResultBlock(FrozenDictionary<string, JsonElement> properties)
+    BetaBashCodeExecutionToolResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaBashCodeExecutionToolResultBlock FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaBashCodeExecutionToolResultBlockFromRaw : IFromRaw<BetaBashCodeExecutionToolResultBlock>
+{
+    public BetaBashCodeExecutionToolResultBlock FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaBashCodeExecutionToolResultBlock.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(ContentConverter))]
 public record class Content
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -147,24 +164,21 @@ public record class Content
         }
     }
 
-    public Content(BetaBashCodeExecutionToolResultError value)
+    public Content(BetaBashCodeExecutionToolResultError value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public Content(BetaBashCodeExecutionResultBlock value)
+    public Content(BetaBashCodeExecutionResultBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    Content(UnknownVariant value)
+    public Content(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static Content CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBetaBashCodeExecutionToolResultError(
@@ -227,13 +241,11 @@ public record class Content
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Content");
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ContentConverter : JsonConverter<Content>
@@ -244,58 +256,46 @@ sealed class ContentConverter : JsonConverter<Content>
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultError>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new Content(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaBashCodeExecutionToolResultError'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionResultBlock>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new Content(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaBashCodeExecutionResultBlock'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(Utf8JsonWriter writer, Content value, JsonSerializerOptions options)
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

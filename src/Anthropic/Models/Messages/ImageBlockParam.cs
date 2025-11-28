@@ -9,14 +9,14 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ImageBlockParam>))]
-public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam>
+[JsonConverter(typeof(ModelConverter<ImageBlockParam, ImageBlockParamFromRaw>))]
+public sealed record class ImageBlockParam : ModelBase
 {
     public required ImageBlockParamSource Source
     {
         get
         {
-            if (!this._properties.TryGetValue("source", out JsonElement element))
+            if (!this._rawData.TryGetValue("source", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'source' cannot be null",
                     new System::ArgumentOutOfRangeException("source", "Missing required argument")
@@ -33,7 +33,7 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
         }
         init
         {
-            this._properties["source"] = JsonSerializer.SerializeToElement(
+            this._rawData["source"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -44,7 +44,7 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -54,7 +54,7 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -68,7 +68,7 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<CacheControlEphemeral?>(
@@ -78,7 +78,7 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
         }
         init
         {
-            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -102,26 +102,24 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"image\"");
     }
 
-    public ImageBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public ImageBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"image\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ImageBlockParam(FrozenDictionary<string, JsonElement> properties)
+    ImageBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static ImageBlockParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
-    )
+    public static ImageBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -132,34 +130,44 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
     }
 }
 
+class ImageBlockParamFromRaw : IFromRaw<ImageBlockParam>
+{
+    public ImageBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        ImageBlockParam.FromRawUnchecked(rawData);
+}
+
 [JsonConverter(typeof(ImageBlockParamSourceConverter))]
 public record class ImageBlockParamSource
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
         get { return Match(base64Image: (x) => x.Type, urlImage: (x) => x.Type); }
     }
 
-    public ImageBlockParamSource(Base64ImageSource value)
+    public ImageBlockParamSource(Base64ImageSource value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ImageBlockParamSource(URLImageSource value)
+    public ImageBlockParamSource(URLImageSource value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    ImageBlockParamSource(UnknownVariant value)
+    public ImageBlockParamSource(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static ImageBlockParamSource CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBase64Image([NotNullWhen(true)] out Base64ImageSource? value)
@@ -215,15 +223,13 @@ public record class ImageBlockParamSource
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ImageBlockParamSource"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSource>
@@ -249,61 +255,45 @@ sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSourc
         {
             case "base64":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<Base64ImageSource>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ImageBlockParamSource(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'Base64ImageSource'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "url":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<URLImageSource>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ImageBlockParamSource(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'URLImageSource'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new ImageBlockParamSource(json);
             }
         }
     }
@@ -314,7 +304,6 @@ sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSourc
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

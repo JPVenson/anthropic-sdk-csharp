@@ -9,14 +9,14 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<CacheControlEphemeral>))]
-public sealed record class CacheControlEphemeral : ModelBase, IFromRaw<CacheControlEphemeral>
+[JsonConverter(typeof(ModelConverter<CacheControlEphemeral, CacheControlEphemeralFromRaw>))]
+public sealed record class CacheControlEphemeral : ModelBase
 {
     public JsonElement Type
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -26,7 +26,7 @@ public sealed record class CacheControlEphemeral : ModelBase, IFromRaw<CacheCont
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -44,7 +44,7 @@ public sealed record class CacheControlEphemeral : ModelBase, IFromRaw<CacheCont
     {
         get
         {
-            if (!this._properties.TryGetValue("ttl", out JsonElement element))
+            if (!this._rawData.TryGetValue("ttl", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ApiEnum<string, TTL>?>(
@@ -59,7 +59,7 @@ public sealed record class CacheControlEphemeral : ModelBase, IFromRaw<CacheCont
                 return;
             }
 
-            this._properties["ttl"] = JsonSerializer.SerializeToElement(
+            this._rawData["ttl"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -85,27 +85,34 @@ public sealed record class CacheControlEphemeral : ModelBase, IFromRaw<CacheCont
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"ephemeral\"");
     }
 
-    public CacheControlEphemeral(IReadOnlyDictionary<string, JsonElement> properties)
+    public CacheControlEphemeral(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"ephemeral\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    CacheControlEphemeral(FrozenDictionary<string, JsonElement> properties)
+    CacheControlEphemeral(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static CacheControlEphemeral FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class CacheControlEphemeralFromRaw : IFromRaw<CacheControlEphemeral>
+{
+    public CacheControlEphemeral FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => CacheControlEphemeral.FromRawUnchecked(rawData);
 }
 
 /// <summary>

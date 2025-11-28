@@ -9,10 +9,13 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCountTokensContextManagementResponse>))]
-public sealed record class BetaCountTokensContextManagementResponse
-    : ModelBase,
-        IFromRaw<BetaCountTokensContextManagementResponse>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaCountTokensContextManagementResponse,
+        BetaCountTokensContextManagementResponseFromRaw
+    >)
+)]
+public sealed record class BetaCountTokensContextManagementResponse : ModelBase
 {
     /// <summary>
     /// The original token count before context management was applied
@@ -21,7 +24,7 @@ public sealed record class BetaCountTokensContextManagementResponse
     {
         get
         {
-            if (!this._properties.TryGetValue("original_input_tokens", out JsonElement element))
+            if (!this._rawData.TryGetValue("original_input_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'original_input_tokens' cannot be null",
                     new ArgumentOutOfRangeException(
@@ -34,7 +37,7 @@ public sealed record class BetaCountTokensContextManagementResponse
         }
         init
         {
-            this._properties["original_input_tokens"] = JsonSerializer.SerializeToElement(
+            this._rawData["original_input_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -49,25 +52,25 @@ public sealed record class BetaCountTokensContextManagementResponse
     public BetaCountTokensContextManagementResponse() { }
 
     public BetaCountTokensContextManagementResponse(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaCountTokensContextManagementResponse(FrozenDictionary<string, JsonElement> properties)
+    BetaCountTokensContextManagementResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaCountTokensContextManagementResponse FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -76,4 +79,12 @@ public sealed record class BetaCountTokensContextManagementResponse
     {
         this.OriginalInputTokens = originalInputTokens;
     }
+}
+
+class BetaCountTokensContextManagementResponseFromRaw
+    : IFromRaw<BetaCountTokensContextManagementResponse>
+{
+    public BetaCountTokensContextManagementResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaCountTokensContextManagementResponse.FromRawUnchecked(rawData);
 }

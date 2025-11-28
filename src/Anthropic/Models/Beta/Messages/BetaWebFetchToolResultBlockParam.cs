@@ -9,16 +9,19 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaWebFetchToolResultBlockParam>))]
-public sealed record class BetaWebFetchToolResultBlockParam
-    : ModelBase,
-        IFromRaw<BetaWebFetchToolResultBlockParam>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaWebFetchToolResultBlockParam,
+        BetaWebFetchToolResultBlockParamFromRaw
+    >)
+)]
+public sealed record class BetaWebFetchToolResultBlockParam : ModelBase
 {
     public required BetaWebFetchToolResultBlockParamContent Content
     {
         get
         {
-            if (!this._properties.TryGetValue("content", out JsonElement element))
+            if (!this._rawData.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
@@ -35,7 +38,7 @@ public sealed record class BetaWebFetchToolResultBlockParam
         }
         init
         {
-            this._properties["content"] = JsonSerializer.SerializeToElement(
+            this._rawData["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -46,7 +49,7 @@ public sealed record class BetaWebFetchToolResultBlockParam
     {
         get
         {
-            if (!this._properties.TryGetValue("tool_use_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("tool_use_id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'tool_use_id' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -63,7 +66,7 @@ public sealed record class BetaWebFetchToolResultBlockParam
         }
         init
         {
-            this._properties["tool_use_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["tool_use_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -74,7 +77,7 @@ public sealed record class BetaWebFetchToolResultBlockParam
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -84,7 +87,7 @@ public sealed record class BetaWebFetchToolResultBlockParam
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -98,7 +101,7 @@ public sealed record class BetaWebFetchToolResultBlockParam
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
@@ -108,7 +111,7 @@ public sealed record class BetaWebFetchToolResultBlockParam
         }
         init
         {
-            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -136,33 +139,47 @@ public sealed record class BetaWebFetchToolResultBlockParam
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_tool_result\"");
     }
 
-    public BetaWebFetchToolResultBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaWebFetchToolResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_tool_result\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaWebFetchToolResultBlockParam(FrozenDictionary<string, JsonElement> properties)
+    BetaWebFetchToolResultBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaWebFetchToolResultBlockParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaWebFetchToolResultBlockParamFromRaw : IFromRaw<BetaWebFetchToolResultBlockParam>
+{
+    public BetaWebFetchToolResultBlockParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaWebFetchToolResultBlockParam.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(BetaWebFetchToolResultBlockParamContentConverter))]
 public record class BetaWebFetchToolResultBlockParamContent
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -175,24 +192,27 @@ public record class BetaWebFetchToolResultBlockParamContent
         }
     }
 
-    public BetaWebFetchToolResultBlockParamContent(BetaWebFetchToolResultErrorBlockParam value)
+    public BetaWebFetchToolResultBlockParamContent(
+        BetaWebFetchToolResultErrorBlockParam value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaWebFetchToolResultBlockParamContent(BetaWebFetchBlockParam value)
+    public BetaWebFetchToolResultBlockParamContent(
+        BetaWebFetchBlockParam value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    BetaWebFetchToolResultBlockParamContent(UnknownVariant value)
+    public BetaWebFetchToolResultBlockParamContent(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static BetaWebFetchToolResultBlockParamContent CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBetaWebFetchToolResultErrorBlockParam(
@@ -259,15 +279,13 @@ public record class BetaWebFetchToolResultBlockParamContent
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaWebFetchToolResultBlockParamContent"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaWebFetchToolResultBlockParamContentConverter
@@ -279,53 +297,39 @@ sealed class BetaWebFetchToolResultBlockParamContentConverter
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultErrorBlockParam>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaWebFetchToolResultBlockParamContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaWebFetchToolResultErrorBlockParam'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlockParam>(
-                ref reader,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlockParam>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaWebFetchToolResultBlockParamContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaWebFetchBlockParam'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(
@@ -334,7 +338,6 @@ sealed class BetaWebFetchToolResultBlockParamContentConverter
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

@@ -10,14 +10,14 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ToolResultBlockParam>))]
-public sealed record class ToolResultBlockParam : ModelBase, IFromRaw<ToolResultBlockParam>
+[JsonConverter(typeof(ModelConverter<ToolResultBlockParam, ToolResultBlockParamFromRaw>))]
+public sealed record class ToolResultBlockParam : ModelBase
 {
     public required string ToolUseID
     {
         get
         {
-            if (!this._properties.TryGetValue("tool_use_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("tool_use_id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'tool_use_id' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -34,7 +34,7 @@ public sealed record class ToolResultBlockParam : ModelBase, IFromRaw<ToolResult
         }
         init
         {
-            this._properties["tool_use_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["tool_use_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -45,7 +45,7 @@ public sealed record class ToolResultBlockParam : ModelBase, IFromRaw<ToolResult
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -55,7 +55,7 @@ public sealed record class ToolResultBlockParam : ModelBase, IFromRaw<ToolResult
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -69,7 +69,7 @@ public sealed record class ToolResultBlockParam : ModelBase, IFromRaw<ToolResult
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<CacheControlEphemeral?>(
@@ -79,7 +79,7 @@ public sealed record class ToolResultBlockParam : ModelBase, IFromRaw<ToolResult
         }
         init
         {
-            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -90,7 +90,7 @@ public sealed record class ToolResultBlockParam : ModelBase, IFromRaw<ToolResult
     {
         get
         {
-            if (!this._properties.TryGetValue("content", out JsonElement element))
+            if (!this._rawData.TryGetValue("content", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ToolResultBlockParamContent?>(
@@ -105,7 +105,7 @@ public sealed record class ToolResultBlockParam : ModelBase, IFromRaw<ToolResult
                 return;
             }
 
-            this._properties["content"] = JsonSerializer.SerializeToElement(
+            this._rawData["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -116,7 +116,7 @@ public sealed record class ToolResultBlockParam : ModelBase, IFromRaw<ToolResult
     {
         get
         {
-            if (!this._properties.TryGetValue("is_error", out JsonElement element))
+            if (!this._rawData.TryGetValue("is_error", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
@@ -128,7 +128,7 @@ public sealed record class ToolResultBlockParam : ModelBase, IFromRaw<ToolResult
                 return;
             }
 
-            this._properties["is_error"] = JsonSerializer.SerializeToElement(
+            this._rawData["is_error"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -157,26 +157,26 @@ public sealed record class ToolResultBlockParam : ModelBase, IFromRaw<ToolResult
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_result\"");
     }
 
-    public ToolResultBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public ToolResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_result\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ToolResultBlockParam(FrozenDictionary<string, JsonElement> properties)
+    ToolResultBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static ToolResultBlockParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -187,29 +187,40 @@ public sealed record class ToolResultBlockParam : ModelBase, IFromRaw<ToolResult
     }
 }
 
+class ToolResultBlockParamFromRaw : IFromRaw<ToolResultBlockParam>
+{
+    public ToolResultBlockParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => ToolResultBlockParam.FromRawUnchecked(rawData);
+}
+
 [JsonConverter(typeof(ToolResultBlockParamContentConverter))]
 public record class ToolResultBlockParamContent
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
 
-    public ToolResultBlockParamContent(string value)
+    JsonElement? _json = null;
+
+    public JsonElement Json
     {
-        Value = value;
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public ToolResultBlockParamContent(IReadOnlyList<Block> value)
+    public ToolResultBlockParamContent(string value, JsonElement? json = null)
     {
-        Value = ImmutableArray.ToImmutableArray(value);
+        this.Value = value;
+        this._json = json;
     }
 
-    ToolResultBlockParamContent(UnknownVariant value)
+    public ToolResultBlockParamContent(IReadOnlyList<Block> value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = ImmutableArray.ToImmutableArray(value);
+        this._json = json;
     }
 
-    public static ToolResultBlockParamContent CreateUnknownVariant(JsonElement value)
+    public ToolResultBlockParamContent(JsonElement json)
     {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickString([NotNullWhen(true)] out string? value)
@@ -260,15 +271,13 @@ public record class ToolResultBlockParamContent
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ToolResultBlockParamContent"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ToolResultBlockParamContentConverter : JsonConverter<ToolResultBlockParamContent>
@@ -279,42 +288,34 @@ sealed class ToolResultBlockParamContentConverter : JsonConverter<ToolResultBloc
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<string>(json, options);
             if (deserialized != null)
             {
-                return new ToolResultBlockParamContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException("Data does not match union variant 'string'", e)
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<Block>>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<List<Block>>(json, options);
             if (deserialized != null)
             {
-                return new ToolResultBlockParamContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'List<Block>'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(
@@ -323,15 +324,21 @@ sealed class ToolResultBlockParamContentConverter : JsonConverter<ToolResultBloc
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }
 
 [JsonConverter(typeof(BlockConverter))]
 public record class Block
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -372,34 +379,33 @@ public record class Block
         }
     }
 
-    public Block(TextBlockParam value)
+    public Block(TextBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public Block(ImageBlockParam value)
+    public Block(ImageBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public Block(SearchResultBlockParam value)
+    public Block(SearchResultBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public Block(DocumentBlockParam value)
+    public Block(DocumentBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    Block(UnknownVariant value)
+    public Block(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static Block CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickTextBlockParam([NotNullWhen(true)] out TextBlockParam? value)
@@ -479,13 +485,11 @@ public record class Block
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Block");
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BlockConverter : JsonConverter<Block>
@@ -511,60 +515,44 @@ sealed class BlockConverter : JsonConverter<Block>
         {
             case "text":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<TextBlockParam>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new Block(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'TextBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "image":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new Block(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'ImageBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "search_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<SearchResultBlockParam>(
@@ -574,26 +562,19 @@ sealed class BlockConverter : JsonConverter<Block>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new Block(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'SearchResultBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "document":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<DocumentBlockParam>(
@@ -603,34 +584,26 @@ sealed class BlockConverter : JsonConverter<Block>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new Block(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'DocumentBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new Block(json);
             }
         }
     }
 
     public override void Write(Utf8JsonWriter writer, Block value, JsonSerializerOptions options)
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

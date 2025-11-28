@@ -10,16 +10,16 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaClearToolUses20250919Edit>))]
-public sealed record class BetaClearToolUses20250919Edit
-    : ModelBase,
-        IFromRaw<BetaClearToolUses20250919Edit>
+[JsonConverter(
+    typeof(ModelConverter<BetaClearToolUses20250919Edit, BetaClearToolUses20250919EditFromRaw>)
+)]
+public sealed record class BetaClearToolUses20250919Edit : ModelBase
 {
     public JsonElement Type
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -29,7 +29,7 @@ public sealed record class BetaClearToolUses20250919Edit
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -44,7 +44,7 @@ public sealed record class BetaClearToolUses20250919Edit
     {
         get
         {
-            if (!this._properties.TryGetValue("clear_at_least", out JsonElement element))
+            if (!this._rawData.TryGetValue("clear_at_least", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaInputTokensClearAtLeast?>(
@@ -54,7 +54,7 @@ public sealed record class BetaClearToolUses20250919Edit
         }
         init
         {
-            this._properties["clear_at_least"] = JsonSerializer.SerializeToElement(
+            this._rawData["clear_at_least"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -68,7 +68,7 @@ public sealed record class BetaClearToolUses20250919Edit
     {
         get
         {
-            if (!this._properties.TryGetValue("clear_tool_inputs", out JsonElement element))
+            if (!this._rawData.TryGetValue("clear_tool_inputs", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ClearToolInputs?>(
@@ -78,7 +78,7 @@ public sealed record class BetaClearToolUses20250919Edit
         }
         init
         {
-            this._properties["clear_tool_inputs"] = JsonSerializer.SerializeToElement(
+            this._rawData["clear_tool_inputs"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -88,18 +88,18 @@ public sealed record class BetaClearToolUses20250919Edit
     /// <summary>
     /// Tool names whose uses are preserved from clearing
     /// </summary>
-    public List<string>? ExcludeTools
+    public IReadOnlyList<string>? ExcludeTools
     {
         get
         {
-            if (!this._properties.TryGetValue("exclude_tools", out JsonElement element))
+            if (!this._rawData.TryGetValue("exclude_tools", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["exclude_tools"] = JsonSerializer.SerializeToElement(
+            this._rawData["exclude_tools"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -113,7 +113,7 @@ public sealed record class BetaClearToolUses20250919Edit
     {
         get
         {
-            if (!this._properties.TryGetValue("keep", out JsonElement element))
+            if (!this._rawData.TryGetValue("keep", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaToolUsesKeep?>(
@@ -128,7 +128,7 @@ public sealed record class BetaClearToolUses20250919Edit
                 return;
             }
 
-            this._properties["keep"] = JsonSerializer.SerializeToElement(
+            this._rawData["keep"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -142,7 +142,7 @@ public sealed record class BetaClearToolUses20250919Edit
     {
         get
         {
-            if (!this._properties.TryGetValue("trigger", out JsonElement element))
+            if (!this._rawData.TryGetValue("trigger", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<Trigger?>(element, ModelBase.SerializerOptions);
@@ -154,7 +154,7 @@ public sealed record class BetaClearToolUses20250919Edit
                 return;
             }
 
-            this._properties["trigger"] = JsonSerializer.SerializeToElement(
+            this._rawData["trigger"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -184,27 +184,34 @@ public sealed record class BetaClearToolUses20250919Edit
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_tool_uses_20250919\"");
     }
 
-    public BetaClearToolUses20250919Edit(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaClearToolUses20250919Edit(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_tool_uses_20250919\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaClearToolUses20250919Edit(FrozenDictionary<string, JsonElement> properties)
+    BetaClearToolUses20250919Edit(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaClearToolUses20250919Edit FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaClearToolUses20250919EditFromRaw : IFromRaw<BetaClearToolUses20250919Edit>
+{
+    public BetaClearToolUses20250919Edit FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaClearToolUses20250919Edit.FromRawUnchecked(rawData);
 }
 
 /// <summary>
@@ -213,26 +220,30 @@ public sealed record class BetaClearToolUses20250919Edit
 [JsonConverter(typeof(ClearToolInputsConverter))]
 public record class ClearToolInputs
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
 
-    public ClearToolInputs(bool value)
+    JsonElement? _json = null;
+
+    public JsonElement Json
     {
-        Value = value;
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public ClearToolInputs(IReadOnlyList<string> value)
+    public ClearToolInputs(bool value, JsonElement? json = null)
     {
-        Value = ImmutableArray.ToImmutableArray(value);
+        this.Value = value;
+        this._json = json;
     }
 
-    ClearToolInputs(UnknownVariant value)
+    public ClearToolInputs(IReadOnlyList<string> value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = ImmutableArray.ToImmutableArray(value);
+        this._json = json;
     }
 
-    public static ClearToolInputs CreateUnknownVariant(JsonElement value)
+    public ClearToolInputs(JsonElement json)
     {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBool([NotNullWhen(true)] out bool? value)
@@ -283,15 +294,13 @@ public record class ClearToolInputs
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ClearToolInputs"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
@@ -302,38 +311,30 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            return new ClearToolInputs(JsonSerializer.Deserialize<bool>(ref reader, options));
+            return new(JsonSerializer.Deserialize<bool>(json, options));
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException("Data does not match union variant 'bool'", e)
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<string>>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<List<string>>(json, options);
             if (deserialized != null)
             {
-                return new ClearToolInputs(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'List<string>'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(
@@ -342,8 +343,7 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
         JsonSerializerOptions options
     )
     {
-        object? variant = value?.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value?.Json, options);
     }
 }
 
@@ -353,7 +353,14 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
 [JsonConverter(typeof(TriggerConverter))]
 public record class Trigger
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -365,24 +372,21 @@ public record class Trigger
         get { return Match(betaInputTokens: (x) => x.Value, betaToolUses: (x) => x.Value); }
     }
 
-    public Trigger(BetaInputTokensTrigger value)
+    public Trigger(BetaInputTokensTrigger value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public Trigger(BetaToolUsesTrigger value)
+    public Trigger(BetaToolUsesTrigger value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    Trigger(UnknownVariant value)
+    public Trigger(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static Trigger CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBetaInputTokens([NotNullWhen(true)] out BetaInputTokensTrigger? value)
@@ -438,13 +442,11 @@ public record class Trigger
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Trigger");
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class TriggerConverter : JsonConverter<Trigger>
@@ -470,8 +472,6 @@ sealed class TriggerConverter : JsonConverter<Trigger>
         {
             case "input_tokens":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaInputTokensTrigger>(
@@ -481,26 +481,19 @@ sealed class TriggerConverter : JsonConverter<Trigger>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new Trigger(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaInputTokensTrigger'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "tool_uses":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaToolUsesTrigger>(
@@ -510,34 +503,26 @@ sealed class TriggerConverter : JsonConverter<Trigger>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new Trigger(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaToolUsesTrigger'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new Trigger(json);
             }
         }
     }
 
     public override void Write(Utf8JsonWriter writer, Trigger value, JsonSerializerOptions options)
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

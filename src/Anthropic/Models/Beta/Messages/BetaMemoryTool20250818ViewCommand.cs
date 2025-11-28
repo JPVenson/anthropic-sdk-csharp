@@ -9,10 +9,13 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMemoryTool20250818ViewCommand>))]
-public sealed record class BetaMemoryTool20250818ViewCommand
-    : ModelBase,
-        IFromRaw<BetaMemoryTool20250818ViewCommand>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaMemoryTool20250818ViewCommand,
+        BetaMemoryTool20250818ViewCommandFromRaw
+    >)
+)]
+public sealed record class BetaMemoryTool20250818ViewCommand : ModelBase
 {
     /// <summary>
     /// Command type identifier
@@ -21,7 +24,7 @@ public sealed record class BetaMemoryTool20250818ViewCommand
     {
         get
         {
-            if (!this._properties.TryGetValue("command", out JsonElement element))
+            if (!this._rawData.TryGetValue("command", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'command' cannot be null",
                     new ArgumentOutOfRangeException("command", "Missing required argument")
@@ -31,7 +34,7 @@ public sealed record class BetaMemoryTool20250818ViewCommand
         }
         init
         {
-            this._properties["command"] = JsonSerializer.SerializeToElement(
+            this._rawData["command"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -45,7 +48,7 @@ public sealed record class BetaMemoryTool20250818ViewCommand
     {
         get
         {
-            if (!this._properties.TryGetValue("path", out JsonElement element))
+            if (!this._rawData.TryGetValue("path", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'path' cannot be null",
                     new ArgumentOutOfRangeException("path", "Missing required argument")
@@ -59,7 +62,7 @@ public sealed record class BetaMemoryTool20250818ViewCommand
         }
         init
         {
-            this._properties["path"] = JsonSerializer.SerializeToElement(
+            this._rawData["path"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -69,11 +72,11 @@ public sealed record class BetaMemoryTool20250818ViewCommand
     /// <summary>
     /// Optional line range for viewing specific lines
     /// </summary>
-    public List<long>? ViewRange
+    public IReadOnlyList<long>? ViewRange
     {
         get
         {
-            if (!this._properties.TryGetValue("view_range", out JsonElement element))
+            if (!this._rawData.TryGetValue("view_range", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<long>?>(element, ModelBase.SerializerOptions);
@@ -85,7 +88,7 @@ public sealed record class BetaMemoryTool20250818ViewCommand
                 return;
             }
 
-            this._properties["view_range"] = JsonSerializer.SerializeToElement(
+            this._rawData["view_range"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -112,26 +115,26 @@ public sealed record class BetaMemoryTool20250818ViewCommand
         this.Command = JsonSerializer.Deserialize<JsonElement>("\"view\"");
     }
 
-    public BetaMemoryTool20250818ViewCommand(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaMemoryTool20250818ViewCommand(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Command = JsonSerializer.Deserialize<JsonElement>("\"view\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMemoryTool20250818ViewCommand(FrozenDictionary<string, JsonElement> properties)
+    BetaMemoryTool20250818ViewCommand(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaMemoryTool20250818ViewCommand FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -140,4 +143,11 @@ public sealed record class BetaMemoryTool20250818ViewCommand
     {
         this.Path = path;
     }
+}
+
+class BetaMemoryTool20250818ViewCommandFromRaw : IFromRaw<BetaMemoryTool20250818ViewCommand>
+{
+    public BetaMemoryTool20250818ViewCommand FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaMemoryTool20250818ViewCommand.FromRawUnchecked(rawData);
 }

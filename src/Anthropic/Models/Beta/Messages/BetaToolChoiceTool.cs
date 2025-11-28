@@ -12,8 +12,8 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// The model will use the specified tool with `tool_choice.name`.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaToolChoiceTool>))]
-public sealed record class BetaToolChoiceTool : ModelBase, IFromRaw<BetaToolChoiceTool>
+[JsonConverter(typeof(ModelConverter<BetaToolChoiceTool, BetaToolChoiceToolFromRaw>))]
+public sealed record class BetaToolChoiceTool : ModelBase
 {
     /// <summary>
     /// The name of the tool to use.
@@ -22,7 +22,7 @@ public sealed record class BetaToolChoiceTool : ModelBase, IFromRaw<BetaToolChoi
     {
         get
         {
-            if (!this._properties.TryGetValue("name", out JsonElement element))
+            if (!this._rawData.TryGetValue("name", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'name' cannot be null",
                     new ArgumentOutOfRangeException("name", "Missing required argument")
@@ -36,7 +36,7 @@ public sealed record class BetaToolChoiceTool : ModelBase, IFromRaw<BetaToolChoi
         }
         init
         {
-            this._properties["name"] = JsonSerializer.SerializeToElement(
+            this._rawData["name"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -47,7 +47,7 @@ public sealed record class BetaToolChoiceTool : ModelBase, IFromRaw<BetaToolChoi
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -57,7 +57,7 @@ public sealed record class BetaToolChoiceTool : ModelBase, IFromRaw<BetaToolChoi
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -74,7 +74,7 @@ public sealed record class BetaToolChoiceTool : ModelBase, IFromRaw<BetaToolChoi
     {
         get
         {
-            if (!this._properties.TryGetValue("disable_parallel_tool_use", out JsonElement element))
+            if (!this._rawData.TryGetValue("disable_parallel_tool_use", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
@@ -86,7 +86,7 @@ public sealed record class BetaToolChoiceTool : ModelBase, IFromRaw<BetaToolChoi
                 return;
             }
 
-            this._properties["disable_parallel_tool_use"] = JsonSerializer.SerializeToElement(
+            this._rawData["disable_parallel_tool_use"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -108,26 +108,26 @@ public sealed record class BetaToolChoiceTool : ModelBase, IFromRaw<BetaToolChoi
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool\"");
     }
 
-    public BetaToolChoiceTool(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaToolChoiceTool(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaToolChoiceTool(FrozenDictionary<string, JsonElement> properties)
+    BetaToolChoiceTool(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaToolChoiceTool FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -136,4 +136,10 @@ public sealed record class BetaToolChoiceTool : ModelBase, IFromRaw<BetaToolChoi
     {
         this.Name = name;
     }
+}
+
+class BetaToolChoiceToolFromRaw : IFromRaw<BetaToolChoiceTool>
+{
+    public BetaToolChoiceTool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaToolChoiceTool.FromRawUnchecked(rawData);
 }

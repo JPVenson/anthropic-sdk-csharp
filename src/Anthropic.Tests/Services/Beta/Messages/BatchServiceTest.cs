@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Anthropic.Tests;
 using Anthropic.Models.Beta.Messages.Batches;
+using Anthropic.Tests;
 using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Services.Beta.Messages;
@@ -28,7 +28,7 @@ public class BatchServiceTest
                             [
                                 new() { Content = "Hello, world", Role = Messages::Role.User },
                             ],
-                            Model = global::Anthropic.Models.Messages.Model.Claude3_7SonnetLatest,
+                            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
                             Container = new Messages::BetaContainerParams()
                             {
                                 ID = "id",
@@ -71,6 +71,7 @@ public class BatchServiceTest
                                 },
                             ],
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                            OutputConfig = new() { Effort = Messages::Effort.Low },
                             OutputFormat = new()
                             {
                                 Schema = new Dictionary<string, JsonElement>()
@@ -113,7 +114,7 @@ public class BatchServiceTest
                                 {
                                     InputSchema = new()
                                     {
-                                        Properties1 = new Dictionary<string, JsonElement>()
+                                        Properties = new Dictionary<string, JsonElement>()
                                         {
                                             {
                                                 "location",
@@ -124,8 +125,17 @@ public class BatchServiceTest
                                         Required = ["location"],
                                     },
                                     Name = "name",
+                                    AllowedCallers = [Messages::AllowedCaller2.Direct],
                                     CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                                    DeferLoading = true,
                                     Description = "Get the current weather in a given location",
+                                    InputExamples =
+                                    [
+                                        new Dictionary<string, JsonElement>()
+                                        {
+                                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                                        },
+                                    ],
                                     Strict = true,
                                     Type = Messages::BetaToolType.Custom,
                                 },
@@ -140,18 +150,14 @@ public class BatchServiceTest
         betaMessageBatch.Validate();
     }
 
-    
     [Theory]
     [AnthropicTestClients]
     public async Task Retrieve_Works(IAnthropicClient client)
     {
-        var betaMessageBatch = await client.Beta.Messages.Batches.Retrieve(
-            new() { MessageBatchID = "message_batch_id" }
-        );
+        var betaMessageBatch = await client.Beta.Messages.Batches.Retrieve("message_batch_id");
         betaMessageBatch.Validate();
     }
 
-    
     [Theory]
     [AnthropicTestClients]
     public async Task List_Works(IAnthropicClient client)
@@ -160,25 +166,19 @@ public class BatchServiceTest
         page.Validate();
     }
 
-    
     [Theory]
     [AnthropicTestClients]
     public async Task Delete_Works(IAnthropicClient client)
     {
-        var betaDeletedMessageBatch = await client.Beta.Messages.Batches.Delete(
-            new() { MessageBatchID = "message_batch_id" }
-        );
+        var betaDeletedMessageBatch = await client.Beta.Messages.Batches.Delete("message_batch_id");
         betaDeletedMessageBatch.Validate();
     }
 
-    
     [Theory]
     [AnthropicTestClients]
     public async Task Cancel_Works(IAnthropicClient client)
     {
-        var betaMessageBatch = await client.Beta.Messages.Batches.Cancel(
-            new() { MessageBatchID = "message_batch_id" }
-        );
+        var betaMessageBatch = await client.Beta.Messages.Batches.Cancel("message_batch_id");
         betaMessageBatch.Validate();
     }
 
@@ -186,9 +186,7 @@ public class BatchServiceTest
     [AnthropicTestClients]
     public async Task ResultsStreaming_Works(IAnthropicClient client)
     {
-        var stream = client.Beta.Messages.Batches.ResultsStreaming(
-            new() { MessageBatchID = "message_batch_id" }
-        );
+        var stream = client.Beta.Messages.Batches.ResultsStreaming("message_batch_id");
 
         await foreach (var betaMessageBatchIndividualResponse in stream)
         {
