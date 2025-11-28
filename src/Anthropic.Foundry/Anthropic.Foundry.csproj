@@ -7,7 +7,6 @@
     <AssemblyName>Anthropic.Foundry</AssemblyName>
   </PropertyGroup>
 
-
   <ItemGroup>
     <ProjectReference Include="..\Anthropic\Anthropic.csproj" />
   </ItemGroup>
