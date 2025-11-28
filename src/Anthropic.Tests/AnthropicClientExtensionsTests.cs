@@ -1,3 +1,4 @@
+#if NET
 using System;
 using System.Threading.Tasks;
 using Anthropic;
@@ -223,3 +224,4 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
         Assert.NotNull(response);
     }
 }
+#endif

@@ -1,3 +1,5 @@
+#if NET
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1063,3 +1065,4 @@ public static class AnthropicClientExtensions
                 : base.GetService(serviceType!, serviceKey);
     }
 }
+#endif
