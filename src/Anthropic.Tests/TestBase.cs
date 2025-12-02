@@ -17,9 +17,9 @@ public abstract class TestBase
         client = new AnthropicClient()
         {
             BaseUrl = new Uri(
-                Environment.GetEnvironmentVariable("TEST_API_BASE_URL") ?? "http://localhost:4010"
+                AnthropicTestClientsAttribute.DataServiceUrl
             ),
-            APIKey = "my-anthropic-api-key",
+            APIKey = AnthropicTestClientsAttribute.ApiKey,
         };
     }
 }
