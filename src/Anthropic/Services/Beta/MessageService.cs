@@ -12,8 +12,10 @@ using Anthropic.Services.Beta.Messages;
 
 namespace Anthropic.Services.Beta;
 
+/// <inheritdoc />
 public sealed class MessageService : global::Anthropic.Services.Beta.IMessageService
 {
+    /// <inheritdoc/>
     public global::Anthropic.Services.Beta.IMessageService WithOptions(
         Func<ClientOptions, ClientOptions> modifier
     )
@@ -37,6 +39,7 @@ public sealed class MessageService : global::Anthropic.Services.Beta.IMessageSer
         get { return _batches.Value; }
     }
 
+    /// <inheritdoc/>
     public async Task<BetaMessage> Create(
         MessageCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -66,25 +69,20 @@ public sealed class MessageService : global::Anthropic.Services.Beta.IMessageSer
         return betaMessage;
     }
 
+    /// <inheritdoc/>
     public async IAsyncEnumerable<BetaRawMessageStreamEvent> CreateStreaming(
         MessageCreateParams parameters,
         [EnumeratorCancellation] CancellationToken cancellationToken = default
     )
     {
-#if NET5_0_OR_GREATER
-        Dictionary<string, JsonElement> rawBodyData = new(parameters.RawBodyData)
-        {
-            ["stream"] = JsonSerializer.Deserialize<JsonElement>("true"),
-        };
-#else
-        var rawBodyData = parameters.RawBodyData.ToDictionary(e => e.Key, e => e.Value);
+        var rawBodyData = Enumerable.ToDictionary(parameters.RawBodyData, e => e.Key, e => e.Value);
         rawBodyData["stream"] = JsonSerializer.Deserialize<JsonElement>("true");
-#endif
         parameters = MessageCreateParams.FromRawUnchecked(
             parameters.RawHeaderData,
             parameters.RawQueryData,
             rawBodyData
         );
+
         HttpRequest<MessageCreateParams> request = new()
         {
             Method = HttpMethod.Post,
@@ -110,6 +108,7 @@ public sealed class MessageService : global::Anthropic.Services.Beta.IMessageSer
         }
     }
 
+    /// <inheritdoc/>
     public async Task<BetaMessageTokensCount> CountTokens(
         MessageCountTokensParams parameters,
         CancellationToken cancellationToken = default

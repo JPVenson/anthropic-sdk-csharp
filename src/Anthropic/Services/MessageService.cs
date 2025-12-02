@@ -12,8 +12,10 @@ using Anthropic.Services.Messages;
 
 namespace Anthropic.Services;
 
+/// <inheritdoc />
 public sealed class MessageService : IMessageService
 {
+    /// <inheritdoc/>
     public IMessageService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new MessageService(this._client.WithOptions(modifier));
@@ -33,6 +35,7 @@ public sealed class MessageService : IMessageService
         get { return _batches.Value; }
     }
 
+    /// <inheritdoc/>
     public async Task<Message> Create(
         MessageCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -60,20 +63,14 @@ public sealed class MessageService : IMessageService
         return message;
     }
 
+    /// <inheritdoc/>
     public async IAsyncEnumerable<RawMessageStreamEvent> CreateStreaming(
         MessageCreateParams parameters,
         [EnumeratorCancellation] CancellationToken cancellationToken = default
     )
     {
-#if NET5_0_OR_GREATER
-        Dictionary<string, JsonElement> rawBodyData = new(parameters.RawBodyData)
-        {
-            ["stream"] = JsonSerializer.Deserialize<JsonElement>("true"),
-        };
-#else
-        var rawBodyData = parameters.RawBodyData.ToDictionary(e => e.Key, e => e.Value);
+        var rawBodyData = Enumerable.ToDictionary(parameters.RawBodyData, e => e.Key, e => e.Value);
         rawBodyData["stream"] = JsonSerializer.Deserialize<JsonElement>("true");
-#endif
         parameters = MessageCreateParams.FromRawUnchecked(
             parameters.RawHeaderData,
             parameters.RawQueryData,
@@ -105,6 +102,7 @@ public sealed class MessageService : IMessageService
         }
     }
 
+    /// <inheritdoc/>
     public async Task<MessageTokensCount> CountTokens(
         MessageCountTokensParams parameters,
         CancellationToken cancellationToken = default
