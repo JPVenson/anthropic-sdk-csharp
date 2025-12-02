@@ -11,6 +11,7 @@ public class MessageServiceTest
     [AnthropicTestClients]
     [AnthropicTestData(TestSupportTypes.Anthropic, "Claude3_7SonnetLatest")]
     [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-4-5")]
+    [AnthropicTestData(TestSupportTypes.Bedrock, "global.anthropic.claude-haiku-4-5-20251001-v1:0")]
     public async Task Create_Works(IAnthropicClient client, string modelName)
     {
         var message = await client.Messages.Create(
