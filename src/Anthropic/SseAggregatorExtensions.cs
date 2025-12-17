@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Anthropic.Services.Messages;
 using Anthropic.Models.Beta.Messages;
 using Anthropic.Models.Messages;
+using Anthropic.Services.Messages;
 
 namespace Anthropic;
 
@@ -11,7 +11,6 @@ namespace Anthropic;
 /// </summary>
 public static class SseAggregatorExtensions
 {
-
     /// <summary>
     /// Aggregates all messages received by the streaming event and aggregates them into a single object once the sender indicated a fully delivered stream.
     /// </summary>
@@ -27,7 +26,9 @@ public static class SseAggregatorExtensions
     /// </summary>
     /// <param name="source">A enumerable as provided by the <see cref="IBetaService.CreateStreaming(Models.Beta.Messages.MessageCreateParams)"/></param>
     /// <returns>A task that completes once all messages have been received or in the event of improper streaming and exception.</returns>
-    public static Task<BetaMessage?> Aggregate(this IAsyncEnumerable<BetaRawMessageStreamEvent> source)
+    public static Task<BetaMessage?> Aggregate(
+        this IAsyncEnumerable<BetaRawMessageStreamEvent> source
+    )
     {
         return new BetaMessageContentAggregator(source).BeginCollectionAsync();
     }

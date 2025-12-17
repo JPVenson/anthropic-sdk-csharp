@@ -10,7 +10,7 @@ namespace Anthropic;
 /// </summary>
 /// <typeparam name="TMessage"></typeparam>
 /// <typeparam name="TResult"></typeparam>
-public abstract class SseAggregator<TMessage, TResult>     
+public abstract class SseAggregator<TMessage, TResult>
 {
     private readonly IAsyncEnumerable<TMessage> _messages;
 
@@ -54,14 +54,16 @@ public abstract class SseAggregator<TMessage, TResult>
                 }
             }
 
-            if(messages is {Count: 0})
+            if (messages is { Count: 0 })
             {
                 return default;
             }
 
             if (filterResult != FilterResult.EndMessage)
             {
-                throw new InvalidOperationException($"Expected last message to be the End message but found: {filterResult}");
+                throw new InvalidOperationException(
+                    $"Expected last message to be the End message but found: {filterResult}"
+                );
             }
 
             return GetResult(new ReadOnlyDictionary<FilterResult, IList<TMessage>>(messages));
@@ -80,7 +82,9 @@ public abstract class SseAggregator<TMessage, TResult>
     /// </summary>
     /// <param name="messages">The read only list of messages.</param>
     /// <returns>The aggregation result.</returns>
-    protected abstract TResult GetResult(IReadOnlyDictionary<FilterResult, IList<TMessage>> messages);
+    protected abstract TResult GetResult(
+        IReadOnlyDictionary<FilterResult, IList<TMessage>> messages
+    );
 
     /// <summary>
     /// Defines the filter result types.
@@ -105,6 +109,6 @@ public abstract class SseAggregator<TMessage, TResult>
         /// <summary>
         /// The message defines the end boundry of the message package.
         /// </summary>
-        EndMessage = 3
+        EndMessage = 3,
     }
 }
