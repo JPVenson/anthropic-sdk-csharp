@@ -8,7 +8,8 @@ namespace Anthropic.Services.Messages;
 /// <summary>
 /// The aggregation model for a stream of <see cref="BetaRawContentBlockDeltaEvent"/>
 /// </summary>
-public class BetaMessageContentAggregator : SseAggregator<BetaRawMessageStreamEvent, BetaMessage>
+public sealed class BetaMessageContentAggregator
+    : SseAggregator<BetaRawMessageStreamEvent, BetaMessage>
 {
     /// <summary>
     /// Creates a new instance of the <see cref="BetaMessageContentAggregator"/>.

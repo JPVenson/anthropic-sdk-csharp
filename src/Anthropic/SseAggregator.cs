@@ -8,8 +8,8 @@ namespace Anthropic;
 /// <summary>
 /// Defines the base for all Aggregators using ServerSideStreaming events.
 /// </summary>
-/// <typeparam name="TMessage"></typeparam>
-/// <typeparam name="TResult"></typeparam>
+/// <typeparam name="TMessage">The raw message base element type.</typeparam>
+/// <typeparam name="TResult">The element type that defines an aggregated <typeparamref name="TMessage"/></typeparam>
 public abstract class SseAggregator<TMessage, TResult>
 {
     private readonly IAsyncEnumerable<TMessage> _messages;

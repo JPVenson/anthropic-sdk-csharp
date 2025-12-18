@@ -8,7 +8,7 @@ namespace Anthropic.Services.Messages;
 /// <summary>
 /// An implementation of the <see cref="SseAggregator{TMessage, TResult}"/> for aggregating BlockDeltaEvents from the <see cref="IMessageService.CreateStreaming(MessageCreateParams)"/> method.
 /// </summary>
-public class MessageContentAggregator : SseAggregator<RawMessageStreamEvent, Message>
+public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEvent, Message>
 {
     /// <summary>
     /// Creates a new instance of the <see cref="MessageContentAggregator"/>.
