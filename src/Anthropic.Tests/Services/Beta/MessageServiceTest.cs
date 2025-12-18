@@ -12,6 +12,26 @@ namespace Anthropic.Tests.Services.Beta;
 
 public class MessageServiceTest
 {
+    private static Message GenerateStartMessage => new Message()
+    {
+        ID = "Test",
+        Content = [],
+        Model = Model.Claude3OpusLatest,
+        StopReason = StopReason.ToolUse,
+        StopSequence = "",
+        Usage = null,
+    };
+
+    private static Anthropic.Models.Messages.MessageCreateParams StreamingParam => new()
+    {
+        MaxTokens = 1024,
+        Messages =
+        [
+            new() { Content = new(""), Role = Anthropic.Models.Messages.Role.User },
+        ],
+        Model = Model.Claude3_7SonnetLatest,
+    };
+
     [Theory(Skip = "prism validates based on the non-beta endpoint")]
     [AnthropicTestClients]
     public async Task Create_Works(IAnthropicClient client)
@@ -85,7 +105,7 @@ public class MessageServiceTest
         var messagesServiceMock = new Mock<IMessageService>();
         static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
         {
-            yield return new(new RawMessageStartEvent(GenerateStartMessage()));
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
             yield return new(new RawMessageStopEvent());
             await Task.CompletedTask;
         }
@@ -102,19 +122,13 @@ public class MessageServiceTest
 
         var stream = await messagesServiceMock
             .Object.CreateStreaming(
-                new()
-                {
-                    MaxTokens = 1024,
-                    Messages =
-                    [
-                        new() { Content = new(""), Role = Anthropic.Models.Messages.Role.User },
-                    ],
-                    Model = Model.Claude3_7SonnetLatest,
-                }
+                StreamingParam
             )
             .Aggregate();
 
         // assert
+
+        Assert.NotNull(stream);
         stream.Validate();
     }
 
@@ -126,7 +140,7 @@ public class MessageServiceTest
         var messagesServiceMock = new Mock<IMessageService>();
         static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
         {
-            yield return new(new RawMessageStartEvent(GenerateStartMessage()));
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
             await Task.CompletedTask;
         }
         messagesServiceMock
@@ -145,15 +159,7 @@ public class MessageServiceTest
         await Assert.ThrowsAsync<InvalidOperationException>(async () =>
             await messagesServiceMock
                 .Object.CreateStreaming(
-                    new()
-                    {
-                        MaxTokens = 1024,
-                        Messages =
-                        [
-                            new() { Content = new(""), Role = Anthropic.Models.Messages.Role.User },
-                        ],
-                        Model = Model.Claude3_7SonnetLatest,
-                    }
+                    StreamingParam
                 )
                 .Aggregate()
         );
@@ -185,19 +191,13 @@ public class MessageServiceTest
 
         var stream = await messagesServiceMock
             .Object.CreateStreaming(
-                new()
-                {
-                    MaxTokens = 1024,
-                    Messages =
-                    [
-                        new() { Content = new(""), Role = Anthropic.Models.Messages.Role.User },
-                    ],
-                    Model = Model.Claude3_7SonnetLatest,
-                }
+                StreamingParam
             )
             .Aggregate();
 
         // assert
+
+        Assert.NotNull(stream);
         stream.Validate();
     }
 
@@ -229,19 +229,13 @@ public class MessageServiceTest
 
         var stream = await messagesServiceMock
             .Object.CreateStreaming(
-                new()
-                {
-                    MaxTokens = 1024,
-                    Messages =
-                    [
-                        new() { Content = new(""), Role = Anthropic.Models.Messages.Role.User },
-                    ],
-                    Model = Model.Claude3_7SonnetLatest,
-                }
+                StreamingParam
             )
             .Aggregate();
 
         // assert
+
+        Assert.NotNull(stream);
         stream.Validate();
     }
 
@@ -306,32 +300,13 @@ public class MessageServiceTest
 
         var stream = await messagesServiceMock
             .Object.CreateStreaming(
-                new()
-                {
-                    MaxTokens = 1024,
-                    Messages =
-                    [
-                        new() { Content = new(""), Role = Anthropic.Models.Messages.Role.User },
-                    ],
-                    Model = Model.Claude3_7SonnetLatest,
-                }
+                StreamingParam
             )
             .Aggregate();
 
         // assert
-        stream.Validate();
-    }
 
-    private static Message GenerateStartMessage()
-    {
-        return new Message()
-        {
-            ID = "Test",
-            Content = [],
-            Model = Model.Claude3OpusLatest,
-            StopReason = StopReason.ToolUse,
-            StopSequence = "",
-            Usage = null,
-        };
+        Assert.NotNull(stream);
+        stream.Validate();
     }
 }
