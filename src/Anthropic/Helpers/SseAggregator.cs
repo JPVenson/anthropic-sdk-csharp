@@ -32,47 +32,49 @@ public abstract class SseAggregator<TMessage, TResult>
     /// <returns>A task that completes when all messages have been aggregated.</returns>
     public virtual async Task<TResult?> AggregateAsync()
     {
-        return await (_collectionTask ??= Task.Run(async () =>
-        {
-            var messages = new Dictionary<FilterResult, IList<TMessage>>();
-            foreach (FilterResult item in Enum.GetValues(typeof(FilterResult)))
+        return await (
+            _collectionTask ??= Task.Run(async () =>
             {
-                messages[item] = [];
-            }
-
-            var startMessageReceived = false;
-            FilterResult filterResult = FilterResult.Ignore;
-            await foreach (var item in _messages.ConfigureAwait(false))
-            {
-                if (!startMessageReceived && Filter(item) != FilterResult.StartMessage)
+                var messages = new Dictionary<FilterResult, IList<TMessage>>();
+                foreach (FilterResult item in Enum.GetValues(typeof(FilterResult)))
                 {
-                    messages[FilterResult.StartMessage].Add(item);
-                    continue;
+                    messages[item] = [];
                 }
 
-                startMessageReceived = true;
-                filterResult = Filter(item);
-                messages[filterResult].Add(item);
-                if (filterResult == FilterResult.EndMessage)
+                var startMessageReceived = false;
+                FilterResult filterResult = FilterResult.Ignore;
+                await foreach (var item in _messages.ConfigureAwait(false))
                 {
-                    break;
+                    if (!startMessageReceived && Filter(item) != FilterResult.StartMessage)
+                    {
+                        messages[FilterResult.StartMessage].Add(item);
+                        continue;
+                    }
+
+                    startMessageReceived = true;
+                    filterResult = Filter(item);
+                    messages[filterResult].Add(item);
+                    if (filterResult == FilterResult.EndMessage)
+                    {
+                        break;
+                    }
                 }
-            }
 
-            if (messages is { Count: 0 })
-            {
-                return default;
-            }
+                if (messages is { Count: 0 })
+                {
+                    return default;
+                }
 
-            if (filterResult != FilterResult.EndMessage)
-            {
-                throw new AnthropicInvalidDataException(
-                    $"Expected last message to be the End message but found: {filterResult}"
-                );
-            }
+                if (filterResult != FilterResult.EndMessage)
+                {
+                    throw new AnthropicInvalidDataException(
+                        $"Expected last message to be the End message but found: {filterResult}"
+                    );
+                }
 
-            return GetResult(new ReadOnlyDictionary<FilterResult, IList<TMessage>>(messages));
-        }));
+                return GetResult(new ReadOnlyDictionary<FilterResult, IList<TMessage>>(messages));
+            })
+        );
     }
 
     /// <summary>
