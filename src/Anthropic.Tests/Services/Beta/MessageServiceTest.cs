@@ -58,7 +58,8 @@ public class MessageServiceTest
                     },
                 ],
                 Model = Messages::Model.ClaudeOpus4_5_20251101,
-            }
+            },
+            TestContext.Current.CancellationToken
         );
         betaMessage.Validate();
     }
@@ -80,7 +81,8 @@ public class MessageServiceTest
                     },
                 ],
                 Model = Messages::Model.ClaudeOpus4_5_20251101,
-            }
+            },
+            TestContext.Current.CancellationToken
         );
 
         await foreach (var betaMessage in stream)
@@ -101,7 +103,8 @@ public class MessageServiceTest
                     new() { Content = "string", Role = Anthropic.Models.Beta.Messages.Role.User },
                 ],
                 Model = Messages::Model.ClaudeOpus4_5_20251101,
-            }
+            },
+            TestContext.Current.CancellationToken
         );
         betaMessageTokensCount.Validate();
     }
