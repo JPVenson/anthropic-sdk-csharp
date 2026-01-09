@@ -19,7 +19,8 @@ public class MessageServiceTest
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Role.User }],
                 Model = modelName,
-            }
+            },
+            TestContext.Current.CancellationToken
         );
         message.Validate();
     }
@@ -37,7 +38,8 @@ public class MessageServiceTest
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Role.User }],
                 Model = modelName,
-            }
+            },
+            TestContext.Current.CancellationToken
         );
 
         await foreach (var message in stream)
@@ -53,7 +55,12 @@ public class MessageServiceTest
     public async Task CountTokens_Works(IAnthropicClient client, string modelName)
     {
         var messageTokensCount = await client.Messages.CountTokens(
-            new() { Messages = [new() { Content = "string", Role = Role.User }], Model = modelName }
+            new()
+            {
+                Messages = [new() { Content = "string", Role = Role.User }],
+                Model = modelName,
+            },
+            TestContext.Current.CancellationToken
         );
         messageTokensCount.Validate();
     }
