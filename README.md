@@ -210,6 +210,41 @@ using var fileStream = File.Open(path, FileMode.OpenOrCreate);
 await contentStream.CopyToAsync(fileStream); // Or any other Stream
 ```
 
+## Raw responses
+
+The SDK defines methods that deserialize responses into instances of C# classes. However, these methods don't provide access to the response headers, status code, or the raw response body.
+
+To access this data, prefix any HTTP method call on a client or service with `WithRawResponse`:
+
+```csharp
+var response = await client.WithRawResponse.Messages.Create(parameters);
+var statusCode = response.Message.StatusCode;
+var headers = response.Message.Headers;
+```
+
+For non-streaming responses, you can deserialize the response into an instance of a C# class if needed:
+
+```csharp
+using System;
+using Anthropic.Models.Messages;
+
+var response = await client.WithRawResponse.Messages.Create(parameters);
+Message deserialized = await response.Deserialize();
+Console.WriteLine(deserialized);
+```
+
+For streaming responses, you can deserialize the response to an [`IAsyncEnumerable`](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.iasyncenumerable-1) if needed:
+
+```csharp
+using System;
+
+var response = await client.WithRawResponse.Messages.CreateStreaming(parameters);
+await foreach (var item in response.Enumerate())
+{
+    Console.WriteLine(item);
+}
+```
+
 ## Error handling
 
 The SDK throws custom unchecked exception types:
