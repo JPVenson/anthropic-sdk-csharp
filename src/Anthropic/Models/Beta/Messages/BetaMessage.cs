@@ -218,23 +218,13 @@ public sealed record class BetaMessage : JsonModel
         }
         this.ContextManagement?.Validate();
         this.Model.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Role,
-                JsonSerializer.Deserialize<JsonElement>("\"assistant\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Role, JsonSerializer.SerializeToElement("assistant")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         this.StopReason?.Validate();
         _ = this.StopSequence;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"message\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("message")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -243,8 +233,8 @@ public sealed record class BetaMessage : JsonModel
 
     public BetaMessage()
     {
-        this.Role = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message\"");
+        this.Role = JsonSerializer.SerializeToElement("assistant");
+        this.Type = JsonSerializer.SerializeToElement("message");
     }
 
     public BetaMessage(BetaMessage betaMessage)
@@ -254,8 +244,8 @@ public sealed record class BetaMessage : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Role = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message\"");
+        this.Role = JsonSerializer.SerializeToElement("assistant");
+        this.Type = JsonSerializer.SerializeToElement("message");
     }
 
 #pragma warning disable CS8618

@@ -47,12 +47,7 @@ public sealed record class BetaBase64ImageSource : JsonModel
     {
         _ = this.Data;
         this.MediaType.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"base64\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("base64")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -60,7 +55,7 @@ public sealed record class BetaBase64ImageSource : JsonModel
 
     public BetaBase64ImageSource()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
+        this.Type = JsonSerializer.SerializeToElement("base64");
     }
 
     public BetaBase64ImageSource(BetaBase64ImageSource betaBase64ImageSource)
@@ -70,7 +65,7 @@ public sealed record class BetaBase64ImageSource : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
+        this.Type = JsonSerializer.SerializeToElement("base64");
     }
 
 #pragma warning disable CS8618

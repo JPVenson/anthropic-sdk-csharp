@@ -29,8 +29,8 @@ public class BetaToolSearchToolSearchResultBlockParamTest : TestBase
                 CacheControl = new() { Ttl = Ttl.Ttl5m },
             },
         ];
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_search_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "tool_search_tool_search_result"
         );
 
         Assert.Equal(expectedToolReferences.Count, model.ToolReferences.Count);
@@ -93,8 +93,8 @@ public class BetaToolSearchToolSearchResultBlockParamTest : TestBase
                 CacheControl = new() { Ttl = Ttl.Ttl5m },
             },
         ];
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_search_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "tool_search_tool_search_result"
         );
 
         Assert.Equal(expectedToolReferences.Count, deserialized.ToolReferences.Count);

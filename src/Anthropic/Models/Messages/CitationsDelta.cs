@@ -37,10 +37,7 @@ public sealed record class CitationsDelta : JsonModel
     {
         this.Citation.Validate();
         if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"citations_delta\"")
-            )
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("citations_delta"))
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
@@ -49,7 +46,7 @@ public sealed record class CitationsDelta : JsonModel
 
     public CitationsDelta()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"citations_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("citations_delta");
     }
 
     public CitationsDelta(CitationsDelta citationsDelta)
@@ -59,7 +56,7 @@ public sealed record class CitationsDelta : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"citations_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("citations_delta");
     }
 
 #pragma warning disable CS8618

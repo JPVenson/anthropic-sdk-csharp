@@ -27,7 +27,7 @@ public class BetaTextBlockParamTest : TestBase
         };
 
         string expectedText = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         List<BetaTextCitationParam> expectedCitations =
         [
@@ -103,7 +103,7 @@ public class BetaTextBlockParamTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedText = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         List<BetaTextCitationParam> expectedCitations =
         [

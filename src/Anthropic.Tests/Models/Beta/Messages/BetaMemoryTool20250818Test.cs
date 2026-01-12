@@ -26,8 +26,8 @@ public class BetaMemoryTool20250818Test : TestBase
             Strict = true,
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"memory\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"memory_20250818\"");
+        JsonElement expectedName = JsonSerializer.SerializeToElement("memory");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("memory_20250818");
         List<ApiEnum<string, BetaMemoryTool20250818AllowedCaller>> expectedAllowedCallers =
         [
             BetaMemoryTool20250818AllowedCaller.Direct,
@@ -114,8 +114,8 @@ public class BetaMemoryTool20250818Test : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"memory\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"memory_20250818\"");
+        JsonElement expectedName = JsonSerializer.SerializeToElement("memory");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("memory_20250818");
         List<ApiEnum<string, BetaMemoryTool20250818AllowedCaller>> expectedAllowedCallers =
         [
             BetaMemoryTool20250818AllowedCaller.Direct,
@@ -345,10 +345,7 @@ public class BetaMemoryTool20250818AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaMemoryTool20250818AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -375,10 +372,7 @@ public class BetaMemoryTool20250818AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaMemoryTool20250818AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaMemoryTool20250818AllowedCaller>

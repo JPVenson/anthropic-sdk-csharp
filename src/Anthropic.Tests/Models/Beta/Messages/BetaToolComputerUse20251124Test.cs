@@ -32,8 +32,8 @@ public class BetaToolComputerUse20251124Test : TestBase
 
         long expectedDisplayHeightPx = 1;
         long expectedDisplayWidthPx = 1;
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"computer\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"computer_20251124\"");
+        JsonElement expectedName = JsonSerializer.SerializeToElement("computer");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("computer_20251124");
         List<ApiEnum<string, BetaToolComputerUse20251124AllowedCaller>> expectedAllowedCallers =
         [
             BetaToolComputerUse20251124AllowedCaller.Direct,
@@ -136,8 +136,8 @@ public class BetaToolComputerUse20251124Test : TestBase
 
         long expectedDisplayHeightPx = 1;
         long expectedDisplayWidthPx = 1;
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"computer\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"computer_20251124\"");
+        JsonElement expectedName = JsonSerializer.SerializeToElement("computer");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("computer_20251124");
         List<ApiEnum<string, BetaToolComputerUse20251124AllowedCaller>> expectedAllowedCallers =
         [
             BetaToolComputerUse20251124AllowedCaller.Direct,
@@ -419,10 +419,7 @@ public class BetaToolComputerUse20251124AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolComputerUse20251124AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -449,10 +446,7 @@ public class BetaToolComputerUse20251124AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolComputerUse20251124AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolComputerUse20251124AllowedCaller>

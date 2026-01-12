@@ -10,7 +10,7 @@ public class BetaMemoryTool20250818DeleteCommandTest : TestBase
     {
         var model = new BetaMemoryTool20250818DeleteCommand { Path = "/memories/old_file.txt" };
 
-        JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"delete\"");
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("delete");
         string expectedPath = "/memories/old_file.txt";
 
         Assert.True(JsonElement.DeepEquals(expectedCommand, model.Command));
@@ -37,7 +37,7 @@ public class BetaMemoryTool20250818DeleteCommandTest : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818DeleteCommand>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"delete\"");
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("delete");
         string expectedPath = "/memories/old_file.txt";
 
         Assert.True(JsonElement.DeepEquals(expectedCommand, deserialized.Command));

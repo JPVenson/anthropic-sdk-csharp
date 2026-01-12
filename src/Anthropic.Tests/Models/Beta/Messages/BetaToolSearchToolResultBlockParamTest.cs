@@ -22,9 +22,7 @@ public class BetaToolSearchToolResultBlockParamTest : TestBase
                 BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
             );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_result\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_search_tool_result");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, model.Content);
@@ -72,9 +70,7 @@ public class BetaToolSearchToolResultBlockParamTest : TestBase
                 BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
             );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_result\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_search_tool_result");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, deserialized.Content);

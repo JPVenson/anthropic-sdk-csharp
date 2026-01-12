@@ -11,7 +11,7 @@ public class ToolChoiceToolTest : TestBase
         var model = new ToolChoiceTool { Name = "name", DisableParallelToolUse = true };
 
         string expectedName = "name";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool");
         bool expectedDisableParallelToolUse = true;
 
         Assert.Equal(expectedName, model.Name);
@@ -40,7 +40,7 @@ public class ToolChoiceToolTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedName = "name";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool");
         bool expectedDisableParallelToolUse = true;
 
         Assert.Equal(expectedName, deserialized.Name);

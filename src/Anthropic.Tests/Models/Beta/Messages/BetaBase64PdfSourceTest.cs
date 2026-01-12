@@ -11,10 +11,8 @@ public class BetaBase64PdfSourceTest : TestBase
         var model = new BetaBase64PdfSource { Data = "U3RhaW5sZXNzIHJvY2tz" };
 
         string expectedData = "U3RhaW5sZXNzIHJvY2tz";
-        JsonElement expectedMediaType = JsonSerializer.Deserialize<JsonElement>(
-            "\"application/pdf\""
-        );
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
+        JsonElement expectedMediaType = JsonSerializer.SerializeToElement("application/pdf");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("base64");
 
         Assert.Equal(expectedData, model.Data);
         Assert.True(JsonElement.DeepEquals(expectedMediaType, model.MediaType));
@@ -42,10 +40,8 @@ public class BetaBase64PdfSourceTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedData = "U3RhaW5sZXNzIHJvY2tz";
-        JsonElement expectedMediaType = JsonSerializer.Deserialize<JsonElement>(
-            "\"application/pdf\""
-        );
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
+        JsonElement expectedMediaType = JsonSerializer.SerializeToElement("application/pdf");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("base64");
 
         Assert.Equal(expectedData, deserialized.Data);
         Assert.True(JsonElement.DeepEquals(expectedMediaType, deserialized.MediaType));

@@ -24,12 +24,7 @@ public sealed record class ThinkingConfigDisabled : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"disabled\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("disabled")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -37,7 +32,7 @@ public sealed record class ThinkingConfigDisabled : JsonModel
 
     public ThinkingConfigDisabled()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");
+        this.Type = JsonSerializer.SerializeToElement("disabled");
     }
 
     public ThinkingConfigDisabled(ThinkingConfigDisabled thinkingConfigDisabled)
@@ -47,7 +42,7 @@ public sealed record class ThinkingConfigDisabled : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");
+        this.Type = JsonSerializer.SerializeToElement("disabled");
     }
 
 #pragma warning disable CS8618

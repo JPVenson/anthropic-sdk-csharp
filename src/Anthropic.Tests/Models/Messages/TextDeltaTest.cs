@@ -11,7 +11,7 @@ public class TextDeltaTest : TestBase
         var model = new TextDelta { Text = "text" };
 
         string expectedText = "text";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text_delta\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text_delta");
 
         Assert.Equal(expectedText, model.Text);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -38,7 +38,7 @@ public class TextDeltaTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedText = "text";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text_delta\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text_delta");
 
         Assert.Equal(expectedText, deserialized.Text);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

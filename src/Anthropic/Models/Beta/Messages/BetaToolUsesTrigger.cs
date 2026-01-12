@@ -34,12 +34,7 @@ public sealed record class BetaToolUsesTrigger : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"tool_uses\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("tool_uses")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -48,7 +43,7 @@ public sealed record class BetaToolUsesTrigger : JsonModel
 
     public BetaToolUsesTrigger()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_uses\"");
+        this.Type = JsonSerializer.SerializeToElement("tool_uses");
     }
 
     public BetaToolUsesTrigger(BetaToolUsesTrigger betaToolUsesTrigger)
@@ -58,7 +53,7 @@ public sealed record class BetaToolUsesTrigger : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_uses\"");
+        this.Type = JsonSerializer.SerializeToElement("tool_uses");
     }
 
 #pragma warning disable CS8618

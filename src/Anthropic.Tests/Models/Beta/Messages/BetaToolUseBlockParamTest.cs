@@ -27,7 +27,7 @@ public class BetaToolUseBlockParamTest : TestBase
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
         string expectedName = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaToolUseBlockParamCaller expectedCaller = new BetaDirectCaller();
 
@@ -91,7 +91,7 @@ public class BetaToolUseBlockParamTest : TestBase
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
         string expectedName = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaToolUseBlockParamCaller expectedCaller = new BetaDirectCaller();
 

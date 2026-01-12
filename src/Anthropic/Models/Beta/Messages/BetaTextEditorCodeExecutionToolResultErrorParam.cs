@@ -59,9 +59,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam : Jso
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>(
-                    "\"text_editor_code_execution_tool_result_error\""
-                )
+                JsonSerializer.SerializeToElement("text_editor_code_execution_tool_result_error")
             )
         )
         {
@@ -72,8 +70,8 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam : Jso
 
     public BetaTextEditorCodeExecutionToolResultErrorParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_tool_result_error\""
+        this.Type = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_tool_result_error"
         );
     }
 
@@ -88,8 +86,8 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam : Jso
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_tool_result_error\""
+        this.Type = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_tool_result_error"
         );
     }
 

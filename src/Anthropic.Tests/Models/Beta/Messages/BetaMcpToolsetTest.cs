@@ -24,7 +24,7 @@ public class BetaMcpToolsetTest : TestBase
         };
 
         string expectedMcpServerName = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"mcp_toolset\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("mcp_toolset");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         Dictionary<string, BetaMcpToolConfig> expectedConfigs = new()
         {
@@ -98,7 +98,7 @@ public class BetaMcpToolsetTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedMcpServerName = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"mcp_toolset\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("mcp_toolset");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         Dictionary<string, BetaMcpToolConfig> expectedConfigs = new()
         {

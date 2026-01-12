@@ -57,7 +57,7 @@ public class BetaSearchResultBlockParamTest : TestBase
         ];
         string expectedSource = "source";
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"search_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("search_result");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaCitationsConfigParam expectedCitations = new() { Enabled = true };
 
@@ -164,7 +164,7 @@ public class BetaSearchResultBlockParamTest : TestBase
         ];
         string expectedSource = "source";
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"search_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("search_result");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaCitationsConfigParam expectedCitations = new() { Enabled = true };
 

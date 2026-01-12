@@ -36,10 +36,7 @@ public sealed record class NotFoundError : JsonModel
     {
         _ = this.Message;
         if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"not_found_error\"")
-            )
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("not_found_error"))
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
@@ -48,7 +45,7 @@ public sealed record class NotFoundError : JsonModel
 
     public NotFoundError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"not_found_error\"");
+        this.Type = JsonSerializer.SerializeToElement("not_found_error");
     }
 
     public NotFoundError(NotFoundError notFoundError)
@@ -58,7 +55,7 @@ public sealed record class NotFoundError : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"not_found_error\"");
+        this.Type = JsonSerializer.SerializeToElement("not_found_error");
     }
 
 #pragma warning disable CS8618

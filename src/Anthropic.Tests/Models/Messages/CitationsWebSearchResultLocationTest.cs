@@ -19,9 +19,7 @@ public class CitationsWebSearchResultLocationTest : TestBase
         string expectedCitedText = "cited_text";
         string expectedEncryptedIndex = "encrypted_index";
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_result_location\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_result_location");
         string expectedUrl = "url";
 
         Assert.Equal(expectedCitedText, model.CitedText);
@@ -66,9 +64,7 @@ public class CitationsWebSearchResultLocationTest : TestBase
         string expectedCitedText = "cited_text";
         string expectedEncryptedIndex = "encrypted_index";
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_result_location\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_result_location");
         string expectedUrl = "url";
 
         Assert.Equal(expectedCitedText, deserialized.CitedText);

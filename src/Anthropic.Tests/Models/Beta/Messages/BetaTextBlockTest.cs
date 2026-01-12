@@ -39,7 +39,7 @@ public class BetaTextBlockTest : TestBase
             },
         ];
         string expectedText = "text";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
 
         Assert.NotNull(model.Citations);
         Assert.Equal(expectedCitations.Count, model.Citations.Count);
@@ -114,7 +114,7 @@ public class BetaTextBlockTest : TestBase
             },
         ];
         string expectedText = "text";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
 
         Assert.NotNull(deserialized.Citations);
         Assert.Equal(expectedCitations.Count, deserialized.Citations.Count);

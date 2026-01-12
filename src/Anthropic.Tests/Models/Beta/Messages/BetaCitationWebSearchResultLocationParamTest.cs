@@ -19,9 +19,7 @@ public class BetaCitationWebSearchResultLocationParamTest : TestBase
         string expectedCitedText = "cited_text";
         string expectedEncryptedIndex = "encrypted_index";
         string expectedTitle = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_result_location\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_result_location");
         string expectedUrl = "x";
 
         Assert.Equal(expectedCitedText, model.CitedText);
@@ -70,9 +68,7 @@ public class BetaCitationWebSearchResultLocationParamTest : TestBase
         string expectedCitedText = "cited_text";
         string expectedEncryptedIndex = "encrypted_index";
         string expectedTitle = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_result_location\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_result_location");
         string expectedUrl = "x";
 
         Assert.Equal(expectedCitedText, deserialized.CitedText);

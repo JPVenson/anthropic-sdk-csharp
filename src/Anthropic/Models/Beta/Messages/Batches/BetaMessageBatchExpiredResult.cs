@@ -26,12 +26,7 @@ public sealed record class BetaMessageBatchExpiredResult : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"expired\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("expired")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -39,7 +34,7 @@ public sealed record class BetaMessageBatchExpiredResult : JsonModel
 
     public BetaMessageBatchExpiredResult()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"expired\"");
+        this.Type = JsonSerializer.SerializeToElement("expired");
     }
 
     public BetaMessageBatchExpiredResult(
@@ -51,7 +46,7 @@ public sealed record class BetaMessageBatchExpiredResult : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"expired\"");
+        this.Type = JsonSerializer.SerializeToElement("expired");
     }
 
 #pragma warning disable CS8618

@@ -27,7 +27,7 @@ public class RawMessageDeltaEventTest : TestBase
             StopReason = StopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message_delta");
         MessageDeltaUsage expectedUsage = new()
         {
             CacheCreationInputTokens = 2051,
@@ -89,7 +89,7 @@ public class RawMessageDeltaEventTest : TestBase
             StopReason = StopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message_delta");
         MessageDeltaUsage expectedUsage = new()
         {
             CacheCreationInputTokens = 2051,

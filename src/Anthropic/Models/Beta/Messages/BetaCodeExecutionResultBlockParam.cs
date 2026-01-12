@@ -88,7 +88,7 @@ public sealed record class BetaCodeExecutionResultBlockParam : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"code_execution_result\"")
+                JsonSerializer.SerializeToElement("code_execution_result")
             )
         )
         {
@@ -98,7 +98,7 @@ public sealed record class BetaCodeExecutionResultBlockParam : JsonModel
 
     public BetaCodeExecutionResultBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_result\"");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_result");
     }
 
     public BetaCodeExecutionResultBlockParam(
@@ -110,7 +110,7 @@ public sealed record class BetaCodeExecutionResultBlockParam : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_result\"");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_result");
     }
 
 #pragma warning disable CS8618

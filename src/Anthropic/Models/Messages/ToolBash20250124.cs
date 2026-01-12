@@ -52,16 +52,11 @@ public sealed record class ToolBash20250124 : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.Deserialize<JsonElement>("\"bash\"")))
+        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.SerializeToElement("bash")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"bash_20250124\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("bash_20250124")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -70,8 +65,8 @@ public sealed record class ToolBash20250124 : JsonModel
 
     public ToolBash20250124()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"bash\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_20250124\"");
+        this.Name = JsonSerializer.SerializeToElement("bash");
+        this.Type = JsonSerializer.SerializeToElement("bash_20250124");
     }
 
     public ToolBash20250124(ToolBash20250124 toolBash20250124)
@@ -81,8 +76,8 @@ public sealed record class ToolBash20250124 : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"bash\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_20250124\"");
+        this.Name = JsonSerializer.SerializeToElement("bash");
+        this.Type = JsonSerializer.SerializeToElement("bash_20250124");
     }
 
 #pragma warning disable CS8618

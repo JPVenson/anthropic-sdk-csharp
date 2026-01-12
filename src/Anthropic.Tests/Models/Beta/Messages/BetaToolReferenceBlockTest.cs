@@ -11,7 +11,7 @@ public class BetaToolReferenceBlockTest : TestBase
         var model = new BetaToolReferenceBlock { ToolName = "tool_name" };
 
         string expectedToolName = "tool_name";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_reference\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_reference");
 
         Assert.Equal(expectedToolName, model.ToolName);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -38,7 +38,7 @@ public class BetaToolReferenceBlockTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedToolName = "tool_name";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_reference\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_reference");
 
         Assert.Equal(expectedToolName, deserialized.ToolName);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

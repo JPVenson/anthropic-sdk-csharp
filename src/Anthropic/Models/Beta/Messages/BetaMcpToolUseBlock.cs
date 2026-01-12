@@ -80,12 +80,7 @@ public sealed record class BetaMcpToolUseBlock : JsonModel
         _ = this.Input;
         _ = this.Name;
         _ = this.ServerName;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_use\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("mcp_tool_use")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -93,7 +88,7 @@ public sealed record class BetaMcpToolUseBlock : JsonModel
 
     public BetaMcpToolUseBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_use\"");
+        this.Type = JsonSerializer.SerializeToElement("mcp_tool_use");
     }
 
     public BetaMcpToolUseBlock(BetaMcpToolUseBlock betaMcpToolUseBlock)
@@ -103,7 +98,7 @@ public sealed record class BetaMcpToolUseBlock : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_use\"");
+        this.Type = JsonSerializer.SerializeToElement("mcp_tool_use");
     }
 
 #pragma warning disable CS8618

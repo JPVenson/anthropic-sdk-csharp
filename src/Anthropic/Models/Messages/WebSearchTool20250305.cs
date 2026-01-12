@@ -118,19 +118,14 @@ public sealed record class WebSearchTool20250305 : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Name,
-                JsonSerializer.Deserialize<JsonElement>("\"web_search\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.SerializeToElement("web_search")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"web_search_20250305\"")
+                JsonSerializer.SerializeToElement("web_search_20250305")
             )
         )
         {
@@ -145,8 +140,8 @@ public sealed record class WebSearchTool20250305 : JsonModel
 
     public WebSearchTool20250305()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_20250305\"");
+        this.Name = JsonSerializer.SerializeToElement("web_search");
+        this.Type = JsonSerializer.SerializeToElement("web_search_20250305");
     }
 
     public WebSearchTool20250305(WebSearchTool20250305 webSearchTool20250305)
@@ -156,8 +151,8 @@ public sealed record class WebSearchTool20250305 : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_20250305\"");
+        this.Name = JsonSerializer.SerializeToElement("web_search");
+        this.Type = JsonSerializer.SerializeToElement("web_search_20250305");
     }
 
 #pragma warning disable CS8618
@@ -257,12 +252,7 @@ public sealed record class UserLocation : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"approximate\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("approximate")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -274,7 +264,7 @@ public sealed record class UserLocation : JsonModel
 
     public UserLocation()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"approximate\"");
+        this.Type = JsonSerializer.SerializeToElement("approximate");
     }
 
     public UserLocation(UserLocation userLocation)
@@ -284,7 +274,7 @@ public sealed record class UserLocation : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"approximate\"");
+        this.Type = JsonSerializer.SerializeToElement("approximate");
     }
 
 #pragma warning disable CS8618

@@ -23,8 +23,8 @@ public class ServerToolUseBlockTest : TestBase
         {
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("server_tool_use");
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedInput.Count, model.Input.Count);
@@ -77,8 +77,8 @@ public class ServerToolUseBlockTest : TestBase
         {
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("server_tool_use");
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedInput.Count, deserialized.Input.Count);

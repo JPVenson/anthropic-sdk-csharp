@@ -40,12 +40,7 @@ public sealed record class BetaMessageBatchSucceededResult : JsonModel
     public override void Validate()
     {
         this.Message.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"succeeded\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("succeeded")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -53,7 +48,7 @@ public sealed record class BetaMessageBatchSucceededResult : JsonModel
 
     public BetaMessageBatchSucceededResult()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"succeeded\"");
+        this.Type = JsonSerializer.SerializeToElement("succeeded");
     }
 
     public BetaMessageBatchSucceededResult(
@@ -65,7 +60,7 @@ public sealed record class BetaMessageBatchSucceededResult : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"succeeded\"");
+        this.Type = JsonSerializer.SerializeToElement("succeeded");
     }
 
 #pragma warning disable CS8618

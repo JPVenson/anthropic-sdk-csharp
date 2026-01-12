@@ -14,12 +14,8 @@ public class ToolTextEditor20250728Test : TestBase
             MaxCharacters = 1,
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>(
-            "\"str_replace_based_edit_tool\""
-        );
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_20250728\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("str_replace_based_edit_tool");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text_editor_20250728");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         long expectedMaxCharacters = 1;
 
@@ -57,12 +53,8 @@ public class ToolTextEditor20250728Test : TestBase
         var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250728>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>(
-            "\"str_replace_based_edit_tool\""
-        );
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_20250728\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("str_replace_based_edit_tool");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text_editor_20250728");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         long expectedMaxCharacters = 1;
 

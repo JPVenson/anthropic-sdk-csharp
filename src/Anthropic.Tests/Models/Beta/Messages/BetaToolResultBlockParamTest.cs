@@ -17,7 +17,7 @@ public class BetaToolResultBlockParamTest : TestBase
         };
 
         string expectedToolUseID = "tool_use_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_result");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaToolResultBlockParamContent expectedContent = "string";
         bool expectedIsError = true;
@@ -62,7 +62,7 @@ public class BetaToolResultBlockParamTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedToolUseID = "tool_use_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_result");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaToolResultBlockParamContent expectedContent = "string";
         bool expectedIsError = true;

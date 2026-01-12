@@ -196,19 +196,14 @@ public sealed record class BetaWebFetchTool20250910 : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Name,
-                JsonSerializer.Deserialize<JsonElement>("\"web_fetch\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.SerializeToElement("web_fetch")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"web_fetch_20250910\"")
+                JsonSerializer.SerializeToElement("web_fetch_20250910")
             )
         )
         {
@@ -230,8 +225,8 @@ public sealed record class BetaWebFetchTool20250910 : JsonModel
 
     public BetaWebFetchTool20250910()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_fetch\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_20250910\"");
+        this.Name = JsonSerializer.SerializeToElement("web_fetch");
+        this.Type = JsonSerializer.SerializeToElement("web_fetch_20250910");
     }
 
     public BetaWebFetchTool20250910(BetaWebFetchTool20250910 betaWebFetchTool20250910)
@@ -241,8 +236,8 @@ public sealed record class BetaWebFetchTool20250910 : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_fetch\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_20250910\"");
+        this.Name = JsonSerializer.SerializeToElement("web_fetch");
+        this.Type = JsonSerializer.SerializeToElement("web_fetch_20250910");
     }
 
 #pragma warning disable CS8618

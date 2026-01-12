@@ -15,7 +15,7 @@ public class BetaContainerUploadBlockParamTest : TestBase
         };
 
         string expectedFileID = "file_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"container_upload\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("container_upload");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedFileID, model.FileID);
@@ -52,7 +52,7 @@ public class BetaContainerUploadBlockParamTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedFileID = "file_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"container_upload\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("container_upload");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedFileID, deserialized.FileID);

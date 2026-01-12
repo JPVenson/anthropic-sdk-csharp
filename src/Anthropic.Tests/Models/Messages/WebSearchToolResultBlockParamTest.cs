@@ -37,9 +37,7 @@ public class WebSearchToolResultBlockParamTest : TestBase
             ]
         );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_tool_result\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_tool_result");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, model.Content);
@@ -110,9 +108,7 @@ public class WebSearchToolResultBlockParamTest : TestBase
             ]
         );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_tool_result\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_tool_result");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, deserialized.Content);

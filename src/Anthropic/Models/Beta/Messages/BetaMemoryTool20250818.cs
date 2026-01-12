@@ -147,20 +147,12 @@ public sealed record class BetaMemoryTool20250818 : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Name,
-                JsonSerializer.Deserialize<JsonElement>("\"memory\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.SerializeToElement("memory")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"memory_20250818\"")
-            )
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("memory_20250818"))
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
@@ -177,8 +169,8 @@ public sealed record class BetaMemoryTool20250818 : JsonModel
 
     public BetaMemoryTool20250818()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"memory\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"memory_20250818\"");
+        this.Name = JsonSerializer.SerializeToElement("memory");
+        this.Type = JsonSerializer.SerializeToElement("memory_20250818");
     }
 
     public BetaMemoryTool20250818(BetaMemoryTool20250818 betaMemoryTool20250818)
@@ -188,8 +180,8 @@ public sealed record class BetaMemoryTool20250818 : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"memory\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"memory_20250818\"");
+        this.Name = JsonSerializer.SerializeToElement("memory");
+        this.Type = JsonSerializer.SerializeToElement("memory_20250818");
     }
 
 #pragma warning disable CS8618

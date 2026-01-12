@@ -119,7 +119,7 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"clear_tool_uses_20250919\"")
+                JsonSerializer.SerializeToElement("clear_tool_uses_20250919")
             )
         )
         {
@@ -134,7 +134,7 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
 
     public BetaClearToolUses20250919Edit()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_tool_uses_20250919\"");
+        this.Type = JsonSerializer.SerializeToElement("clear_tool_uses_20250919");
     }
 
     public BetaClearToolUses20250919Edit(
@@ -146,7 +146,7 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_tool_uses_20250919\"");
+        this.Type = JsonSerializer.SerializeToElement("clear_tool_uses_20250919");
     }
 
 #pragma warning disable CS8618

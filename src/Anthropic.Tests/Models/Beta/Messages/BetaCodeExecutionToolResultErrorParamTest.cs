@@ -16,8 +16,8 @@ public class BetaCodeExecutionToolResultErrorParamTest : TestBase
 
         ApiEnum<string, BetaCodeExecutionToolResultErrorCode> expectedErrorCode =
             BetaCodeExecutionToolResultErrorCode.InvalidToolInput;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_tool_result_error\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "code_execution_tool_result_error"
         );
 
         Assert.Equal(expectedErrorCode, model.ErrorCode);
@@ -54,8 +54,8 @@ public class BetaCodeExecutionToolResultErrorParamTest : TestBase
 
         ApiEnum<string, BetaCodeExecutionToolResultErrorCode> expectedErrorCode =
             BetaCodeExecutionToolResultErrorCode.InvalidToolInput;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_tool_result_error\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "code_execution_tool_result_error"
         );
 
         Assert.Equal(expectedErrorCode, deserialized.ErrorCode);

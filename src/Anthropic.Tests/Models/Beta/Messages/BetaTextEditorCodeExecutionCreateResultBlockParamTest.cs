@@ -11,8 +11,8 @@ public class BetaTextEditorCodeExecutionCreateResultBlockParamTest : TestBase
         var model = new BetaTextEditorCodeExecutionCreateResultBlockParam { IsFileUpdate = true };
 
         bool expectedIsFileUpdate = true;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_create_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_create_result"
         );
 
         Assert.Equal(expectedIsFileUpdate, model.IsFileUpdate);
@@ -42,8 +42,8 @@ public class BetaTextEditorCodeExecutionCreateResultBlockParamTest : TestBase
         Assert.NotNull(deserialized);
 
         bool expectedIsFileUpdate = true;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_create_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_create_result"
         );
 
         Assert.Equal(expectedIsFileUpdate, deserialized.IsFileUpdate);

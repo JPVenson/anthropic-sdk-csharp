@@ -29,10 +29,8 @@ public class BetaWebSearchTool20250305Test : TestBase
             },
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_20250305\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_20250305");
         List<ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>> expectedAllowedCallers =
         [
             BetaWebSearchTool20250305AllowedCaller.Direct,
@@ -130,10 +128,8 @@ public class BetaWebSearchTool20250305Test : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20250305>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_20250305\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_20250305");
         List<ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>> expectedAllowedCallers =
         [
             BetaWebSearchTool20250305AllowedCaller.Direct,
@@ -407,10 +403,7 @@ public class BetaWebSearchTool20250305AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -437,10 +430,7 @@ public class BetaWebSearchTool20250305AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>
@@ -463,7 +453,7 @@ public class UserLocationTest : TestBase
             Timezone = "America/New_York",
         };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"approximate\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("approximate");
         string expectedCity = "New York";
         string expectedCountry = "US";
         string expectedRegion = "California";
@@ -508,7 +498,7 @@ public class UserLocationTest : TestBase
         var deserialized = JsonSerializer.Deserialize<UserLocation>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"approximate\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("approximate");
         string expectedCity = "New York";
         string expectedCountry = "US";
         string expectedRegion = "California";

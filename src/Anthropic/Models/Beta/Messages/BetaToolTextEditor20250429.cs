@@ -152,7 +152,7 @@ public sealed record class BetaToolTextEditor20250429 : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Name,
-                JsonSerializer.Deserialize<JsonElement>("\"str_replace_based_edit_tool\"")
+                JsonSerializer.SerializeToElement("str_replace_based_edit_tool")
             )
         )
         {
@@ -161,7 +161,7 @@ public sealed record class BetaToolTextEditor20250429 : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"text_editor_20250429\"")
+                JsonSerializer.SerializeToElement("text_editor_20250429")
             )
         )
         {
@@ -179,8 +179,8 @@ public sealed record class BetaToolTextEditor20250429 : JsonModel
 
     public BetaToolTextEditor20250429()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"str_replace_based_edit_tool\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_editor_20250429\"");
+        this.Name = JsonSerializer.SerializeToElement("str_replace_based_edit_tool");
+        this.Type = JsonSerializer.SerializeToElement("text_editor_20250429");
     }
 
     public BetaToolTextEditor20250429(BetaToolTextEditor20250429 betaToolTextEditor20250429)
@@ -190,8 +190,8 @@ public sealed record class BetaToolTextEditor20250429 : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"str_replace_based_edit_tool\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_editor_20250429\"");
+        this.Name = JsonSerializer.SerializeToElement("str_replace_based_edit_tool");
+        this.Type = JsonSerializer.SerializeToElement("text_editor_20250429");
     }
 
 #pragma warning disable CS8618

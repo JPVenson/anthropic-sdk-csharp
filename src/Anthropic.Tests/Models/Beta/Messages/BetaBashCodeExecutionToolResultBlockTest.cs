@@ -18,8 +18,8 @@ public class BetaBashCodeExecutionToolResultBlockTest : TestBase
             ErrorCode.InvalidToolInput
         );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"bash_code_execution_tool_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "bash_code_execution_tool_result"
         );
 
         Assert.Equal(expectedContent, model.Content);
@@ -61,8 +61,8 @@ public class BetaBashCodeExecutionToolResultBlockTest : TestBase
             ErrorCode.InvalidToolInput
         );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"bash_code_execution_tool_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "bash_code_execution_tool_result"
         );
 
         Assert.Equal(expectedContent, deserialized.Content);

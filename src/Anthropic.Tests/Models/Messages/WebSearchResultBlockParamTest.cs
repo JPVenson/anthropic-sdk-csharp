@@ -18,7 +18,7 @@ public class WebSearchResultBlockParamTest : TestBase
 
         string expectedEncryptedContent = "encrypted_content";
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_result");
         string expectedUrl = "url";
         string expectedPageAge = "page_age";
 
@@ -63,7 +63,7 @@ public class WebSearchResultBlockParamTest : TestBase
 
         string expectedEncryptedContent = "encrypted_content";
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_result");
         string expectedUrl = "url";
         string expectedPageAge = "page_age";
 

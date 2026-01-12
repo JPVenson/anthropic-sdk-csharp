@@ -24,10 +24,8 @@ public class BetaWebFetchTool20250910Test : TestBase
             Strict = true,
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"web_fetch\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_fetch_20250910\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("web_fetch");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_20250910");
         List<ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>> expectedAllowedCallers =
         [
             BetaWebFetchTool20250910AllowedCaller.Direct,
@@ -111,10 +109,8 @@ public class BetaWebFetchTool20250910Test : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"web_fetch\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_fetch_20250910\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("web_fetch");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_20250910");
         List<ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>> expectedAllowedCallers =
         [
             BetaWebFetchTool20250910AllowedCaller.Direct,
@@ -365,10 +361,7 @@ public class BetaWebFetchTool20250910AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -395,10 +388,7 @@ public class BetaWebFetchTool20250910AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>

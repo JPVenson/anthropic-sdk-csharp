@@ -35,12 +35,7 @@ public sealed record class BetaGatewayTimeoutError : JsonModel
     public override void Validate()
     {
         _ = this.Message;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"timeout_error\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("timeout_error")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -48,7 +43,7 @@ public sealed record class BetaGatewayTimeoutError : JsonModel
 
     public BetaGatewayTimeoutError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"timeout_error\"");
+        this.Type = JsonSerializer.SerializeToElement("timeout_error");
     }
 
     public BetaGatewayTimeoutError(BetaGatewayTimeoutError betaGatewayTimeoutError)
@@ -58,7 +53,7 @@ public sealed record class BetaGatewayTimeoutError : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"timeout_error\"");
+        this.Type = JsonSerializer.SerializeToElement("timeout_error");
     }
 
 #pragma warning disable CS8618

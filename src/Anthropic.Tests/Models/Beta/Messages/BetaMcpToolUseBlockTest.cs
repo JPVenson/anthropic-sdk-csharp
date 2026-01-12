@@ -27,7 +27,7 @@ public class BetaMcpToolUseBlockTest : TestBase
         };
         string expectedName = "name";
         string expectedServerName = "server_name";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_use\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("mcp_tool_use");
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedInput.Count, model.Input.Count);
@@ -87,7 +87,7 @@ public class BetaMcpToolUseBlockTest : TestBase
         };
         string expectedName = "name";
         string expectedServerName = "server_name";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_use\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("mcp_tool_use");
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedInput.Count, deserialized.Input.Count);

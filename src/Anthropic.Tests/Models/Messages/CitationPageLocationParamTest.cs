@@ -22,7 +22,7 @@ public class CitationPageLocationParamTest : TestBase
         string expectedDocumentTitle = "x";
         long expectedEndPageNumber = 0;
         long expectedStartPageNumber = 1;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"page_location\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("page_location");
 
         Assert.Equal(expectedCitedText, model.CitedText);
         Assert.Equal(expectedDocumentIndex, model.DocumentIndex);
@@ -71,7 +71,7 @@ public class CitationPageLocationParamTest : TestBase
         string expectedDocumentTitle = "x";
         long expectedEndPageNumber = 0;
         long expectedStartPageNumber = 1;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"page_location\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("page_location");
 
         Assert.Equal(expectedCitedText, deserialized.CitedText);
         Assert.Equal(expectedDocumentIndex, deserialized.DocumentIndex);

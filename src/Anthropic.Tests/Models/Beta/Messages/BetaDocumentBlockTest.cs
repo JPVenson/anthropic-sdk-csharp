@@ -18,7 +18,7 @@ public class BetaDocumentBlockTest : TestBase
         BetaCitationConfig expectedCitations = new(true);
         Source expectedSource = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz");
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"document\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("document");
 
         Assert.Equal(expectedCitations, model.Citations);
         Assert.Equal(expectedSource, model.Source);
@@ -59,7 +59,7 @@ public class BetaDocumentBlockTest : TestBase
         BetaCitationConfig expectedCitations = new(true);
         Source expectedSource = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz");
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"document\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("document");
 
         Assert.Equal(expectedCitations, deserialized.Citations);
         Assert.Equal(expectedSource, deserialized.Source);

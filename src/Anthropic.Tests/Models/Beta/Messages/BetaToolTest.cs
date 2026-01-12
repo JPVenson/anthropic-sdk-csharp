@@ -521,7 +521,7 @@ public class InputSchemaTest : TestBase
             Required = ["location"],
         };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"object\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("object");
         Dictionary<string, JsonElement> expectedProperties = new()
         {
             { "location", JsonSerializer.SerializeToElement("bar") },
@@ -582,7 +582,7 @@ public class InputSchemaTest : TestBase
         var deserialized = JsonSerializer.Deserialize<InputSchema>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"object\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("object");
         Dictionary<string, JsonElement> expectedProperties = new()
         {
             { "location", JsonSerializer.SerializeToElement("bar") },
@@ -678,7 +678,7 @@ public class BetaToolAllowedCallerTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, BetaToolAllowedCaller>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
 
@@ -707,7 +707,7 @@ public class BetaToolAllowedCallerTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, BetaToolAllowedCaller>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -735,7 +735,7 @@ public class BetaToolTypeTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, BetaToolType>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
 
@@ -763,7 +763,7 @@ public class BetaToolTypeTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, BetaToolType>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

@@ -42,7 +42,7 @@ public sealed record class BetaWebSearchToolRequestError : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"")
+                JsonSerializer.SerializeToElement("web_search_tool_result_error")
             )
         )
         {
@@ -52,7 +52,7 @@ public sealed record class BetaWebSearchToolRequestError : JsonModel
 
     public BetaWebSearchToolRequestError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_tool_result_error");
     }
 
     public BetaWebSearchToolRequestError(
@@ -64,7 +64,7 @@ public sealed record class BetaWebSearchToolRequestError : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_tool_result_error");
     }
 
 #pragma warning disable CS8618

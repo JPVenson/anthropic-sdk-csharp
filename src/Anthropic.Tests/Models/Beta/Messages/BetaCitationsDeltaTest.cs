@@ -30,7 +30,7 @@ public class BetaCitationsDeltaTest : TestBase
             FileID = "file_id",
             StartCharIndex = 0,
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"citations_delta\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("citations_delta");
 
         Assert.Equal(expectedCitation, model.Citation);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -87,7 +87,7 @@ public class BetaCitationsDeltaTest : TestBase
             FileID = "file_id",
             StartCharIndex = 0,
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"citations_delta\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("citations_delta");
 
         Assert.Equal(expectedCitation, deserialized.Citation);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

@@ -20,7 +20,7 @@ public class BetaRequestDocumentBlockTest : TestBase
         BetaRequestDocumentBlockSource expectedSource = new BetaBase64PdfSource(
             "U3RhaW5sZXNzIHJvY2tz"
         );
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"document\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("document");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaCitationsConfigParam expectedCitations = new() { Enabled = true };
         string expectedContext = "x";
@@ -71,7 +71,7 @@ public class BetaRequestDocumentBlockTest : TestBase
         BetaRequestDocumentBlockSource expectedSource = new BetaBase64PdfSource(
             "U3RhaW5sZXNzIHJvY2tz"
         );
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"document\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("document");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaCitationsConfigParam expectedCitations = new() { Enabled = true };
         string expectedContext = "x";

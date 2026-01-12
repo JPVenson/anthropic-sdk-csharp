@@ -11,7 +11,7 @@ public class SignatureDeltaTest : TestBase
         var model = new SignatureDelta { Signature = "signature" };
 
         string expectedSignature = "signature";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"signature_delta\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("signature_delta");
 
         Assert.Equal(expectedSignature, model.Signature);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -38,7 +38,7 @@ public class SignatureDeltaTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedSignature = "signature";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"signature_delta\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("signature_delta");
 
         Assert.Equal(expectedSignature, deserialized.Signature);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

@@ -65,7 +65,7 @@ public sealed record class BetaWebFetchBlock : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"")
+                JsonSerializer.SerializeToElement("web_fetch_result")
             )
         )
         {
@@ -76,7 +76,7 @@ public sealed record class BetaWebFetchBlock : JsonModel
 
     public BetaWebFetchBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"");
+        this.Type = JsonSerializer.SerializeToElement("web_fetch_result");
     }
 
     public BetaWebFetchBlock(BetaWebFetchBlock betaWebFetchBlock)
@@ -86,7 +86,7 @@ public sealed record class BetaWebFetchBlock : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"");
+        this.Type = JsonSerializer.SerializeToElement("web_fetch_result");
     }
 
 #pragma warning disable CS8618

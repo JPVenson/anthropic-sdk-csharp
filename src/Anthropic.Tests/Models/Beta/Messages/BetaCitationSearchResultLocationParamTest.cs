@@ -24,9 +24,7 @@ public class BetaCitationSearchResultLocationParamTest : TestBase
         string expectedSource = "source";
         long expectedStartBlockIndex = 0;
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"search_result_location\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("search_result_location");
 
         Assert.Equal(expectedCitedText, model.CitedText);
         Assert.Equal(expectedEndBlockIndex, model.EndBlockIndex);
@@ -81,9 +79,7 @@ public class BetaCitationSearchResultLocationParamTest : TestBase
         string expectedSource = "source";
         long expectedStartBlockIndex = 0;
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"search_result_location\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("search_result_location");
 
         Assert.Equal(expectedCitedText, deserialized.CitedText);
         Assert.Equal(expectedEndBlockIndex, deserialized.EndBlockIndex);

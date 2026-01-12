@@ -137,7 +137,7 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                 ServiceTier = Messages::BetaUsageServiceTier.Standard,
             },
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"succeeded\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("succeeded");
 
         Assert.Equal(expectedMessage, model.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -352,7 +352,7 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                 ServiceTier = Messages::BetaUsageServiceTier.Standard,
             },
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"succeeded\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("succeeded");
 
         Assert.Equal(expectedMessage, deserialized.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

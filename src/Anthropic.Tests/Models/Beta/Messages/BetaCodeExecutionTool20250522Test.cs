@@ -19,10 +19,8 @@ public class BetaCodeExecutionTool20250522Test : TestBase
             Strict = true,
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"code_execution\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_20250522\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("code_execution");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20250522");
         List<ApiEnum<string, AllowedCaller>> expectedAllowedCallers = [AllowedCaller.Direct];
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
@@ -73,10 +71,8 @@ public class BetaCodeExecutionTool20250522Test : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250522>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"code_execution\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_20250522\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("code_execution");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20250522");
         List<ApiEnum<string, AllowedCaller>> expectedAllowedCallers = [AllowedCaller.Direct];
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
@@ -242,7 +238,7 @@ public class AllowedCallerTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, AllowedCaller>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
 
@@ -271,7 +267,7 @@ public class AllowedCallerTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, AllowedCaller>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

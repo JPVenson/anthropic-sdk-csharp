@@ -38,7 +38,7 @@ public sealed record class BetaAuthenticationError : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"authentication_error\"")
+                JsonSerializer.SerializeToElement("authentication_error")
             )
         )
         {
@@ -48,7 +48,7 @@ public sealed record class BetaAuthenticationError : JsonModel
 
     public BetaAuthenticationError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"authentication_error\"");
+        this.Type = JsonSerializer.SerializeToElement("authentication_error");
     }
 
     public BetaAuthenticationError(BetaAuthenticationError betaAuthenticationError)
@@ -58,7 +58,7 @@ public sealed record class BetaAuthenticationError : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"authentication_error\"");
+        this.Type = JsonSerializer.SerializeToElement("authentication_error");
     }
 
 #pragma warning disable CS8618

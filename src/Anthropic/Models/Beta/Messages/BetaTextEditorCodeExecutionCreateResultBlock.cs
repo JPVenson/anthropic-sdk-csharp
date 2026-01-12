@@ -43,9 +43,7 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock : JsonMo
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>(
-                    "\"text_editor_code_execution_create_result\""
-                )
+                JsonSerializer.SerializeToElement("text_editor_code_execution_create_result")
             )
         )
         {
@@ -55,9 +53,7 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock : JsonMo
 
     public BetaTextEditorCodeExecutionCreateResultBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_create_result\""
-        );
+        this.Type = JsonSerializer.SerializeToElement("text_editor_code_execution_create_result");
     }
 
     public BetaTextEditorCodeExecutionCreateResultBlock(
@@ -71,9 +67,7 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock : JsonMo
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_create_result\""
-        );
+        this.Type = JsonSerializer.SerializeToElement("text_editor_code_execution_create_result");
     }
 
 #pragma warning disable CS8618

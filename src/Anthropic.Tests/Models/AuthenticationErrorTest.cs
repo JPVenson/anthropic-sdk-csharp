@@ -11,9 +11,7 @@ public class AuthenticationErrorTest : TestBase
         var model = new AuthenticationError { Message = "message" };
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"authentication_error\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("authentication_error");
 
         Assert.Equal(expectedMessage, model.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -40,9 +38,7 @@ public class AuthenticationErrorTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"authentication_error\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("authentication_error");
 
         Assert.Equal(expectedMessage, deserialized.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

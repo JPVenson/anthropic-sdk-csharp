@@ -47,9 +47,7 @@ public class BetaRawContentBlockStartEventTest : TestBase
             Text = "text",
         };
         long expectedIndex = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"content_block_start\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content_block_start");
 
         Assert.Equal(expectedContentBlock, model.ContentBlock);
         Assert.Equal(expectedIndex, model.Index);
@@ -131,9 +129,7 @@ public class BetaRawContentBlockStartEventTest : TestBase
             Text = "text",
         };
         long expectedIndex = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"content_block_start\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content_block_start");
 
         Assert.Equal(expectedContentBlock, deserialized.ContentBlock);
         Assert.Equal(expectedIndex, deserialized.Index);

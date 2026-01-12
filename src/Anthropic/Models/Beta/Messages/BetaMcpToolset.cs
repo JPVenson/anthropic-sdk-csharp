@@ -99,12 +99,7 @@ public sealed record class BetaMcpToolset : JsonModel
     public override void Validate()
     {
         _ = this.McpServerName;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"mcp_toolset\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("mcp_toolset")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -121,7 +116,7 @@ public sealed record class BetaMcpToolset : JsonModel
 
     public BetaMcpToolset()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_toolset\"");
+        this.Type = JsonSerializer.SerializeToElement("mcp_toolset");
     }
 
     public BetaMcpToolset(BetaMcpToolset betaMcpToolset)
@@ -131,7 +126,7 @@ public sealed record class BetaMcpToolset : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_toolset\"");
+        this.Type = JsonSerializer.SerializeToElement("mcp_toolset");
     }
 
 #pragma warning disable CS8618

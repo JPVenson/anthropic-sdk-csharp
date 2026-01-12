@@ -16,9 +16,7 @@ public class BetaClearThinking20251015EditResponseTest : TestBase
 
         long expectedClearedInputTokens = 0;
         long expectedClearedThinkingTurns = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"clear_thinking_20251015\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("clear_thinking_20251015");
 
         Assert.Equal(expectedClearedInputTokens, model.ClearedInputTokens);
         Assert.Equal(expectedClearedThinkingTurns, model.ClearedThinkingTurns);
@@ -57,9 +55,7 @@ public class BetaClearThinking20251015EditResponseTest : TestBase
 
         long expectedClearedInputTokens = 0;
         long expectedClearedThinkingTurns = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"clear_thinking_20251015\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("clear_thinking_20251015");
 
         Assert.Equal(expectedClearedInputTokens, deserialized.ClearedInputTokens);
         Assert.Equal(expectedClearedThinkingTurns, deserialized.ClearedThinkingTurns);

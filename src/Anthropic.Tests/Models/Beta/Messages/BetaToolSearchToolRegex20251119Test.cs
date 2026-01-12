@@ -20,9 +20,7 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
             Strict = true,
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_regex\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("tool_search_tool_regex");
         ApiEnum<string, BetaToolSearchToolRegex20251119Type> expectedType =
             BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119;
         List<
@@ -79,9 +77,7 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolRegex20251119>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_regex\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("tool_search_tool_regex");
         ApiEnum<string, BetaToolSearchToolRegex20251119Type> expectedType =
             BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119;
         List<
@@ -267,10 +263,7 @@ public class BetaToolSearchToolRegex20251119TypeTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolSearchToolRegex20251119Type>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -297,10 +290,7 @@ public class BetaToolSearchToolRegex20251119TypeTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolSearchToolRegex20251119Type>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolSearchToolRegex20251119Type>
@@ -327,10 +317,7 @@ public class BetaToolSearchToolRegex20251119AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolSearchToolRegex20251119AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -357,10 +344,7 @@ public class BetaToolSearchToolRegex20251119AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolSearchToolRegex20251119AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolSearchToolRegex20251119AllowedCaller>

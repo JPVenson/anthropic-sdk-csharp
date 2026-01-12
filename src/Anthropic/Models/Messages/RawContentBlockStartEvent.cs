@@ -54,7 +54,7 @@ public sealed record class RawContentBlockStartEvent : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"")
+                JsonSerializer.SerializeToElement("content_block_start")
             )
         )
         {
@@ -64,7 +64,7 @@ public sealed record class RawContentBlockStartEvent : JsonModel
 
     public RawContentBlockStartEvent()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"");
+        this.Type = JsonSerializer.SerializeToElement("content_block_start");
     }
 
     public RawContentBlockStartEvent(RawContentBlockStartEvent rawContentBlockStartEvent)
@@ -74,7 +74,7 @@ public sealed record class RawContentBlockStartEvent : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"");
+        this.Type = JsonSerializer.SerializeToElement("content_block_start");
     }
 
 #pragma warning disable CS8618

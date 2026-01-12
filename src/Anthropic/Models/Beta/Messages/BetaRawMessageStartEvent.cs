@@ -37,12 +37,7 @@ public sealed record class BetaRawMessageStartEvent : JsonModel
     public override void Validate()
     {
         this.Message.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"message_start\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("message_start")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -50,7 +45,7 @@ public sealed record class BetaRawMessageStartEvent : JsonModel
 
     public BetaRawMessageStartEvent()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_start\"");
+        this.Type = JsonSerializer.SerializeToElement("message_start");
     }
 
     public BetaRawMessageStartEvent(BetaRawMessageStartEvent betaRawMessageStartEvent)
@@ -60,7 +55,7 @@ public sealed record class BetaRawMessageStartEvent : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_start\"");
+        this.Type = JsonSerializer.SerializeToElement("message_start");
     }
 
 #pragma warning disable CS8618

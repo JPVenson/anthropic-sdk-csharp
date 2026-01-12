@@ -11,9 +11,7 @@ public class DeletedMessageBatchTest : TestBase
         var model = new DeletedMessageBatch { ID = "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF" };
 
         string expectedID = "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"message_batch_deleted\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message_batch_deleted");
 
         Assert.Equal(expectedID, model.ID);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -40,9 +38,7 @@ public class DeletedMessageBatchTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedID = "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"message_batch_deleted\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message_batch_deleted");
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

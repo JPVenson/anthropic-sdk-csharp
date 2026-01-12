@@ -176,12 +176,7 @@ public sealed record class BetaMessageBatch : JsonModel
         this.ProcessingStatus.Validate();
         this.RequestCounts.Validate();
         _ = this.ResultsUrl;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"message_batch\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("message_batch")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -189,7 +184,7 @@ public sealed record class BetaMessageBatch : JsonModel
 
     public BetaMessageBatch()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch\"");
+        this.Type = JsonSerializer.SerializeToElement("message_batch");
     }
 
     public BetaMessageBatch(BetaMessageBatch betaMessageBatch)
@@ -199,7 +194,7 @@ public sealed record class BetaMessageBatch : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch\"");
+        this.Type = JsonSerializer.SerializeToElement("message_batch");
     }
 
 #pragma warning disable CS8618

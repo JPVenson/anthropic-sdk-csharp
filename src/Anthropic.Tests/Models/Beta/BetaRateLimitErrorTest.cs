@@ -11,7 +11,7 @@ public class BetaRateLimitErrorTest : TestBase
         var model = new BetaRateLimitError { Message = "message" };
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("rate_limit_error");
 
         Assert.Equal(expectedMessage, model.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -38,7 +38,7 @@ public class BetaRateLimitErrorTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("rate_limit_error");
 
         Assert.Equal(expectedMessage, deserialized.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

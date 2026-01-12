@@ -15,7 +15,7 @@ public class BetaMemoryTool20250818ViewCommandTest : TestBase
             ViewRange = [1, 10],
         };
 
-        JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"view\"");
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("view");
         string expectedPath = "/memories";
         List<long> expectedViewRange = [1, 10];
 
@@ -57,7 +57,7 @@ public class BetaMemoryTool20250818ViewCommandTest : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818ViewCommand>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"view\"");
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("view");
         string expectedPath = "/memories";
         List<long> expectedViewRange = [1, 10];
 

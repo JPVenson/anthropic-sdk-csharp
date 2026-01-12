@@ -14,7 +14,7 @@ public class BetaMemoryTool20250818CreateCommandTest : TestBase
             Path = "/memories/notes.txt",
         };
 
-        JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"create\"");
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("create");
         string expectedFileText =
             "Meeting notes:\n- Discussed project timeline\n- Next steps defined\n";
         string expectedPath = "/memories/notes.txt";
@@ -52,7 +52,7 @@ public class BetaMemoryTool20250818CreateCommandTest : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818CreateCommand>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"create\"");
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("create");
         string expectedFileText =
             "Meeting notes:\n- Discussed project timeline\n- Next steps defined\n";
         string expectedPath = "/memories/notes.txt";

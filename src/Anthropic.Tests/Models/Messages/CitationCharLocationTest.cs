@@ -24,7 +24,7 @@ public class CitationCharLocationTest : TestBase
         long expectedEndCharIndex = 0;
         string expectedFileID = "file_id";
         long expectedStartCharIndex = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("char_location");
 
         Assert.Equal(expectedCitedText, model.CitedText);
         Assert.Equal(expectedDocumentIndex, model.DocumentIndex);
@@ -77,7 +77,7 @@ public class CitationCharLocationTest : TestBase
         long expectedEndCharIndex = 0;
         string expectedFileID = "file_id";
         long expectedStartCharIndex = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("char_location");
 
         Assert.Equal(expectedCitedText, deserialized.CitedText);
         Assert.Equal(expectedDocumentIndex, deserialized.DocumentIndex);

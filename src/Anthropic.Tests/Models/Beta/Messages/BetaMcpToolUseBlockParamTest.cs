@@ -28,7 +28,7 @@ public class BetaMcpToolUseBlockParamTest : TestBase
         };
         string expectedName = "name";
         string expectedServerName = "server_name";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_use\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("mcp_tool_use");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedID, model.ID);
@@ -92,7 +92,7 @@ public class BetaMcpToolUseBlockParamTest : TestBase
         };
         string expectedName = "name";
         string expectedServerName = "server_name";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_use\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("mcp_tool_use");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedID, deserialized.ID);

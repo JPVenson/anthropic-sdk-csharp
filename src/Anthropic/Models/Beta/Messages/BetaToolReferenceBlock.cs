@@ -35,12 +35,7 @@ public sealed record class BetaToolReferenceBlock : JsonModel
     public override void Validate()
     {
         _ = this.ToolName;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"tool_reference\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("tool_reference")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -48,7 +43,7 @@ public sealed record class BetaToolReferenceBlock : JsonModel
 
     public BetaToolReferenceBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_reference\"");
+        this.Type = JsonSerializer.SerializeToElement("tool_reference");
     }
 
     public BetaToolReferenceBlock(BetaToolReferenceBlock betaToolReferenceBlock)
@@ -58,7 +53,7 @@ public sealed record class BetaToolReferenceBlock : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_reference\"");
+        this.Type = JsonSerializer.SerializeToElement("tool_reference");
     }
 
 #pragma warning disable CS8618

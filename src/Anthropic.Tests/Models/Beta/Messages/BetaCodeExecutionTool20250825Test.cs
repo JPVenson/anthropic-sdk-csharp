@@ -19,10 +19,8 @@ public class BetaCodeExecutionTool20250825Test : TestBase
             Strict = true,
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"code_execution\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_20250825\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("code_execution");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20250825");
         List<ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>> expectedAllowedCallers =
         [
             BetaCodeExecutionTool20250825AllowedCaller.Direct,
@@ -76,10 +74,8 @@ public class BetaCodeExecutionTool20250825Test : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250825>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"code_execution\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_20250825\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("code_execution");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20250825");
         List<ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>> expectedAllowedCallers =
         [
             BetaCodeExecutionTool20250825AllowedCaller.Direct,
@@ -249,10 +245,7 @@ public class BetaCodeExecutionTool20250825AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -279,10 +272,7 @@ public class BetaCodeExecutionTool20250825AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>

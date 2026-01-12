@@ -35,12 +35,7 @@ public sealed record class BetaThinkingDelta : JsonModel
     public override void Validate()
     {
         _ = this.Thinking;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"thinking_delta\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("thinking_delta")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -48,7 +43,7 @@ public sealed record class BetaThinkingDelta : JsonModel
 
     public BetaThinkingDelta()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("thinking_delta");
     }
 
     public BetaThinkingDelta(BetaThinkingDelta betaThinkingDelta)
@@ -58,7 +53,7 @@ public sealed record class BetaThinkingDelta : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("thinking_delta");
     }
 
 #pragma warning disable CS8618

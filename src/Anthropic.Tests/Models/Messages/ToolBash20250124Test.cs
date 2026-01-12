@@ -10,8 +10,8 @@ public class ToolBash20250124Test : TestBase
     {
         var model = new ToolBash20250124 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"bash\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"bash_20250124\"");
+        JsonElement expectedName = JsonSerializer.SerializeToElement("bash");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("bash_20250124");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.True(JsonElement.DeepEquals(expectedName, model.Name));
@@ -39,8 +39,8 @@ public class ToolBash20250124Test : TestBase
         var deserialized = JsonSerializer.Deserialize<ToolBash20250124>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"bash\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"bash_20250124\"");
+        JsonElement expectedName = JsonSerializer.SerializeToElement("bash");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("bash_20250124");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));

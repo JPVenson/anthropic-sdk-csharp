@@ -12,7 +12,7 @@ public class BetaThinkingBlockParamTest : TestBase
 
         string expectedSignature = "signature";
         string expectedThinking = "thinking";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"thinking\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("thinking");
 
         Assert.Equal(expectedSignature, model.Signature);
         Assert.Equal(expectedThinking, model.Thinking);
@@ -41,7 +41,7 @@ public class BetaThinkingBlockParamTest : TestBase
 
         string expectedSignature = "signature";
         string expectedThinking = "thinking";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"thinking\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("thinking");
 
         Assert.Equal(expectedSignature, deserialized.Signature);
         Assert.Equal(expectedThinking, deserialized.Thinking);

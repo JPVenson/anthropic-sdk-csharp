@@ -38,7 +38,7 @@ public sealed record class BetaRateLimitError : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\"")
+                JsonSerializer.SerializeToElement("rate_limit_error")
             )
         )
         {
@@ -48,7 +48,7 @@ public sealed record class BetaRateLimitError : JsonModel
 
     public BetaRateLimitError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\"");
+        this.Type = JsonSerializer.SerializeToElement("rate_limit_error");
     }
 
     public BetaRateLimitError(BetaRateLimitError betaRateLimitError)
@@ -58,7 +58,7 @@ public sealed record class BetaRateLimitError : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\"");
+        this.Type = JsonSerializer.SerializeToElement("rate_limit_error");
     }
 
 #pragma warning disable CS8618

@@ -90,12 +90,7 @@ public sealed record class CitationPageLocation : JsonModel
         _ = this.EndPageNumber;
         _ = this.FileID;
         _ = this.StartPageNumber;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"page_location\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("page_location")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -103,7 +98,7 @@ public sealed record class CitationPageLocation : JsonModel
 
     public CitationPageLocation()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"page_location\"");
+        this.Type = JsonSerializer.SerializeToElement("page_location");
     }
 
     public CitationPageLocation(CitationPageLocation citationPageLocation)
@@ -113,7 +108,7 @@ public sealed record class CitationPageLocation : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"page_location\"");
+        this.Type = JsonSerializer.SerializeToElement("page_location");
     }
 
 #pragma warning disable CS8618

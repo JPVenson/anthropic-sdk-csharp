@@ -100,12 +100,7 @@ public sealed record class BetaSearchResultBlockParam : JsonModel
         }
         _ = this.Source;
         _ = this.Title;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"search_result\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("search_result")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -115,7 +110,7 @@ public sealed record class BetaSearchResultBlockParam : JsonModel
 
     public BetaSearchResultBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"search_result\"");
+        this.Type = JsonSerializer.SerializeToElement("search_result");
     }
 
     public BetaSearchResultBlockParam(BetaSearchResultBlockParam betaSearchResultBlockParam)
@@ -125,7 +120,7 @@ public sealed record class BetaSearchResultBlockParam : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"search_result\"");
+        this.Type = JsonSerializer.SerializeToElement("search_result");
     }
 
 #pragma warning disable CS8618

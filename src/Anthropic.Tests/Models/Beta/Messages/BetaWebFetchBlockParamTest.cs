@@ -30,7 +30,7 @@ public class BetaWebFetchBlockParamTest : TestBase
             Context = "x",
             Title = "x",
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_result");
         string expectedUrl = "url";
         string expectedRetrievedAt = "retrieved_at";
 
@@ -92,7 +92,7 @@ public class BetaWebFetchBlockParamTest : TestBase
             Context = "x",
             Title = "x",
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_result");
         string expectedUrl = "url";
         string expectedRetrievedAt = "retrieved_at";
 

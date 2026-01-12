@@ -26,8 +26,8 @@ public class BetaToolBash20250124Test : TestBase
             Strict = true,
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"bash\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"bash_20250124\"");
+        JsonElement expectedName = JsonSerializer.SerializeToElement("bash");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("bash_20250124");
         List<ApiEnum<string, BetaToolBash20250124AllowedCaller>> expectedAllowedCallers =
         [
             BetaToolBash20250124AllowedCaller.Direct,
@@ -114,8 +114,8 @@ public class BetaToolBash20250124Test : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaToolBash20250124>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"bash\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"bash_20250124\"");
+        JsonElement expectedName = JsonSerializer.SerializeToElement("bash");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("bash_20250124");
         List<ApiEnum<string, BetaToolBash20250124AllowedCaller>> expectedAllowedCallers =
         [
             BetaToolBash20250124AllowedCaller.Direct,
@@ -344,7 +344,7 @@ public class BetaToolBash20250124AllowedCallerTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, BetaToolBash20250124AllowedCaller>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
 
@@ -372,7 +372,7 @@ public class BetaToolBash20250124AllowedCallerTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, BetaToolBash20250124AllowedCaller>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

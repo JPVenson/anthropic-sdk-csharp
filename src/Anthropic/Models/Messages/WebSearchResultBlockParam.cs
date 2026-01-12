@@ -71,7 +71,7 @@ public sealed record class WebSearchResultBlockParam : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"")
+                JsonSerializer.SerializeToElement("web_search_result")
             )
         )
         {
@@ -83,7 +83,7 @@ public sealed record class WebSearchResultBlockParam : JsonModel
 
     public WebSearchResultBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_result");
     }
 
     public WebSearchResultBlockParam(WebSearchResultBlockParam webSearchResultBlockParam)
@@ -93,7 +93,7 @@ public sealed record class WebSearchResultBlockParam : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_result");
     }
 
 #pragma warning disable CS8618

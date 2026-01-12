@@ -26,7 +26,7 @@ public class ToolUseBlockParamTest : TestBase
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
         string expectedName = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedID, model.ID);
@@ -86,7 +86,7 @@ public class ToolUseBlockParamTest : TestBase
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
         string expectedName = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedID, deserialized.ID);

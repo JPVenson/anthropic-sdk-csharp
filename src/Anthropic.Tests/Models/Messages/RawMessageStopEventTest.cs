@@ -10,7 +10,7 @@ public class RawMessageStopEventTest : TestBase
     {
         var model = new RawMessageStopEvent { };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_stop\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message_stop");
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
@@ -35,7 +35,7 @@ public class RawMessageStopEventTest : TestBase
         var deserialized = JsonSerializer.Deserialize<RawMessageStopEvent>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_stop\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message_stop");
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }

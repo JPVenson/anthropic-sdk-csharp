@@ -63,7 +63,7 @@ public sealed record class BetaClearThinking20251015EditResponse : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"")
+                JsonSerializer.SerializeToElement("clear_thinking_20251015")
             )
         )
         {
@@ -73,7 +73,7 @@ public sealed record class BetaClearThinking20251015EditResponse : JsonModel
 
     public BetaClearThinking20251015EditResponse()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"");
+        this.Type = JsonSerializer.SerializeToElement("clear_thinking_20251015");
     }
 
     public BetaClearThinking20251015EditResponse(
@@ -85,7 +85,7 @@ public sealed record class BetaClearThinking20251015EditResponse : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"");
+        this.Type = JsonSerializer.SerializeToElement("clear_thinking_20251015");
     }
 
 #pragma warning disable CS8618

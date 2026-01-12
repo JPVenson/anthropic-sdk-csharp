@@ -18,9 +18,7 @@ public class BetaClearToolUses20250919EditTest : TestBase
             Trigger = new BetaInputTokensTrigger(1),
         };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"clear_tool_uses_20250919\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("clear_tool_uses_20250919");
         BetaInputTokensClearAtLeast expectedClearAtLeast = new(0);
         ClearToolInputs expectedClearToolInputs = true;
         List<string> expectedExcludeTools = ["string"];
@@ -74,9 +72,7 @@ public class BetaClearToolUses20250919EditTest : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaClearToolUses20250919Edit>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"clear_tool_uses_20250919\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("clear_tool_uses_20250919");
         BetaInputTokensClearAtLeast expectedClearAtLeast = new(0);
         ClearToolInputs expectedClearToolInputs = true;
         List<string> expectedExcludeTools = ["string"];

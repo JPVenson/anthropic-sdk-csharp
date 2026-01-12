@@ -15,7 +15,7 @@ public class BetaMemoryTool20250818StrReplaceCommandTest : TestBase
             Path = "/memories/preferences.txt",
         };
 
-        JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"str_replace\"");
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("str_replace");
         string expectedNewStr = "Favorite color: green";
         string expectedOldStr = "Favorite color: blue";
         string expectedPath = "/memories/preferences.txt";
@@ -60,7 +60,7 @@ public class BetaMemoryTool20250818StrReplaceCommandTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"str_replace\"");
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("str_replace");
         string expectedNewStr = "Favorite color: green";
         string expectedOldStr = "Favorite color: blue";
         string expectedPath = "/memories/preferences.txt";

@@ -49,9 +49,7 @@ public sealed record class BetaImageBlockParam : JsonModel
     public override void Validate()
     {
         this.Source.Validate();
-        if (
-            !JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"image\""))
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("image")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -60,7 +58,7 @@ public sealed record class BetaImageBlockParam : JsonModel
 
     public BetaImageBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"image\"");
+        this.Type = JsonSerializer.SerializeToElement("image");
     }
 
     public BetaImageBlockParam(BetaImageBlockParam betaImageBlockParam)
@@ -70,7 +68,7 @@ public sealed record class BetaImageBlockParam : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"image\"");
+        this.Type = JsonSerializer.SerializeToElement("image");
     }
 
 #pragma warning disable CS8618

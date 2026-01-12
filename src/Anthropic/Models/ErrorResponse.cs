@@ -46,9 +46,7 @@ public sealed record class ErrorResponse : JsonModel
     {
         this.Error.Validate();
         _ = this.RequestID;
-        if (
-            !JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"error\""))
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("error")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -56,7 +54,7 @@ public sealed record class ErrorResponse : JsonModel
 
     public ErrorResponse()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"error\"");
+        this.Type = JsonSerializer.SerializeToElement("error");
     }
 
     public ErrorResponse(ErrorResponse errorResponse)
@@ -66,7 +64,7 @@ public sealed record class ErrorResponse : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"error\"");
+        this.Type = JsonSerializer.SerializeToElement("error");
     }
 
 #pragma warning disable CS8618

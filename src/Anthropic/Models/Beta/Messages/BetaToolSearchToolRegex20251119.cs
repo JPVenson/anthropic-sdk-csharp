@@ -128,7 +128,7 @@ public sealed record class BetaToolSearchToolRegex20251119 : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Name,
-                JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_regex\"")
+                JsonSerializer.SerializeToElement("tool_search_tool_regex")
             )
         )
         {
@@ -146,7 +146,7 @@ public sealed record class BetaToolSearchToolRegex20251119 : JsonModel
 
     public BetaToolSearchToolRegex20251119()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_regex\"");
+        this.Name = JsonSerializer.SerializeToElement("tool_search_tool_regex");
     }
 
     public BetaToolSearchToolRegex20251119(
@@ -158,7 +158,7 @@ public sealed record class BetaToolSearchToolRegex20251119 : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_regex\"");
+        this.Name = JsonSerializer.SerializeToElement("tool_search_tool_regex");
     }
 
 #pragma warning disable CS8618

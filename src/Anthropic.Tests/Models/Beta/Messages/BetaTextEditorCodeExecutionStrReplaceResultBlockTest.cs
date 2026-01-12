@@ -23,8 +23,8 @@ public class BetaTextEditorCodeExecutionStrReplaceResultBlockTest : TestBase
         long expectedNewStart = 0;
         long expectedOldLines = 0;
         long expectedOldStart = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_str_replace_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_str_replace_result"
         );
 
         Assert.NotNull(model.Lines);
@@ -81,8 +81,8 @@ public class BetaTextEditorCodeExecutionStrReplaceResultBlockTest : TestBase
         long expectedNewStart = 0;
         long expectedOldLines = 0;
         long expectedOldStart = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_str_replace_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_str_replace_result"
         );
 
         Assert.NotNull(deserialized.Lines);

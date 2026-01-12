@@ -24,7 +24,7 @@ public class FileMetadataTest : TestBase
         string expectedFilename = "x";
         string expectedMimeType = "x";
         long expectedSizeBytes = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"file\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("file");
         bool expectedDownloadable = true;
 
         Assert.Equal(expectedID, model.ID);
@@ -77,7 +77,7 @@ public class FileMetadataTest : TestBase
         string expectedFilename = "x";
         string expectedMimeType = "x";
         long expectedSizeBytes = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"file\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("file");
         bool expectedDownloadable = true;
 
         Assert.Equal(expectedID, deserialized.ID);

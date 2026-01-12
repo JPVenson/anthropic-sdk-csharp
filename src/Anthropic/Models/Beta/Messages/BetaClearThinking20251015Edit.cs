@@ -52,7 +52,7 @@ public sealed record class BetaClearThinking20251015Edit : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"")
+                JsonSerializer.SerializeToElement("clear_thinking_20251015")
             )
         )
         {
@@ -63,7 +63,7 @@ public sealed record class BetaClearThinking20251015Edit : JsonModel
 
     public BetaClearThinking20251015Edit()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"");
+        this.Type = JsonSerializer.SerializeToElement("clear_thinking_20251015");
     }
 
     public BetaClearThinking20251015Edit(
@@ -75,7 +75,7 @@ public sealed record class BetaClearThinking20251015Edit : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"");
+        this.Type = JsonSerializer.SerializeToElement("clear_thinking_20251015");
     }
 
 #pragma warning disable CS8618
@@ -407,7 +407,7 @@ public record class UnionMember2
 
     public UnionMember2()
     {
-        Element = JsonSerializer.Deserialize<JsonElement>("\"all\"");
+        Element = JsonSerializer.SerializeToElement("all");
     }
 
     UnionMember2(JsonElement element)

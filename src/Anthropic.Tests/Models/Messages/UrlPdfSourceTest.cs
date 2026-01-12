@@ -10,7 +10,7 @@ public class UrlPdfSourceTest : TestBase
     {
         var model = new UrlPdfSource { Url = "url" };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"url\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("url");
         string expectedUrl = "url";
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -37,7 +37,7 @@ public class UrlPdfSourceTest : TestBase
         var deserialized = JsonSerializer.Deserialize<UrlPdfSource>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"url\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("url");
         string expectedUrl = "url";
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

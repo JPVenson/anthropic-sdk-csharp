@@ -11,7 +11,7 @@ public class ThinkingDeltaTest : TestBase
         var model = new ThinkingDelta { Thinking = "thinking" };
 
         string expectedThinking = "thinking";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"thinking_delta\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("thinking_delta");
 
         Assert.Equal(expectedThinking, model.Thinking);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -38,7 +38,7 @@ public class ThinkingDeltaTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedThinking = "thinking";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"thinking_delta\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("thinking_delta");
 
         Assert.Equal(expectedThinking, deserialized.Thinking);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

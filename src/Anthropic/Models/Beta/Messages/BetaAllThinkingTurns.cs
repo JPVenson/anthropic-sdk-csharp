@@ -24,7 +24,7 @@ public sealed record class BetaAllThinkingTurns : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"all\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("all")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -32,7 +32,7 @@ public sealed record class BetaAllThinkingTurns : JsonModel
 
     public BetaAllThinkingTurns()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"all\"");
+        this.Type = JsonSerializer.SerializeToElement("all");
     }
 
     public BetaAllThinkingTurns(BetaAllThinkingTurns betaAllThinkingTurns)
@@ -42,7 +42,7 @@ public sealed record class BetaAllThinkingTurns : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"all\"");
+        this.Type = JsonSerializer.SerializeToElement("all");
     }
 
 #pragma warning disable CS8618

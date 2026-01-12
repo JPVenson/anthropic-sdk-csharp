@@ -103,10 +103,7 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
         _ = this.Input;
         this.Name.Validate();
         if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"")
-            )
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("server_tool_use"))
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
@@ -117,7 +114,7 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
 
     public BetaServerToolUseBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        this.Type = JsonSerializer.SerializeToElement("server_tool_use");
     }
 
     public BetaServerToolUseBlockParam(BetaServerToolUseBlockParam betaServerToolUseBlockParam)
@@ -127,7 +124,7 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        this.Type = JsonSerializer.SerializeToElement("server_tool_use");
     }
 
 #pragma warning disable CS8618

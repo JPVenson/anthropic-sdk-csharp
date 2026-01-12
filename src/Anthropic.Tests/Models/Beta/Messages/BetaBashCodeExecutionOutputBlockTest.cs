@@ -11,9 +11,7 @@ public class BetaBashCodeExecutionOutputBlockTest : TestBase
         var model = new BetaBashCodeExecutionOutputBlock { FileID = "file_id" };
 
         string expectedFileID = "file_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"bash_code_execution_output\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("bash_code_execution_output");
 
         Assert.Equal(expectedFileID, model.FileID);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -40,9 +38,7 @@ public class BetaBashCodeExecutionOutputBlockTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedFileID = "file_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"bash_code_execution_output\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("bash_code_execution_output");
 
         Assert.Equal(expectedFileID, deserialized.FileID);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

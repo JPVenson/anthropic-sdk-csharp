@@ -21,8 +21,8 @@ public class BetaTextEditorCodeExecutionToolResultErrorParamTest : TestBase
             BetaTextEditorCodeExecutionToolResultErrorParamErrorCode
         > expectedErrorCode =
             BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_tool_result_error\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_tool_result_error"
         );
         string expectedErrorMessage = "error_message";
 
@@ -66,8 +66,8 @@ public class BetaTextEditorCodeExecutionToolResultErrorParamTest : TestBase
             BetaTextEditorCodeExecutionToolResultErrorParamErrorCode
         > expectedErrorCode =
             BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_tool_result_error\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_tool_result_error"
         );
         string expectedErrorMessage = "error_message";
 
@@ -159,10 +159,7 @@ public class BetaTextEditorCodeExecutionToolResultErrorParamErrorCodeTest : Test
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorParamErrorCode>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -194,10 +191,7 @@ public class BetaTextEditorCodeExecutionToolResultErrorParamErrorCodeTest : Test
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorParamErrorCode>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorParamErrorCode>

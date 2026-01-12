@@ -27,12 +27,8 @@ public class BetaToolTextEditor20250728Test : TestBase
             Strict = true,
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>(
-            "\"str_replace_based_edit_tool\""
-        );
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_20250728\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("str_replace_based_edit_tool");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text_editor_20250728");
         List<ApiEnum<string, BetaToolTextEditor20250728AllowedCaller>> expectedAllowedCallers =
         [
             BetaToolTextEditor20250728AllowedCaller.Direct,
@@ -123,12 +119,8 @@ public class BetaToolTextEditor20250728Test : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250728>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>(
-            "\"str_replace_based_edit_tool\""
-        );
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_20250728\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("str_replace_based_edit_tool");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text_editor_20250728");
         List<ApiEnum<string, BetaToolTextEditor20250728AllowedCaller>> expectedAllowedCallers =
         [
             BetaToolTextEditor20250728AllowedCaller.Direct,
@@ -377,10 +369,7 @@ public class BetaToolTextEditor20250728AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolTextEditor20250728AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -407,10 +396,7 @@ public class BetaToolTextEditor20250728AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolTextEditor20250728AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolTextEditor20250728AllowedCaller>

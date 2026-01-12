@@ -12,7 +12,7 @@ public class BetaCacheControlEphemeralTest : TestBase
     {
         var model = new BetaCacheControlEphemeral { Ttl = Ttl.Ttl5m };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"ephemeral\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("ephemeral");
         ApiEnum<string, Ttl> expectedTtl = Ttl.Ttl5m;
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -39,7 +39,7 @@ public class BetaCacheControlEphemeralTest : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaCacheControlEphemeral>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"ephemeral\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("ephemeral");
         ApiEnum<string, Ttl> expectedTtl = Ttl.Ttl5m;
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -113,7 +113,7 @@ public class TtlTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, Ttl>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
 
@@ -142,7 +142,7 @@ public class TtlTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, Ttl>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

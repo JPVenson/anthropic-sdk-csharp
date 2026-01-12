@@ -46,7 +46,7 @@ public sealed record class BetaDeletedMessageBatch : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"message_batch_deleted\"")
+                JsonSerializer.SerializeToElement("message_batch_deleted")
             )
         )
         {
@@ -56,7 +56,7 @@ public sealed record class BetaDeletedMessageBatch : JsonModel
 
     public BetaDeletedMessageBatch()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch_deleted\"");
+        this.Type = JsonSerializer.SerializeToElement("message_batch_deleted");
     }
 
     public BetaDeletedMessageBatch(BetaDeletedMessageBatch betaDeletedMessageBatch)
@@ -66,7 +66,7 @@ public sealed record class BetaDeletedMessageBatch : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch_deleted\"");
+        this.Type = JsonSerializer.SerializeToElement("message_batch_deleted");
     }
 
 #pragma warning disable CS8618

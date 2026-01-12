@@ -21,9 +21,7 @@ public class BetaCodeExecutionResultBlockTest : TestBase
         long expectedReturnCode = 0;
         string expectedStderr = "stderr";
         string expectedStdout = "stdout";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_result\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_result");
 
         Assert.Equal(expectedContent.Count, model.Content.Count);
         for (int i = 0; i < expectedContent.Count; i++)
@@ -72,9 +70,7 @@ public class BetaCodeExecutionResultBlockTest : TestBase
         long expectedReturnCode = 0;
         string expectedStderr = "stderr";
         string expectedStdout = "stdout";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_result\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_result");
 
         Assert.Equal(expectedContent.Count, deserialized.Content.Count);
         for (int i = 0; i < expectedContent.Count; i++)

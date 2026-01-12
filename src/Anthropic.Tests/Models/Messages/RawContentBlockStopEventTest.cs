@@ -11,9 +11,7 @@ public class RawContentBlockStopEventTest : TestBase
         var model = new RawContentBlockStopEvent { Index = 0 };
 
         long expectedIndex = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"content_block_stop\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content_block_stop");
 
         Assert.Equal(expectedIndex, model.Index);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -40,9 +38,7 @@ public class RawContentBlockStopEventTest : TestBase
         Assert.NotNull(deserialized);
 
         long expectedIndex = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"content_block_stop\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content_block_stop");
 
         Assert.Equal(expectedIndex, deserialized.Index);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

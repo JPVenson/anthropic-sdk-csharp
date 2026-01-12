@@ -10,7 +10,7 @@ public class BetaAllThinkingTurnsTest : TestBase
     {
         var model = new BetaAllThinkingTurns { };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"all\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("all");
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
@@ -35,7 +35,7 @@ public class BetaAllThinkingTurnsTest : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaAllThinkingTurns>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"all\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("all");
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }

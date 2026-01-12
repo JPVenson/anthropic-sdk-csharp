@@ -11,7 +11,7 @@ public class BetaOverloadedErrorTest : TestBase
         var model = new BetaOverloadedError { Message = "message" };
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"overloaded_error\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("overloaded_error");
 
         Assert.Equal(expectedMessage, model.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -38,7 +38,7 @@ public class BetaOverloadedErrorTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"overloaded_error\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("overloaded_error");
 
         Assert.Equal(expectedMessage, deserialized.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

@@ -11,7 +11,7 @@ public class ThinkingConfigEnabledTest : TestBase
         var model = new ThinkingConfigEnabled { BudgetTokens = 1024 };
 
         long expectedBudgetTokens = 1024;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"enabled\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("enabled");
 
         Assert.Equal(expectedBudgetTokens, model.BudgetTokens);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -38,7 +38,7 @@ public class ThinkingConfigEnabledTest : TestBase
         Assert.NotNull(deserialized);
 
         long expectedBudgetTokens = 1024;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"enabled\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("enabled");
 
         Assert.Equal(expectedBudgetTokens, deserialized.BudgetTokens);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

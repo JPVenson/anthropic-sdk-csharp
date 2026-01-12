@@ -22,8 +22,8 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamTest : TestBase
         string expectedContent = "content";
         ApiEnum<string, BetaTextEditorCodeExecutionViewResultBlockParamFileType> expectedFileType =
             BetaTextEditorCodeExecutionViewResultBlockParamFileType.Text;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_view_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_view_result"
         );
         long expectedNumLines = 0;
         long expectedStartLine = 0;
@@ -76,8 +76,8 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamTest : TestBase
         string expectedContent = "content";
         ApiEnum<string, BetaTextEditorCodeExecutionViewResultBlockParamFileType> expectedFileType =
             BetaTextEditorCodeExecutionViewResultBlockParamFileType.Text;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_view_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_view_result"
         );
         long expectedNumLines = 0;
         long expectedStartLine = 0;
@@ -191,10 +191,7 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamFileTypeTest : TestB
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaTextEditorCodeExecutionViewResultBlockParamFileType>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -224,10 +221,7 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamFileTypeTest : TestB
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaTextEditorCodeExecutionViewResultBlockParamFileType>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaTextEditorCodeExecutionViewResultBlockParamFileType>

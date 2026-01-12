@@ -57,7 +57,7 @@ public class SearchResultBlockParamTest : TestBase
         ];
         string expectedSource = "source";
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"search_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("search_result");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         CitationsConfigParam expectedCitations = new() { Enabled = true };
 
@@ -164,7 +164,7 @@ public class SearchResultBlockParamTest : TestBase
         ];
         string expectedSource = "source";
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"search_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("search_result");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         CitationsConfigParam expectedCitations = new() { Enabled = true };
 

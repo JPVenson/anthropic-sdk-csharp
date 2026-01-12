@@ -35,7 +35,7 @@ public sealed record class BetaFileImageSource : JsonModel
     public override void Validate()
     {
         _ = this.FileID;
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"file\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("file")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -43,7 +43,7 @@ public sealed record class BetaFileImageSource : JsonModel
 
     public BetaFileImageSource()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"file\"");
+        this.Type = JsonSerializer.SerializeToElement("file");
     }
 
     public BetaFileImageSource(BetaFileImageSource betaFileImageSource)
@@ -53,7 +53,7 @@ public sealed record class BetaFileImageSource : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"file\"");
+        this.Type = JsonSerializer.SerializeToElement("file");
     }
 
 #pragma warning disable CS8618

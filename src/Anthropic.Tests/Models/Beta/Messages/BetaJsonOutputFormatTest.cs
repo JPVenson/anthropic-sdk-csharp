@@ -21,7 +21,7 @@ public class BetaJsonOutputFormatTest : TestBase
         {
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"json_schema\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("json_schema");
 
         Assert.Equal(expectedSchema.Count, model.Schema.Count);
         foreach (var item in expectedSchema)
@@ -69,7 +69,7 @@ public class BetaJsonOutputFormatTest : TestBase
         {
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"json_schema\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("json_schema");
 
         Assert.Equal(expectedSchema.Count, deserialized.Schema.Count);
         foreach (var item in expectedSchema)

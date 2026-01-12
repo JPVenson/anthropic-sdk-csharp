@@ -123,7 +123,7 @@ public sealed record class FileMetadata : JsonModel
         _ = this.Filename;
         _ = this.MimeType;
         _ = this.SizeBytes;
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"file\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("file")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -132,7 +132,7 @@ public sealed record class FileMetadata : JsonModel
 
     public FileMetadata()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"file\"");
+        this.Type = JsonSerializer.SerializeToElement("file");
     }
 
     public FileMetadata(FileMetadata fileMetadata)
@@ -142,7 +142,7 @@ public sealed record class FileMetadata : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"file\"");
+        this.Type = JsonSerializer.SerializeToElement("file");
     }
 
 #pragma warning disable CS8618

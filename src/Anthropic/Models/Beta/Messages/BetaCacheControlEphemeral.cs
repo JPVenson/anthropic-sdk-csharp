@@ -52,12 +52,7 @@ public sealed record class BetaCacheControlEphemeral : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"ephemeral\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("ephemeral")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -66,7 +61,7 @@ public sealed record class BetaCacheControlEphemeral : JsonModel
 
     public BetaCacheControlEphemeral()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"ephemeral\"");
+        this.Type = JsonSerializer.SerializeToElement("ephemeral");
     }
 
     public BetaCacheControlEphemeral(BetaCacheControlEphemeral betaCacheControlEphemeral)
@@ -76,7 +71,7 @@ public sealed record class BetaCacheControlEphemeral : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"ephemeral\"");
+        this.Type = JsonSerializer.SerializeToElement("ephemeral");
     }
 
 #pragma warning disable CS8618

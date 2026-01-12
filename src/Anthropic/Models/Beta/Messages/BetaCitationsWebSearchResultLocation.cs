@@ -75,7 +75,7 @@ public sealed record class BetaCitationsWebSearchResultLocation : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"web_search_result_location\"")
+                JsonSerializer.SerializeToElement("web_search_result_location")
             )
         )
         {
@@ -86,7 +86,7 @@ public sealed record class BetaCitationsWebSearchResultLocation : JsonModel
 
     public BetaCitationsWebSearchResultLocation()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result_location\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_result_location");
     }
 
     public BetaCitationsWebSearchResultLocation(
@@ -98,7 +98,7 @@ public sealed record class BetaCitationsWebSearchResultLocation : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result_location\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_result_location");
     }
 
 #pragma warning disable CS8618

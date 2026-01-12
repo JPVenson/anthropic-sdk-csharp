@@ -89,9 +89,7 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>(
-                    "\"text_editor_code_execution_str_replace_result\""
-                )
+                JsonSerializer.SerializeToElement("text_editor_code_execution_str_replace_result")
             )
         )
         {
@@ -106,8 +104,8 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
 
     public BetaTextEditorCodeExecutionStrReplaceResultBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_str_replace_result\""
+        this.Type = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_str_replace_result"
         );
     }
 
@@ -122,8 +120,8 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_str_replace_result\""
+        this.Type = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_str_replace_result"
         );
     }
 

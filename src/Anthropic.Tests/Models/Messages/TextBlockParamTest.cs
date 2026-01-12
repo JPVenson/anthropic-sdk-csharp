@@ -27,7 +27,7 @@ public class TextBlockParamTest : TestBase
         };
 
         string expectedText = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         List<TextCitationParam> expectedCitations =
         [
@@ -103,7 +103,7 @@ public class TextBlockParamTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedText = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         List<TextCitationParam> expectedCitations =
         [

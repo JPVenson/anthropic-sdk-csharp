@@ -19,7 +19,7 @@ public class MessageBatchErroredResultTest : TestBase
             Error = new InvalidRequestError("message"),
             RequestID = "request_id",
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"errored\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("errored");
 
         Assert.Equal(expectedError, model.Error);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -56,7 +56,7 @@ public class MessageBatchErroredResultTest : TestBase
             Error = new InvalidRequestError("message"),
             RequestID = "request_id",
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"errored\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("errored");
 
         Assert.Equal(expectedError, deserialized.Error);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

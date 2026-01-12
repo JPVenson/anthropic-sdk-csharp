@@ -17,7 +17,7 @@ public class BetaRequestMcpServerURLDefinitionTest : TestBase
         };
 
         string expectedName = "name";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"url\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("url");
         string expectedUrl = "url";
         string expectedAuthorizationToken = "authorization_token";
         BetaRequestMcpServerToolConfiguration expectedToolConfiguration = new()
@@ -66,7 +66,7 @@ public class BetaRequestMcpServerURLDefinitionTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedName = "name";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"url\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("url");
         string expectedUrl = "url";
         string expectedAuthorizationToken = "authorization_token";
         BetaRequestMcpServerToolConfiguration expectedToolConfiguration = new()

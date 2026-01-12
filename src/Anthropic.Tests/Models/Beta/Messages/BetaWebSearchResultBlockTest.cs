@@ -19,7 +19,7 @@ public class BetaWebSearchResultBlockTest : TestBase
         string expectedEncryptedContent = "encrypted_content";
         string expectedPageAge = "page_age";
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_result");
         string expectedUrl = "url";
 
         Assert.Equal(expectedEncryptedContent, model.EncryptedContent);
@@ -64,7 +64,7 @@ public class BetaWebSearchResultBlockTest : TestBase
         string expectedEncryptedContent = "encrypted_content";
         string expectedPageAge = "page_age";
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_result");
         string expectedUrl = "url";
 
         Assert.Equal(expectedEncryptedContent, deserialized.EncryptedContent);

@@ -15,7 +15,7 @@ public class BetaMemoryTool20250818InsertCommandTest : TestBase
             Path = "/memories/todo.txt",
         };
 
-        JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"insert\"");
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("insert");
         long expectedInsertLine = 2;
         string expectedInsertText = "- Review memory tool documentation\n";
         string expectedPath = "/memories/todo.txt";
@@ -56,7 +56,7 @@ public class BetaMemoryTool20250818InsertCommandTest : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818InsertCommand>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"insert\"");
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("insert");
         long expectedInsertLine = 2;
         string expectedInsertText = "- Review memory tool documentation\n";
         string expectedPath = "/memories/todo.txt";

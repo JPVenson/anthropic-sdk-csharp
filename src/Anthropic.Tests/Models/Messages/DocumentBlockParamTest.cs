@@ -18,7 +18,7 @@ public class DocumentBlockParamTest : TestBase
         };
 
         Source expectedSource = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"document\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("document");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         CitationsConfigParam expectedCitations = new() { Enabled = true };
         string expectedContext = "x";
@@ -67,7 +67,7 @@ public class DocumentBlockParamTest : TestBase
         Assert.NotNull(deserialized);
 
         Source expectedSource = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"document\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("document");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         CitationsConfigParam expectedCitations = new() { Enabled = true };
         string expectedContext = "x";

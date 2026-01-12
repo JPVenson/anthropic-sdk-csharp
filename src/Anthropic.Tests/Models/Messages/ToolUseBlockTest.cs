@@ -25,7 +25,7 @@ public class ToolUseBlockTest : TestBase
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
         string expectedName = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedInput.Count, model.Input.Count);
@@ -81,7 +81,7 @@ public class ToolUseBlockTest : TestBase
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
         string expectedName = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedInput.Count, deserialized.Input.Count);

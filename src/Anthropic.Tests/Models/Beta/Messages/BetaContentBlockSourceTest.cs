@@ -11,7 +11,7 @@ public class BetaContentBlockSourceTest : TestBase
         var model = new BetaContentBlockSource { Content = "string" };
 
         BetaContentBlockSourceContent expectedContent = "string";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"content\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content");
 
         Assert.Equal(expectedContent, model.Content);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -38,7 +38,7 @@ public class BetaContentBlockSourceTest : TestBase
         Assert.NotNull(deserialized);
 
         BetaContentBlockSourceContent expectedContent = "string";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"content\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content");
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

@@ -62,20 +62,12 @@ public sealed record class ServerToolUseBlock : JsonModel
     {
         _ = this.ID;
         _ = this.Input;
-        if (
-            !JsonElement.DeepEquals(
-                this.Name,
-                JsonSerializer.Deserialize<JsonElement>("\"web_search\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.SerializeToElement("web_search")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"")
-            )
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("server_tool_use"))
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
@@ -84,8 +76,8 @@ public sealed record class ServerToolUseBlock : JsonModel
 
     public ServerToolUseBlock()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        this.Name = JsonSerializer.SerializeToElement("web_search");
+        this.Type = JsonSerializer.SerializeToElement("server_tool_use");
     }
 
     public ServerToolUseBlock(ServerToolUseBlock serverToolUseBlock)
@@ -95,8 +87,8 @@ public sealed record class ServerToolUseBlock : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        this.Name = JsonSerializer.SerializeToElement("web_search");
+        this.Type = JsonSerializer.SerializeToElement("server_tool_use");
     }
 
 #pragma warning disable CS8618

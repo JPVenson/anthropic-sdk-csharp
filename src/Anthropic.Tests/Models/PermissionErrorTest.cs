@@ -11,7 +11,7 @@ public class PermissionErrorTest : TestBase
         var model = new PermissionError { Message = "message" };
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"permission_error\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("permission_error");
 
         Assert.Equal(expectedMessage, model.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -38,7 +38,7 @@ public class PermissionErrorTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"permission_error\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("permission_error");
 
         Assert.Equal(expectedMessage, deserialized.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

@@ -34,7 +34,7 @@ public sealed record class UrlPdfSource : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"url\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("url")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -43,7 +43,7 @@ public sealed record class UrlPdfSource : JsonModel
 
     public UrlPdfSource()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
+        this.Type = JsonSerializer.SerializeToElement("url");
     }
 
     public UrlPdfSource(UrlPdfSource UrlPdfSource)
@@ -53,7 +53,7 @@ public sealed record class UrlPdfSource : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
+        this.Type = JsonSerializer.SerializeToElement("url");
     }
 
 #pragma warning disable CS8618

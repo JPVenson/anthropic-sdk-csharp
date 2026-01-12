@@ -11,7 +11,7 @@ public class BetaInputJsonDeltaTest : TestBase
         var model = new BetaInputJsonDelta { PartialJson = "partial_json" };
 
         string expectedPartialJson = "partial_json";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"input_json_delta\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("input_json_delta");
 
         Assert.Equal(expectedPartialJson, model.PartialJson);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -38,7 +38,7 @@ public class BetaInputJsonDeltaTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedPartialJson = "partial_json";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"input_json_delta\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("input_json_delta");
 
         Assert.Equal(expectedPartialJson, deserialized.PartialJson);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

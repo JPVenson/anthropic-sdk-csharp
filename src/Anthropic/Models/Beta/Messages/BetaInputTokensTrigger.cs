@@ -34,12 +34,7 @@ public sealed record class BetaInputTokensTrigger : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"input_tokens\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("input_tokens")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -48,7 +43,7 @@ public sealed record class BetaInputTokensTrigger : JsonModel
 
     public BetaInputTokensTrigger()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"input_tokens\"");
+        this.Type = JsonSerializer.SerializeToElement("input_tokens");
     }
 
     public BetaInputTokensTrigger(BetaInputTokensTrigger betaInputTokensTrigger)
@@ -58,7 +53,7 @@ public sealed record class BetaInputTokensTrigger : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"input_tokens\"");
+        this.Type = JsonSerializer.SerializeToElement("input_tokens");
     }
 
 #pragma warning disable CS8618

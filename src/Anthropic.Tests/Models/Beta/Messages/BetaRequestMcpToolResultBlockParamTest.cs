@@ -17,7 +17,7 @@ public class BetaRequestMcpToolResultBlockParamTest : TestBase
         };
 
         string expectedToolUseID = "tool_use_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("mcp_tool_result");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaRequestMcpToolResultBlockParamContent expectedContent = "string";
         bool expectedIsError = true;
@@ -62,7 +62,7 @@ public class BetaRequestMcpToolResultBlockParamTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedToolUseID = "tool_use_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("mcp_tool_result");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaRequestMcpToolResultBlockParamContent expectedContent = "string";
         bool expectedIsError = true;

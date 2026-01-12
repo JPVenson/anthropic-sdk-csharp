@@ -38,7 +38,7 @@ public sealed record class BetaInvalidRequestError : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"invalid_request_error\"")
+                JsonSerializer.SerializeToElement("invalid_request_error")
             )
         )
         {
@@ -48,7 +48,7 @@ public sealed record class BetaInvalidRequestError : JsonModel
 
     public BetaInvalidRequestError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"invalid_request_error\"");
+        this.Type = JsonSerializer.SerializeToElement("invalid_request_error");
     }
 
     public BetaInvalidRequestError(BetaInvalidRequestError betaInvalidRequestError)
@@ -58,7 +58,7 @@ public sealed record class BetaInvalidRequestError : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"invalid_request_error\"");
+        this.Type = JsonSerializer.SerializeToElement("invalid_request_error");
     }
 
 #pragma warning disable CS8618

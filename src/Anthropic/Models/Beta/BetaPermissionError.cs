@@ -38,7 +38,7 @@ public sealed record class BetaPermissionError : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"permission_error\"")
+                JsonSerializer.SerializeToElement("permission_error")
             )
         )
         {
@@ -48,7 +48,7 @@ public sealed record class BetaPermissionError : JsonModel
 
     public BetaPermissionError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"permission_error\"");
+        this.Type = JsonSerializer.SerializeToElement("permission_error");
     }
 
     public BetaPermissionError(BetaPermissionError betaPermissionError)
@@ -58,7 +58,7 @@ public sealed record class BetaPermissionError : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"permission_error\"");
+        this.Type = JsonSerializer.SerializeToElement("permission_error");
     }
 
 #pragma warning disable CS8618

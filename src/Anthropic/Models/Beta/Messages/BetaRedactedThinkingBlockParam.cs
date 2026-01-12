@@ -43,7 +43,7 @@ public sealed record class BetaRedactedThinkingBlockParam : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"")
+                JsonSerializer.SerializeToElement("redacted_thinking")
             )
         )
         {
@@ -53,7 +53,7 @@ public sealed record class BetaRedactedThinkingBlockParam : JsonModel
 
     public BetaRedactedThinkingBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"");
+        this.Type = JsonSerializer.SerializeToElement("redacted_thinking");
     }
 
     public BetaRedactedThinkingBlockParam(
@@ -65,7 +65,7 @@ public sealed record class BetaRedactedThinkingBlockParam : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"");
+        this.Type = JsonSerializer.SerializeToElement("redacted_thinking");
     }
 
 #pragma warning disable CS8618

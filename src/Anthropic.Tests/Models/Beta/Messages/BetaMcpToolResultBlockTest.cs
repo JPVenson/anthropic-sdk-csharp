@@ -18,7 +18,7 @@ public class BetaMcpToolResultBlockTest : TestBase
         BetaMcpToolResultBlockContent expectedContent = "string";
         bool expectedIsError = true;
         string expectedToolUseID = "tool_use_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("mcp_tool_result");
 
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedIsError, model.IsError);
@@ -59,7 +59,7 @@ public class BetaMcpToolResultBlockTest : TestBase
         BetaMcpToolResultBlockContent expectedContent = "string";
         bool expectedIsError = true;
         string expectedToolUseID = "tool_use_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("mcp_tool_result");
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedIsError, deserialized.IsError);

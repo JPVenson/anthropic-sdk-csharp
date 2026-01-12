@@ -80,12 +80,7 @@ public sealed record class BetaRawMessageDeltaEvent : JsonModel
     {
         this.ContextManagement?.Validate();
         this.Delta.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"message_delta\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("message_delta")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -94,7 +89,7 @@ public sealed record class BetaRawMessageDeltaEvent : JsonModel
 
     public BetaRawMessageDeltaEvent()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("message_delta");
     }
 
     public BetaRawMessageDeltaEvent(BetaRawMessageDeltaEvent betaRawMessageDeltaEvent)
@@ -104,7 +99,7 @@ public sealed record class BetaRawMessageDeltaEvent : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("message_delta");
     }
 
 #pragma warning disable CS8618

@@ -27,7 +27,7 @@ public sealed record class ToolChoiceNone : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"none\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("none")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -35,7 +35,7 @@ public sealed record class ToolChoiceNone : JsonModel
 
     public ToolChoiceNone()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"none\"");
+        this.Type = JsonSerializer.SerializeToElement("none");
     }
 
     public ToolChoiceNone(ToolChoiceNone toolChoiceNone)
@@ -45,7 +45,7 @@ public sealed record class ToolChoiceNone : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"none\"");
+        this.Type = JsonSerializer.SerializeToElement("none");
     }
 
 #pragma warning disable CS8618

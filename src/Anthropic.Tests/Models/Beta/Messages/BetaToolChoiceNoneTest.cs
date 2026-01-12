@@ -10,7 +10,7 @@ public class BetaToolChoiceNoneTest : TestBase
     {
         var model = new BetaToolChoiceNone { };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"none\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("none");
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
@@ -35,7 +35,7 @@ public class BetaToolChoiceNoneTest : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaToolChoiceNone>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"none\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("none");
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }

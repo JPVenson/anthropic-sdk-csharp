@@ -24,8 +24,8 @@ public class ServerToolUseBlockParamTest : TestBase
         {
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("server_tool_use");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedID, model.ID);
@@ -82,8 +82,8 @@ public class ServerToolUseBlockParamTest : TestBase
         {
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("server_tool_use");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedID, deserialized.ID);

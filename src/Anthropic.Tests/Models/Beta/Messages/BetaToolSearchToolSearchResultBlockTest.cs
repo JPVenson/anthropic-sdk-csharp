@@ -12,8 +12,8 @@ public class BetaToolSearchToolSearchResultBlockTest : TestBase
         var model = new BetaToolSearchToolSearchResultBlock { ToolReferences = [new("tool_name")] };
 
         List<BetaToolReferenceBlock> expectedToolReferences = [new("tool_name")];
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_search_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "tool_search_tool_search_result"
         );
 
         Assert.Equal(expectedToolReferences.Count, model.ToolReferences.Count);
@@ -45,8 +45,8 @@ public class BetaToolSearchToolSearchResultBlockTest : TestBase
         Assert.NotNull(deserialized);
 
         List<BetaToolReferenceBlock> expectedToolReferences = [new("tool_name")];
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_search_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "tool_search_tool_search_result"
         );
 
         Assert.Equal(expectedToolReferences.Count, deserialized.ToolReferences.Count);

@@ -37,12 +37,7 @@ public sealed record class ContentBlockSource : JsonModel
     public override void Validate()
     {
         this.Content.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"content\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("content")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -50,7 +45,7 @@ public sealed record class ContentBlockSource : JsonModel
 
     public ContentBlockSource()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
+        this.Type = JsonSerializer.SerializeToElement("content");
     }
 
     public ContentBlockSource(ContentBlockSource contentBlockSource)
@@ -60,7 +55,7 @@ public sealed record class ContentBlockSource : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
+        this.Type = JsonSerializer.SerializeToElement("content");
     }
 
 #pragma warning disable CS8618

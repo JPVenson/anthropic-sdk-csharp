@@ -48,18 +48,13 @@ public sealed record class Base64PdfSource : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.MediaType,
-                JsonSerializer.Deserialize<JsonElement>("\"application/pdf\"")
+                JsonSerializer.SerializeToElement("application/pdf")
             )
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"base64\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("base64")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -67,8 +62,8 @@ public sealed record class Base64PdfSource : JsonModel
 
     public Base64PdfSource()
     {
-        this.MediaType = JsonSerializer.Deserialize<JsonElement>("\"application/pdf\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
+        this.MediaType = JsonSerializer.SerializeToElement("application/pdf");
+        this.Type = JsonSerializer.SerializeToElement("base64");
     }
 
     public Base64PdfSource(Base64PdfSource base64PdfSource)
@@ -78,8 +73,8 @@ public sealed record class Base64PdfSource : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.MediaType = JsonSerializer.Deserialize<JsonElement>("\"application/pdf\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
+        this.MediaType = JsonSerializer.SerializeToElement("application/pdf");
+        this.Type = JsonSerializer.SerializeToElement("base64");
     }
 
 #pragma warning disable CS8618

@@ -34,7 +34,7 @@ public sealed record class BetaUrlImageSource : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"url\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("url")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -43,7 +43,7 @@ public sealed record class BetaUrlImageSource : JsonModel
 
     public BetaUrlImageSource()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
+        this.Type = JsonSerializer.SerializeToElement("url");
     }
 
     public BetaUrlImageSource(BetaUrlImageSource betaUrlImageSource)
@@ -53,7 +53,7 @@ public sealed record class BetaUrlImageSource : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
+        this.Type = JsonSerializer.SerializeToElement("url");
     }
 
 #pragma warning disable CS8618

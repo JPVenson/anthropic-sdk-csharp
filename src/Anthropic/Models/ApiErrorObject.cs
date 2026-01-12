@@ -35,12 +35,7 @@ public sealed record class ApiErrorObject : JsonModel
     public override void Validate()
     {
         _ = this.Message;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"api_error\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("api_error")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -48,7 +43,7 @@ public sealed record class ApiErrorObject : JsonModel
 
     public ApiErrorObject()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"api_error\"");
+        this.Type = JsonSerializer.SerializeToElement("api_error");
     }
 
     public ApiErrorObject(ApiErrorObject apiErrorObject)
@@ -58,7 +53,7 @@ public sealed record class ApiErrorObject : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"api_error\"");
+        this.Type = JsonSerializer.SerializeToElement("api_error");
     }
 
 #pragma warning disable CS8618

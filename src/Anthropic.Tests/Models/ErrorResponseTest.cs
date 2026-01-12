@@ -16,7 +16,7 @@ public class ErrorResponseTest : TestBase
 
         ErrorObject expectedError = new InvalidRequestError("message");
         string expectedRequestID = "request_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"error\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("error");
 
         Assert.Equal(expectedError, model.Error);
         Assert.Equal(expectedRequestID, model.RequestID);
@@ -53,7 +53,7 @@ public class ErrorResponseTest : TestBase
 
         ErrorObject expectedError = new InvalidRequestError("message");
         string expectedRequestID = "request_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"error\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("error");
 
         Assert.Equal(expectedError, deserialized.Error);
         Assert.Equal(expectedRequestID, deserialized.RequestID);

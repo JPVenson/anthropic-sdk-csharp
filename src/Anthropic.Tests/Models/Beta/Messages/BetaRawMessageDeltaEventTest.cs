@@ -78,7 +78,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message_delta");
         Messages::BetaMessageDeltaUsage expectedUsage = new()
         {
             CacheCreationInputTokens = 2051,
@@ -218,7 +218,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message_delta");
         Messages::BetaMessageDeltaUsage expectedUsage = new()
         {
             CacheCreationInputTokens = 2051,

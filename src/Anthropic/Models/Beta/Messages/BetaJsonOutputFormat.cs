@@ -44,12 +44,7 @@ public sealed record class BetaJsonOutputFormat : JsonModel
     public override void Validate()
     {
         _ = this.Schema;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"json_schema\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("json_schema")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -57,7 +52,7 @@ public sealed record class BetaJsonOutputFormat : JsonModel
 
     public BetaJsonOutputFormat()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"json_schema\"");
+        this.Type = JsonSerializer.SerializeToElement("json_schema");
     }
 
     public BetaJsonOutputFormat(BetaJsonOutputFormat betaJsonOutputFormat)
@@ -67,7 +62,7 @@ public sealed record class BetaJsonOutputFormat : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"json_schema\"");
+        this.Type = JsonSerializer.SerializeToElement("json_schema");
     }
 
 #pragma warning disable CS8618

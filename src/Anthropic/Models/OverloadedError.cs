@@ -38,7 +38,7 @@ public sealed record class OverloadedError : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"overloaded_error\"")
+                JsonSerializer.SerializeToElement("overloaded_error")
             )
         )
         {
@@ -48,7 +48,7 @@ public sealed record class OverloadedError : JsonModel
 
     public OverloadedError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"overloaded_error\"");
+        this.Type = JsonSerializer.SerializeToElement("overloaded_error");
     }
 
     public OverloadedError(OverloadedError overloadedError)
@@ -58,7 +58,7 @@ public sealed record class OverloadedError : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"overloaded_error\"");
+        this.Type = JsonSerializer.SerializeToElement("overloaded_error");
     }
 
 #pragma warning disable CS8618

@@ -87,7 +87,7 @@ public sealed record class CitationContentBlockLocationParam : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"content_block_location\"")
+                JsonSerializer.SerializeToElement("content_block_location")
             )
         )
         {
@@ -97,7 +97,7 @@ public sealed record class CitationContentBlockLocationParam : JsonModel
 
     public CitationContentBlockLocationParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_location\"");
+        this.Type = JsonSerializer.SerializeToElement("content_block_location");
     }
 
     public CitationContentBlockLocationParam(
@@ -109,7 +109,7 @@ public sealed record class CitationContentBlockLocationParam : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_location\"");
+        this.Type = JsonSerializer.SerializeToElement("content_block_location");
     }
 
 #pragma warning disable CS8618

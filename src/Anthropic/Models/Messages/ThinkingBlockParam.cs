@@ -46,12 +46,7 @@ public sealed record class ThinkingBlockParam : JsonModel
     {
         _ = this.Signature;
         _ = this.Thinking;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"thinking\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("thinking")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -59,7 +54,7 @@ public sealed record class ThinkingBlockParam : JsonModel
 
     public ThinkingBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking\"");
+        this.Type = JsonSerializer.SerializeToElement("thinking");
     }
 
     public ThinkingBlockParam(ThinkingBlockParam thinkingBlockParam)
@@ -69,7 +64,7 @@ public sealed record class ThinkingBlockParam : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking\"");
+        this.Type = JsonSerializer.SerializeToElement("thinking");
     }
 
 #pragma warning disable CS8618

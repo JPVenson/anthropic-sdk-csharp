@@ -211,19 +211,14 @@ public sealed record class BetaToolComputerUse20251124 : JsonModel
     {
         _ = this.DisplayHeightPx;
         _ = this.DisplayWidthPx;
-        if (
-            !JsonElement.DeepEquals(
-                this.Name,
-                JsonSerializer.Deserialize<JsonElement>("\"computer\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.SerializeToElement("computer")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"computer_20251124\"")
+                JsonSerializer.SerializeToElement("computer_20251124")
             )
         )
         {
@@ -243,8 +238,8 @@ public sealed record class BetaToolComputerUse20251124 : JsonModel
 
     public BetaToolComputerUse20251124()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"computer\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"computer_20251124\"");
+        this.Name = JsonSerializer.SerializeToElement("computer");
+        this.Type = JsonSerializer.SerializeToElement("computer_20251124");
     }
 
     public BetaToolComputerUse20251124(BetaToolComputerUse20251124 betaToolComputerUse20251124)
@@ -254,8 +249,8 @@ public sealed record class BetaToolComputerUse20251124 : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"computer\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"computer_20251124\"");
+        this.Name = JsonSerializer.SerializeToElement("computer");
+        this.Type = JsonSerializer.SerializeToElement("computer_20251124");
     }
 
 #pragma warning disable CS8618

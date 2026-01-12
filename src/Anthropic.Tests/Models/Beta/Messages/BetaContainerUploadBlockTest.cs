@@ -11,7 +11,7 @@ public class BetaContainerUploadBlockTest : TestBase
         var model = new BetaContainerUploadBlock { FileID = "file_id" };
 
         string expectedFileID = "file_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"container_upload\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("container_upload");
 
         Assert.Equal(expectedFileID, model.FileID);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -38,7 +38,7 @@ public class BetaContainerUploadBlockTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedFileID = "file_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"container_upload\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("container_upload");
 
         Assert.Equal(expectedFileID, deserialized.FileID);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

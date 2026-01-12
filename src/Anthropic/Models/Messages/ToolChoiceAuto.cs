@@ -51,7 +51,7 @@ public sealed record class ToolChoiceAuto : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"auto\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("auto")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -60,7 +60,7 @@ public sealed record class ToolChoiceAuto : JsonModel
 
     public ToolChoiceAuto()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"auto\"");
+        this.Type = JsonSerializer.SerializeToElement("auto");
     }
 
     public ToolChoiceAuto(ToolChoiceAuto toolChoiceAuto)
@@ -70,7 +70,7 @@ public sealed record class ToolChoiceAuto : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"auto\"");
+        this.Type = JsonSerializer.SerializeToElement("auto");
     }
 
 #pragma warning disable CS8618

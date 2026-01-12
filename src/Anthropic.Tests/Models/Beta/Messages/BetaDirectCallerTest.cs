@@ -10,7 +10,7 @@ public class BetaDirectCallerTest : TestBase
     {
         var model = new BetaDirectCaller { };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"direct\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("direct");
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
@@ -35,7 +35,7 @@ public class BetaDirectCallerTest : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaDirectCaller>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"direct\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("direct");
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }

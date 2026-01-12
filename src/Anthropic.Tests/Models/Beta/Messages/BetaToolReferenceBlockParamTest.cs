@@ -15,7 +15,7 @@ public class BetaToolReferenceBlockParamTest : TestBase
         };
 
         string expectedToolName = "tool_name";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_reference\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_reference");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedToolName, model.ToolName);
@@ -52,7 +52,7 @@ public class BetaToolReferenceBlockParamTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedToolName = "tool_name";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_reference\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_reference");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedToolName, deserialized.ToolName);

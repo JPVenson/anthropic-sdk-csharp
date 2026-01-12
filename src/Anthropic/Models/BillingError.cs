@@ -35,12 +35,7 @@ public sealed record class BillingError : JsonModel
     public override void Validate()
     {
         _ = this.Message;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"billing_error\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("billing_error")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -48,7 +43,7 @@ public sealed record class BillingError : JsonModel
 
     public BillingError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"billing_error\"");
+        this.Type = JsonSerializer.SerializeToElement("billing_error");
     }
 
     public BillingError(BillingError billingError)
@@ -58,7 +53,7 @@ public sealed record class BillingError : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"billing_error\"");
+        this.Type = JsonSerializer.SerializeToElement("billing_error");
     }
 
 #pragma warning disable CS8618

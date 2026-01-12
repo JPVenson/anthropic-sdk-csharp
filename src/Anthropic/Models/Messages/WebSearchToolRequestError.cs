@@ -41,7 +41,7 @@ public sealed record class WebSearchToolRequestError : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"")
+                JsonSerializer.SerializeToElement("web_search_tool_result_error")
             )
         )
         {
@@ -51,7 +51,7 @@ public sealed record class WebSearchToolRequestError : JsonModel
 
     public WebSearchToolRequestError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_tool_result_error");
     }
 
     public WebSearchToolRequestError(WebSearchToolRequestError webSearchToolRequestError)
@@ -61,7 +61,7 @@ public sealed record class WebSearchToolRequestError : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_tool_result_error");
     }
 
 #pragma warning disable CS8618

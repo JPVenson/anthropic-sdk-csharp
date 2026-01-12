@@ -193,12 +193,7 @@ public sealed record class InputSchema : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"object\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("object")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -208,7 +203,7 @@ public sealed record class InputSchema : JsonModel
 
     public InputSchema()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"object\"");
+        this.Type = JsonSerializer.SerializeToElement("object");
     }
 
     public InputSchema(InputSchema inputSchema)
@@ -218,7 +213,7 @@ public sealed record class InputSchema : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"object\"");
+        this.Type = JsonSerializer.SerializeToElement("object");
     }
 
 #pragma warning disable CS8618

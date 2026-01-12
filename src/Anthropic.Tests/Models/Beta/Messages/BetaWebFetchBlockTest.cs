@@ -27,7 +27,7 @@ public class BetaWebFetchBlockTest : TestBase
             Title = "title",
         };
         string expectedRetrievedAt = "retrieved_at";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_result");
         string expectedUrl = "url";
 
         Assert.Equal(expectedContent, model.Content);
@@ -83,7 +83,7 @@ public class BetaWebFetchBlockTest : TestBase
             Title = "title",
         };
         string expectedRetrievedAt = "retrieved_at";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_result");
         string expectedUrl = "url";
 
         Assert.Equal(expectedContent, deserialized.Content);

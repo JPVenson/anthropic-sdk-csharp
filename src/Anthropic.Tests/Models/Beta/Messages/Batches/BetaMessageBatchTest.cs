@@ -51,7 +51,7 @@ public class BetaMessageBatchTest : TestBase
         };
         string expectedResultsUrl =
             "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_batch\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message_batch");
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedArchivedAt, model.ArchivedAt);
@@ -142,7 +142,7 @@ public class BetaMessageBatchTest : TestBase
         };
         string expectedResultsUrl =
             "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_batch\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message_batch");
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedArchivedAt, deserialized.ArchivedAt);
@@ -201,7 +201,7 @@ public class ProcessingStatusTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, ProcessingStatus>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
 
@@ -231,7 +231,7 @@ public class ProcessingStatusTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, ProcessingStatus>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

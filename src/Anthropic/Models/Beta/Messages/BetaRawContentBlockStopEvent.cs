@@ -40,7 +40,7 @@ public sealed record class BetaRawContentBlockStopEvent : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"")
+                JsonSerializer.SerializeToElement("content_block_stop")
             )
         )
         {
@@ -50,7 +50,7 @@ public sealed record class BetaRawContentBlockStopEvent : JsonModel
 
     public BetaRawContentBlockStopEvent()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"");
+        this.Type = JsonSerializer.SerializeToElement("content_block_stop");
     }
 
     public BetaRawContentBlockStopEvent(BetaRawContentBlockStopEvent betaRawContentBlockStopEvent)
@@ -60,7 +60,7 @@ public sealed record class BetaRawContentBlockStopEvent : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"");
+        this.Type = JsonSerializer.SerializeToElement("content_block_stop");
     }
 
 #pragma warning disable CS8618

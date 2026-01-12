@@ -16,9 +16,7 @@ public class BetaClearToolUses20250919EditResponseTest : TestBase
 
         long expectedClearedInputTokens = 0;
         long expectedClearedToolUses = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"clear_tool_uses_20250919\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("clear_tool_uses_20250919");
 
         Assert.Equal(expectedClearedInputTokens, model.ClearedInputTokens);
         Assert.Equal(expectedClearedToolUses, model.ClearedToolUses);
@@ -57,9 +55,7 @@ public class BetaClearToolUses20250919EditResponseTest : TestBase
 
         long expectedClearedInputTokens = 0;
         long expectedClearedToolUses = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"clear_tool_uses_20250919\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("clear_tool_uses_20250919");
 
         Assert.Equal(expectedClearedInputTokens, deserialized.ClearedInputTokens);
         Assert.Equal(expectedClearedToolUses, deserialized.ClearedToolUses);

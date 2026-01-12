@@ -10,7 +10,7 @@ public class BetaMessageBatchExpiredResultTest : TestBase
     {
         var model = new BetaMessageBatchExpiredResult { };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"expired\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("expired");
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
@@ -35,7 +35,7 @@ public class BetaMessageBatchExpiredResultTest : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaMessageBatchExpiredResult>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"expired\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("expired");
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }

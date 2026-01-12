@@ -10,7 +10,7 @@ public class BetaToolUsesTriggerTest : TestBase
     {
         var model = new BetaToolUsesTrigger { Value = 1 };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_uses\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_uses");
         long expectedValue = 1;
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -37,7 +37,7 @@ public class BetaToolUsesTriggerTest : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaToolUsesTrigger>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_uses\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_uses");
         long expectedValue = 1;
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

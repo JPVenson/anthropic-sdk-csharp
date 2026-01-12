@@ -45,7 +45,7 @@ public sealed record class BetaCodeExecutionToolResultErrorParam : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"code_execution_tool_result_error\"")
+                JsonSerializer.SerializeToElement("code_execution_tool_result_error")
             )
         )
         {
@@ -55,7 +55,7 @@ public sealed record class BetaCodeExecutionToolResultErrorParam : JsonModel
 
     public BetaCodeExecutionToolResultErrorParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_tool_result_error\"");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_tool_result_error");
     }
 
     public BetaCodeExecutionToolResultErrorParam(
@@ -67,7 +67,7 @@ public sealed record class BetaCodeExecutionToolResultErrorParam : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_tool_result_error\"");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_tool_result_error");
     }
 
 #pragma warning disable CS8618

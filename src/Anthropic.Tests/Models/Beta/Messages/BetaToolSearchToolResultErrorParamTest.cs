@@ -17,8 +17,8 @@ public class BetaToolSearchToolResultErrorParamTest : TestBase
 
         ApiEnum<string, BetaToolSearchToolResultErrorParamErrorCode> expectedErrorCode =
             BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_result_error\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "tool_search_tool_result_error"
         );
 
         Assert.Equal(expectedErrorCode, model.ErrorCode);
@@ -53,8 +53,8 @@ public class BetaToolSearchToolResultErrorParamTest : TestBase
 
         ApiEnum<string, BetaToolSearchToolResultErrorParamErrorCode> expectedErrorCode =
             BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_result_error\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "tool_search_tool_result_error"
         );
 
         Assert.Equal(expectedErrorCode, deserialized.ErrorCode);
@@ -92,10 +92,7 @@ public class BetaToolSearchToolResultErrorParamErrorCodeTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolSearchToolResultErrorParamErrorCode>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -124,10 +121,7 @@ public class BetaToolSearchToolResultErrorParamErrorCodeTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolSearchToolResultErrorParamErrorCode>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolSearchToolResultErrorParamErrorCode>

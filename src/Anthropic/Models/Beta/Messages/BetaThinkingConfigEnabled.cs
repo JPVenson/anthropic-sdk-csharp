@@ -47,12 +47,7 @@ public sealed record class BetaThinkingConfigEnabled : JsonModel
     public override void Validate()
     {
         _ = this.BudgetTokens;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"enabled\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("enabled")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -60,7 +55,7 @@ public sealed record class BetaThinkingConfigEnabled : JsonModel
 
     public BetaThinkingConfigEnabled()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"enabled\"");
+        this.Type = JsonSerializer.SerializeToElement("enabled");
     }
 
     public BetaThinkingConfigEnabled(BetaThinkingConfigEnabled betaThinkingConfigEnabled)
@@ -70,7 +65,7 @@ public sealed record class BetaThinkingConfigEnabled : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"enabled\"");
+        this.Type = JsonSerializer.SerializeToElement("enabled");
     }
 
 #pragma warning disable CS8618

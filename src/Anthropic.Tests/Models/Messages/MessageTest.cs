@@ -68,9 +68,9 @@ public class MessageTest : TestBase
             },
         ];
         ApiEnum<string, Model> expectedModel = Model.ClaudeSonnet4_5_20250929;
-        JsonElement expectedRole = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
+        JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message");
         Usage expectedUsage = new()
         {
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
@@ -207,9 +207,9 @@ public class MessageTest : TestBase
             },
         ];
         ApiEnum<string, Model> expectedModel = Model.ClaudeSonnet4_5_20250929;
-        JsonElement expectedRole = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
+        JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message");
         Usage expectedUsage = new()
         {
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },

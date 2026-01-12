@@ -73,9 +73,7 @@ public sealed record class BetaModelInfo : JsonModel
         _ = this.ID;
         _ = this.CreatedAt;
         _ = this.DisplayName;
-        if (
-            !JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"model\""))
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("model")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -83,7 +81,7 @@ public sealed record class BetaModelInfo : JsonModel
 
     public BetaModelInfo()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"model\"");
+        this.Type = JsonSerializer.SerializeToElement("model");
     }
 
     public BetaModelInfo(BetaModelInfo betaModelInfo)
@@ -93,7 +91,7 @@ public sealed record class BetaModelInfo : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"model\"");
+        this.Type = JsonSerializer.SerializeToElement("model");
     }
 
 #pragma warning disable CS8618

@@ -17,7 +17,7 @@ public class ToolResultBlockParamTest : TestBase
         };
 
         string expectedToolUseID = "tool_use_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_result");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         ToolResultBlockParamContent expectedContent = "string";
         bool expectedIsError = true;
@@ -62,7 +62,7 @@ public class ToolResultBlockParamTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedToolUseID = "tool_use_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_result\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_result");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         ToolResultBlockParamContent expectedContent = "string";
         bool expectedIsError = true;

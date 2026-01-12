@@ -72,7 +72,7 @@ public sealed record class BetaRequestMcpServerURLDefinition : JsonModel
     public override void Validate()
     {
         _ = this.Name;
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"url\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("url")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -83,7 +83,7 @@ public sealed record class BetaRequestMcpServerURLDefinition : JsonModel
 
     public BetaRequestMcpServerURLDefinition()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
+        this.Type = JsonSerializer.SerializeToElement("url");
     }
 
     public BetaRequestMcpServerURLDefinition(
@@ -95,7 +95,7 @@ public sealed record class BetaRequestMcpServerURLDefinition : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
+        this.Type = JsonSerializer.SerializeToElement("url");
     }
 
 #pragma warning disable CS8618

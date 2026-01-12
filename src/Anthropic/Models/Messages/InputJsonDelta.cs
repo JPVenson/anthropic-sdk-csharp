@@ -38,7 +38,7 @@ public sealed record class InputJsonDelta : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"input_json_delta\"")
+                JsonSerializer.SerializeToElement("input_json_delta")
             )
         )
         {
@@ -48,7 +48,7 @@ public sealed record class InputJsonDelta : JsonModel
 
     public InputJsonDelta()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"input_json_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("input_json_delta");
     }
 
     public InputJsonDelta(InputJsonDelta inputJsonDelta)
@@ -58,7 +58,7 @@ public sealed record class InputJsonDelta : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"input_json_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("input_json_delta");
     }
 
 #pragma warning disable CS8618

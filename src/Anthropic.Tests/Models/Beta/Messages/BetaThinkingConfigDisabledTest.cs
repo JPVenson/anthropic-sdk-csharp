@@ -10,7 +10,7 @@ public class BetaThinkingConfigDisabledTest : TestBase
     {
         var model = new BetaThinkingConfigDisabled { };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("disabled");
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
@@ -35,7 +35,7 @@ public class BetaThinkingConfigDisabledTest : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigDisabled>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("disabled");
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }

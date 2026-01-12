@@ -24,9 +24,7 @@ public class BetaCitationContentBlockLocationTest : TestBase
         long expectedEndBlockIndex = 0;
         string expectedFileID = "file_id";
         long expectedStartBlockIndex = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"content_block_location\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content_block_location");
 
         Assert.Equal(expectedCitedText, model.CitedText);
         Assert.Equal(expectedDocumentIndex, model.DocumentIndex);
@@ -79,9 +77,7 @@ public class BetaCitationContentBlockLocationTest : TestBase
         long expectedEndBlockIndex = 0;
         string expectedFileID = "file_id";
         long expectedStartBlockIndex = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"content_block_location\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content_block_location");
 
         Assert.Equal(expectedCitedText, deserialized.CitedText);
         Assert.Equal(expectedDocumentIndex, deserialized.DocumentIndex);

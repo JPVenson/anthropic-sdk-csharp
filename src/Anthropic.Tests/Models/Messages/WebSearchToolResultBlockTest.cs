@@ -20,9 +20,7 @@ public class WebSearchToolResultBlockTest : TestBase
             WebSearchToolResultErrorErrorCode.InvalidToolInput
         );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_tool_result\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_tool_result");
 
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedToolUseID, model.ToolUseID);
@@ -65,9 +63,7 @@ public class WebSearchToolResultBlockTest : TestBase
             WebSearchToolResultErrorErrorCode.InvalidToolInput
         );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_tool_result\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_tool_result");
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedToolUseID, deserialized.ToolUseID);

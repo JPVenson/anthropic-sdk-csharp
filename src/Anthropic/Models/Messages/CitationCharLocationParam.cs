@@ -81,12 +81,7 @@ public sealed record class CitationCharLocationParam : JsonModel
         _ = this.DocumentTitle;
         _ = this.EndCharIndex;
         _ = this.StartCharIndex;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"char_location\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("char_location")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -94,7 +89,7 @@ public sealed record class CitationCharLocationParam : JsonModel
 
     public CitationCharLocationParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
+        this.Type = JsonSerializer.SerializeToElement("char_location");
     }
 
     public CitationCharLocationParam(CitationCharLocationParam citationCharLocationParam)
@@ -104,7 +99,7 @@ public sealed record class CitationCharLocationParam : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
+        this.Type = JsonSerializer.SerializeToElement("char_location");
     }
 
 #pragma warning disable CS8618

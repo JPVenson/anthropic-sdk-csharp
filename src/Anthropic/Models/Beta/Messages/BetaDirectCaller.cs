@@ -27,12 +27,7 @@ public sealed record class BetaDirectCaller : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"direct\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("direct")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -40,7 +35,7 @@ public sealed record class BetaDirectCaller : JsonModel
 
     public BetaDirectCaller()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"direct\"");
+        this.Type = JsonSerializer.SerializeToElement("direct");
     }
 
     public BetaDirectCaller(BetaDirectCaller betaDirectCaller)
@@ -50,7 +45,7 @@ public sealed record class BetaDirectCaller : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"direct\"");
+        this.Type = JsonSerializer.SerializeToElement("direct");
     }
 
 #pragma warning disable CS8618

@@ -64,12 +64,7 @@ public sealed record class BetaDocumentBlock : JsonModel
         this.Citations?.Validate();
         this.Source.Validate();
         _ = this.Title;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"document\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("document")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -77,7 +72,7 @@ public sealed record class BetaDocumentBlock : JsonModel
 
     public BetaDocumentBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"document\"");
+        this.Type = JsonSerializer.SerializeToElement("document");
     }
 
     public BetaDocumentBlock(BetaDocumentBlock betaDocumentBlock)
@@ -87,7 +82,7 @@ public sealed record class BetaDocumentBlock : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"document\"");
+        this.Type = JsonSerializer.SerializeToElement("document");
     }
 
 #pragma warning disable CS8618

@@ -24,10 +24,8 @@ public class WebSearchTool20250305Test : TestBase
             },
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_20250305\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_20250305");
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
@@ -105,10 +103,8 @@ public class WebSearchTool20250305Test : TestBase
         var deserialized = JsonSerializer.Deserialize<WebSearchTool20250305>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_20250305\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_20250305");
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
@@ -239,7 +235,7 @@ public class UserLocationTest : TestBase
             Timezone = "America/New_York",
         };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"approximate\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("approximate");
         string expectedCity = "New York";
         string expectedCountry = "US";
         string expectedRegion = "California";
@@ -284,7 +280,7 @@ public class UserLocationTest : TestBase
         var deserialized = JsonSerializer.Deserialize<UserLocation>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"approximate\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("approximate");
         string expectedCity = "New York";
         string expectedCountry = "US";
         string expectedRegion = "California";

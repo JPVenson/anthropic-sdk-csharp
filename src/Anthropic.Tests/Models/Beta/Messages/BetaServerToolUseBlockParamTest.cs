@@ -30,7 +30,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
         };
         ApiEnum<string, BetaServerToolUseBlockParamName> expectedName =
             BetaServerToolUseBlockParamName.WebSearch;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("server_tool_use");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaServerToolUseBlockParamCaller expectedCaller = new BetaDirectCaller();
 
@@ -95,7 +95,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
         };
         ApiEnum<string, BetaServerToolUseBlockParamName> expectedName =
             BetaServerToolUseBlockParamName.WebSearch;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("server_tool_use");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaServerToolUseBlockParamCaller expectedCaller = new BetaDirectCaller();
 
@@ -303,7 +303,7 @@ public class BetaServerToolUseBlockParamNameTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, BetaServerToolUseBlockParamName>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
 
@@ -336,7 +336,7 @@ public class BetaServerToolUseBlockParamNameTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, BetaServerToolUseBlockParamName>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

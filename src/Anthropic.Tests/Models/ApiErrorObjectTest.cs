@@ -11,7 +11,7 @@ public class ApiErrorObjectTest : TestBase
         var model = new ApiErrorObject { Message = "message" };
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"api_error\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("api_error");
 
         Assert.Equal(expectedMessage, model.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -38,7 +38,7 @@ public class ApiErrorObjectTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"api_error\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("api_error");
 
         Assert.Equal(expectedMessage, deserialized.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

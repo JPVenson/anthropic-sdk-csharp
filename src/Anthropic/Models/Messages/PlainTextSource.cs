@@ -46,15 +46,12 @@ public sealed record class PlainTextSource : JsonModel
     {
         _ = this.Data;
         if (
-            !JsonElement.DeepEquals(
-                this.MediaType,
-                JsonSerializer.Deserialize<JsonElement>("\"text/plain\"")
-            )
+            !JsonElement.DeepEquals(this.MediaType, JsonSerializer.SerializeToElement("text/plain"))
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"text\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("text")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -62,8 +59,8 @@ public sealed record class PlainTextSource : JsonModel
 
     public PlainTextSource()
     {
-        this.MediaType = JsonSerializer.Deserialize<JsonElement>("\"text/plain\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        this.MediaType = JsonSerializer.SerializeToElement("text/plain");
+        this.Type = JsonSerializer.SerializeToElement("text");
     }
 
     public PlainTextSource(PlainTextSource plainTextSource)
@@ -73,8 +70,8 @@ public sealed record class PlainTextSource : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.MediaType = JsonSerializer.Deserialize<JsonElement>("\"text/plain\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        this.MediaType = JsonSerializer.SerializeToElement("text/plain");
+        this.Type = JsonSerializer.SerializeToElement("text");
     }
 
 #pragma warning disable CS8618

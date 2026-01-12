@@ -70,12 +70,7 @@ public sealed record class BetaMemoryTool20250818ViewCommand : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Command,
-                JsonSerializer.Deserialize<JsonElement>("\"view\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Command, JsonSerializer.SerializeToElement("view")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -85,7 +80,7 @@ public sealed record class BetaMemoryTool20250818ViewCommand : JsonModel
 
     public BetaMemoryTool20250818ViewCommand()
     {
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"view\"");
+        this.Command = JsonSerializer.SerializeToElement("view");
     }
 
     public BetaMemoryTool20250818ViewCommand(
@@ -97,7 +92,7 @@ public sealed record class BetaMemoryTool20250818ViewCommand : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"view\"");
+        this.Command = JsonSerializer.SerializeToElement("view");
     }
 
 #pragma warning disable CS8618

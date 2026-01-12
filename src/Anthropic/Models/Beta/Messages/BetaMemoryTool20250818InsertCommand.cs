@@ -71,12 +71,7 @@ public sealed record class BetaMemoryTool20250818InsertCommand : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Command,
-                JsonSerializer.Deserialize<JsonElement>("\"insert\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Command, JsonSerializer.SerializeToElement("insert")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -87,7 +82,7 @@ public sealed record class BetaMemoryTool20250818InsertCommand : JsonModel
 
     public BetaMemoryTool20250818InsertCommand()
     {
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"insert\"");
+        this.Command = JsonSerializer.SerializeToElement("insert");
     }
 
     public BetaMemoryTool20250818InsertCommand(
@@ -99,7 +94,7 @@ public sealed record class BetaMemoryTool20250818InsertCommand : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"insert\"");
+        this.Command = JsonSerializer.SerializeToElement("insert");
     }
 
 #pragma warning disable CS8618

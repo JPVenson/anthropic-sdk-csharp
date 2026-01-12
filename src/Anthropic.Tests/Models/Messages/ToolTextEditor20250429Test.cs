@@ -10,12 +10,8 @@ public class ToolTextEditor20250429Test : TestBase
     {
         var model = new ToolTextEditor20250429 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>(
-            "\"str_replace_based_edit_tool\""
-        );
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_20250429\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("str_replace_based_edit_tool");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text_editor_20250429");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.True(JsonElement.DeepEquals(expectedName, model.Name));
@@ -43,12 +39,8 @@ public class ToolTextEditor20250429Test : TestBase
         var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250429>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>(
-            "\"str_replace_based_edit_tool\""
-        );
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_20250429\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("str_replace_based_edit_tool");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text_editor_20250429");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));

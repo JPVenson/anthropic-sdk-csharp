@@ -16,8 +16,8 @@ public class BetaWebSearchToolRequestErrorTest : TestBase
 
         ApiEnum<string, BetaWebSearchToolResultErrorCode> expectedErrorCode =
             BetaWebSearchToolResultErrorCode.InvalidToolInput;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_tool_result_error\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "web_search_tool_result_error"
         );
 
         Assert.Equal(expectedErrorCode, model.ErrorCode);
@@ -52,8 +52,8 @@ public class BetaWebSearchToolRequestErrorTest : TestBase
 
         ApiEnum<string, BetaWebSearchToolResultErrorCode> expectedErrorCode =
             BetaWebSearchToolResultErrorCode.InvalidToolInput;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_tool_result_error\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "web_search_tool_result_error"
         );
 
         Assert.Equal(expectedErrorCode, deserialized.ErrorCode);

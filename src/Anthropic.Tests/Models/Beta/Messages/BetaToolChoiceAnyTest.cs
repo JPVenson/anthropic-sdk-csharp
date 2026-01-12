@@ -10,7 +10,7 @@ public class BetaToolChoiceAnyTest : TestBase
     {
         var model = new BetaToolChoiceAny { DisableParallelToolUse = true };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"any\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("any");
         bool expectedDisableParallelToolUse = true;
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -37,7 +37,7 @@ public class BetaToolChoiceAnyTest : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaToolChoiceAny>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"any\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("any");
         bool expectedDisableParallelToolUse = true;
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

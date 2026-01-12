@@ -26,7 +26,7 @@ public class BetaToolUseBlockTest : TestBase
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
         string expectedName = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
         BetaToolUseBlockCaller expectedCaller = new BetaDirectCaller();
 
         Assert.Equal(expectedID, model.ID);
@@ -86,7 +86,7 @@ public class BetaToolUseBlockTest : TestBase
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
         string expectedName = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
         BetaToolUseBlockCaller expectedCaller = new BetaDirectCaller();
 
         Assert.Equal(expectedID, deserialized.ID);

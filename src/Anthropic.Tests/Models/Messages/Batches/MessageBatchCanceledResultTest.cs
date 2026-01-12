@@ -10,7 +10,7 @@ public class MessageBatchCanceledResultTest : TestBase
     {
         var model = new MessageBatchCanceledResult { };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"canceled\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("canceled");
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
@@ -35,7 +35,7 @@ public class MessageBatchCanceledResultTest : TestBase
         var deserialized = JsonSerializer.Deserialize<MessageBatchCanceledResult>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"canceled\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("canceled");
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }

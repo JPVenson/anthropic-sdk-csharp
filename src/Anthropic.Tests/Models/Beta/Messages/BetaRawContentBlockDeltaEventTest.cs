@@ -16,9 +16,7 @@ public class BetaRawContentBlockDeltaEventTest : TestBase
 
         BetaRawContentBlockDelta expectedDelta = new BetaTextDelta("text");
         long expectedIndex = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"content_block_delta\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content_block_delta");
 
         Assert.Equal(expectedDelta, model.Delta);
         Assert.Equal(expectedIndex, model.Index);
@@ -55,9 +53,7 @@ public class BetaRawContentBlockDeltaEventTest : TestBase
 
         BetaRawContentBlockDelta expectedDelta = new BetaTextDelta("text");
         long expectedIndex = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"content_block_delta\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content_block_delta");
 
         Assert.Equal(expectedDelta, deserialized.Delta);
         Assert.Equal(expectedIndex, deserialized.Index);

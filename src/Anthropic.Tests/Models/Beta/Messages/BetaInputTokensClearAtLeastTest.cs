@@ -10,7 +10,7 @@ public class BetaInputTokensClearAtLeastTest : TestBase
     {
         var model = new BetaInputTokensClearAtLeast { Value = 0 };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"input_tokens\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("input_tokens");
         long expectedValue = 0;
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -37,7 +37,7 @@ public class BetaInputTokensClearAtLeastTest : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaInputTokensClearAtLeast>(element);
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"input_tokens\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("input_tokens");
         long expectedValue = 0;
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

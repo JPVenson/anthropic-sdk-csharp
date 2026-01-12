@@ -35,12 +35,7 @@ public sealed record class BetaTextDelta : JsonModel
     public override void Validate()
     {
         _ = this.Text;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"text_delta\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("text_delta")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -48,7 +43,7 @@ public sealed record class BetaTextDelta : JsonModel
 
     public BetaTextDelta()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("text_delta");
     }
 
     public BetaTextDelta(BetaTextDelta betaTextDelta)
@@ -58,7 +53,7 @@ public sealed record class BetaTextDelta : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("text_delta");
     }
 
 #pragma warning disable CS8618

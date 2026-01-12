@@ -11,9 +11,7 @@ public class BetaServerToolCallerTest : TestBase
         var model = new BetaServerToolCaller { ToolID = "srvtoolu_SQfNkl1n_JR_" };
 
         string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_20250825\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20250825");
 
         Assert.Equal(expectedToolID, model.ToolID);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -40,9 +38,7 @@ public class BetaServerToolCallerTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_20250825\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20250825");
 
         Assert.Equal(expectedToolID, deserialized.ToolID);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

@@ -37,12 +37,7 @@ public sealed record class MessageBatchErroredResult : JsonModel
     public override void Validate()
     {
         this.Error.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"errored\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("errored")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -50,7 +45,7 @@ public sealed record class MessageBatchErroredResult : JsonModel
 
     public MessageBatchErroredResult()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"errored\"");
+        this.Type = JsonSerializer.SerializeToElement("errored");
     }
 
     public MessageBatchErroredResult(MessageBatchErroredResult messageBatchErroredResult)
@@ -60,7 +55,7 @@ public sealed record class MessageBatchErroredResult : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"errored\"");
+        this.Type = JsonSerializer.SerializeToElement("errored");
     }
 
 #pragma warning disable CS8618

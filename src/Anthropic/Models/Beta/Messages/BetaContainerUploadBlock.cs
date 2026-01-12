@@ -43,7 +43,7 @@ public sealed record class BetaContainerUploadBlock : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"container_upload\"")
+                JsonSerializer.SerializeToElement("container_upload")
             )
         )
         {
@@ -53,7 +53,7 @@ public sealed record class BetaContainerUploadBlock : JsonModel
 
     public BetaContainerUploadBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"container_upload\"");
+        this.Type = JsonSerializer.SerializeToElement("container_upload");
     }
 
     public BetaContainerUploadBlock(BetaContainerUploadBlock betaContainerUploadBlock)
@@ -63,7 +63,7 @@ public sealed record class BetaContainerUploadBlock : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"container_upload\"");
+        this.Type = JsonSerializer.SerializeToElement("container_upload");
     }
 
 #pragma warning disable CS8618

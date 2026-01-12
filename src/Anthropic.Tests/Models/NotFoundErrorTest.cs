@@ -11,7 +11,7 @@ public class NotFoundErrorTest : TestBase
         var model = new NotFoundError { Message = "message" };
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"not_found_error\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("not_found_error");
 
         Assert.Equal(expectedMessage, model.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -38,7 +38,7 @@ public class NotFoundErrorTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"not_found_error\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("not_found_error");
 
         Assert.Equal(expectedMessage, deserialized.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

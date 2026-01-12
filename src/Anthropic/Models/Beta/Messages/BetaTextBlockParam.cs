@@ -67,7 +67,7 @@ public sealed record class BetaTextBlockParam : JsonModel
     public override void Validate()
     {
         _ = this.Text;
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"text\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("text")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -80,7 +80,7 @@ public sealed record class BetaTextBlockParam : JsonModel
 
     public BetaTextBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        this.Type = JsonSerializer.SerializeToElement("text");
     }
 
     public BetaTextBlockParam(BetaTextBlockParam betaTextBlockParam)
@@ -90,7 +90,7 @@ public sealed record class BetaTextBlockParam : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        this.Type = JsonSerializer.SerializeToElement("text");
     }
 
 #pragma warning disable CS8618

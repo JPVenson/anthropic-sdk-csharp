@@ -11,7 +11,7 @@ public class BetaFileDocumentSourceTest : TestBase
         var model = new BetaFileDocumentSource { FileID = "file_id" };
 
         string expectedFileID = "file_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"file\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("file");
 
         Assert.Equal(expectedFileID, model.FileID);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -38,7 +38,7 @@ public class BetaFileDocumentSourceTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedFileID = "file_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"file\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("file");
 
         Assert.Equal(expectedFileID, deserialized.FileID);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

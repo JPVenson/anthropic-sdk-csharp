@@ -119,19 +119,14 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Name,
-                JsonSerializer.Deserialize<JsonElement>("\"code_execution\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.SerializeToElement("code_execution")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"code_execution_20250522\"")
+                JsonSerializer.SerializeToElement("code_execution_20250522")
             )
         )
         {
@@ -148,8 +143,8 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
 
     public BetaCodeExecutionTool20250522()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"code_execution\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_20250522\"");
+        this.Name = JsonSerializer.SerializeToElement("code_execution");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_20250522");
     }
 
     public BetaCodeExecutionTool20250522(
@@ -161,8 +156,8 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"code_execution\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_20250522\"");
+        this.Name = JsonSerializer.SerializeToElement("code_execution");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_20250522");
     }
 
 #pragma warning disable CS8618

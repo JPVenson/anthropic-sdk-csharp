@@ -26,12 +26,7 @@ public sealed record class MessageBatchCanceledResult : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"canceled\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("canceled")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -39,7 +34,7 @@ public sealed record class MessageBatchCanceledResult : JsonModel
 
     public MessageBatchCanceledResult()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"canceled\"");
+        this.Type = JsonSerializer.SerializeToElement("canceled");
     }
 
     public MessageBatchCanceledResult(MessageBatchCanceledResult messageBatchCanceledResult)
@@ -49,7 +44,7 @@ public sealed record class MessageBatchCanceledResult : JsonModel
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"canceled\"");
+        this.Type = JsonSerializer.SerializeToElement("canceled");
     }
 
 #pragma warning disable CS8618

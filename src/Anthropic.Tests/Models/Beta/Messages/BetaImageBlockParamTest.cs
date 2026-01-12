@@ -23,7 +23,7 @@ public class BetaImageBlockParamTest : TestBase
             Data = "U3RhaW5sZXNzIHJvY2tz",
             MediaType = MediaType.ImageJpeg,
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"image\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("image");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedSource, model.Source);
@@ -72,7 +72,7 @@ public class BetaImageBlockParamTest : TestBase
             Data = "U3RhaW5sZXNzIHJvY2tz",
             MediaType = MediaType.ImageJpeg,
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"image\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("image");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedSource, deserialized.Source);
