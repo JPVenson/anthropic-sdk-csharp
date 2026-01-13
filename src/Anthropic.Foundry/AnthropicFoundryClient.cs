@@ -8,7 +8,7 @@ namespace Anthropic.Foundry;
 public class AnthropicFoundryClient : AnthropicClient
 {
     private readonly IAnthropicFoundryCredentials _azureCredentials;
-    private readonly Lazy<IAnthropicClientWithRawResponse> _withRawResponseFactory;
+    private readonly Lazy<IAnthropicClientWithRawResponse> _withRawResponse;
 
     /// <summary>
     /// Creates a new instance of the <see cref="AnthropicFoundryClient"/>.
@@ -20,7 +20,7 @@ public class AnthropicFoundryClient : AnthropicClient
         _azureCredentials =
             azureCredentials ?? throw new ArgumentNullException(nameof(azureCredentials));
         BaseUrl = $"https://{azureCredentials.ResourceName}.services.ai.azure.com/anthropic";
-        _withRawResponseFactory = new(() =>
+        _withRawResponse = new(() =>
             new AnthropicFoundryClientWithRawResponse(_azureCredentials, _options)
         );
     }
@@ -33,7 +33,7 @@ public class AnthropicFoundryClient : AnthropicClient
     {
         _azureCredentials =
             azureCredentials ?? throw new ArgumentNullException(nameof(azureCredentials));
-        _withRawResponseFactory = new(() =>
+        _withRawResponse = new(() =>
             new AnthropicFoundryClientWithRawResponse(_azureCredentials, _options)
         );
     }
@@ -54,7 +54,7 @@ public class AnthropicFoundryClient : AnthropicClient
     }
 
     public override IAnthropicClientWithRawResponse WithRawResponse =>
-        _withRawResponseFactory.Value;
+        _withRawResponse.Value;
 
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
