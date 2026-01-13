@@ -53,8 +53,7 @@ public class AnthropicFoundryClient : AnthropicClient
             );
     }
 
-    public override IAnthropicClientWithRawResponse WithRawResponse =>
-        _withRawResponse.Value;
+    public override IAnthropicClientWithRawResponse WithRawResponse => _withRawResponse.Value;
 
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {

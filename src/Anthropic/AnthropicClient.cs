@@ -97,7 +97,11 @@ public class AnthropicClient : IAnthropicClient
         get { return _beta.Value; }
     }
 
-    public void Dispose() => this.HttpClient.Dispose();
+    public void Dispose()
+    {
+        HttpClient.Dispose();
+        GC.SuppressFinalize(this);
+    }
 
     public AnthropicClient()
     {
