@@ -57,7 +57,7 @@ public class MessageServiceTest
                         Role = Anthropic.Models.Beta.Messages.Role.User,
                     },
                 ],
-                Model = Messages::Model.ClaudeOpus4_5_20251101,
+                Model = Messages::Model.ClaudeSonnet4_5_20250929,
             },
             TestContext.Current.CancellationToken
         );
@@ -80,7 +80,7 @@ public class MessageServiceTest
                         Role = Anthropic.Models.Beta.Messages.Role.User,
                     },
                 ],
-                Model = Messages::Model.ClaudeOpus4_5_20251101,
+                Model = Messages::Model.ClaudeSonnet4_5_20250929,
             },
             TestContext.Current.CancellationToken
         );
