@@ -34,7 +34,7 @@ public sealed class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCre
         var now = DateTime.UtcNow;
         var amzDate = AWSSigner.ToAmzDate(now);
         requestMessage.Headers.TryAddWithoutValidation("x-amz-date", amzDate);
-        var content = await requestMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+        var content = await requestMessage.Content!.ReadAsStringAsync().ConfigureAwait(false);
         var payloadHash = AWSSigner.CalculateHash(content);
         requestMessage.Headers.TryAddWithoutValidation("x-amz-content-sha256", payloadHash);
 
@@ -42,7 +42,7 @@ public sealed class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCre
             "bedrock",
             Region,
             requestMessage.Method.ToString(),
-            requestMessage.RequestUri,
+            requestMessage.RequestUri!,
             now,
             requestMessage.Headers.ToDictionary(
                 e => e.Key,

@@ -42,13 +42,13 @@ internal static class SseEventHelpers
         CancellationToken cancellationToken
     )
     {
-        /**
+        /*
         events come in the form of the event stream.
         https://docs.aws.amazon.com/lexv2/latest/dg/event-stream-encoding.html
         |                Prelude                  |             |            Data                 |
         | Total Byte Length | Headers Byte Length | Prelude CRC | Headers | Payload | Message CRC |
         | 4 byte            | 4byte               | 4byte       |                                 |
-        **/
+        */
 
         Span<byte> preamble = stackalloc byte[12];
         var preambleRead = source.Read(preamble);

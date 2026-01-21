@@ -67,17 +67,17 @@ public class AnthropicTestClientsAttribute : DataAttribute
                     ]
                 )
             );
-        }  
+        }
         if (TestSupportTypes.HasFlag(TestSupportTypes.Bedrock))
         {
-             rows.Add(
+            rows.Add(
                 new TheoryDataRow(
                     [
                         new AnthropicBedrockClient(
                             new AnthropicBedrockApiTokenCredentials()
                             {
-                              BearerToken = ApiKey,
-                              Region = Resource,
+                                BearerToken = ApiKey,
+                                Region = Resource,
                             }
                         )
                         {
@@ -89,7 +89,7 @@ public class AnthropicTestClientsAttribute : DataAttribute
                             .ToArray(),
                     ]
                 )
-            );         
+            );
         }
 
         return new ValueTask<IReadOnlyCollection<ITheoryDataRow>>(rows);

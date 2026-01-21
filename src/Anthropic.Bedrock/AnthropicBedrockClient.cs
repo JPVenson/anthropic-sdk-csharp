@@ -12,6 +12,48 @@ namespace Anthropic.Bedrock;
 public sealed class AnthropicBedrockClient : AnthropicClient
 {
     private const string ServiceName = "bedrock-runtime";
+
+    private readonly IAnthropicBedrockCredentials _bedrockCredentials;
+    private readonly Lazy<IAnthropicClientWithRawResponse> _withRawResponse;
+
+    /// <summary>
+    /// Creates a new Instance of the <see cref="AnthropicBedrockClient"/>.
+    /// </summary>
+    /// <param name="bedrockCredentials">The credential Provider used to authenticate with the AWS Bedrock service.</param>
+    public AnthropicBedrockClient(IAnthropicBedrockCredentials bedrockCredentials)
+        : base()
+    {
+        _bedrockCredentials = bedrockCredentials;
+        BaseUrl = $"https://{ServiceName}.{_bedrockCredentials.Region}.amazonaws.com";
+        _withRawResponse = new(() =>
+            new AnthropicBedrockClientWithRawResponse(_bedrockCredentials, _options)
+        );
+    }
+
+    private AnthropicBedrockClient(
+        IAnthropicBedrockCredentials bedrockCredentials,
+        ClientOptions clientOptions
+    )
+        : base(clientOptions)
+    {
+        _bedrockCredentials = bedrockCredentials;
+        _withRawResponse = new(() =>
+            new AnthropicBedrockClientWithRawResponse(_bedrockCredentials, _options)
+        );
+    }
+
+    /// <inheritdoc />
+    public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new AnthropicBedrockClient(_bedrockCredentials, modifier(this._options));
+    }
+
+    public override IAnthropicClientWithRawResponse WithRawResponse => _withRawResponse.Value;
+}
+
+internal class AnthropicBedrockClientWithRawResponse : AnthropicClientWithRawResponse
+{
+    private readonly IAnthropicBedrockCredentials _credentials;
     private const string AnthropicVersion = "bedrock-2023-05-31";
     private const string HeaderAnthropicBeta = "anthropic-beta";
 
@@ -34,32 +76,13 @@ public sealed class AnthropicBedrockClient : AnthropicClient
     /// </summary>
     private const string ContentTypeSseStreamMediaType = "text/event-stream";
 
-    private readonly IAnthropicBedrockCredentials _bedrockCredentials;
-
-    /// <summary>
-    /// Creates a new Instance of the <see cref="AnthropicBedrockClient"/>.
-    /// </summary>
-    /// <param name="bedrockCredentials">The credential Provider used to authenticate with the AWS Bedrock service.</param>
-    public AnthropicBedrockClient(IAnthropicBedrockCredentials bedrockCredentials)
-        : base()
-    {
-        _bedrockCredentials = bedrockCredentials;
-        BaseUrl = new Uri($"https://{ServiceName}.{_bedrockCredentials.Region}.amazonaws.com");
-    }
-
-    private AnthropicBedrockClient(
-        IAnthropicBedrockCredentials bedrockCredentials,
+    public AnthropicBedrockClientWithRawResponse(
+        IAnthropicBedrockCredentials credentials,
         ClientOptions clientOptions
     )
         : base(clientOptions)
     {
-        _bedrockCredentials = bedrockCredentials;
-    }
-
-    /// <inheritdoc />
-    public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
-    {
-        return new AnthropicBedrockClient(_bedrockCredentials, modifier(this._options));
+        _credentials = credentials;
     }
 
     /// <inheritdoc />
@@ -79,7 +102,7 @@ public sealed class AnthropicBedrockClient : AnthropicClient
                         cancellationToken
 #endif
                 ).ConfigureAwait(false)
-            );
+            )!;
 
             var betaVersions = requestMessage.Headers.Contains(HeaderAnthropicBeta)
                 ? requestMessage.Headers.GetValues(HeaderAnthropicBeta).Distinct().ToArray()
@@ -111,7 +134,7 @@ public sealed class AnthropicBedrockClient : AnthropicClient
                 contentStream.Length.ToString()
             );
             var strUri =
-                $"{requestMessage.RequestUri.Scheme}://{requestMessage.RequestUri.Host}/model/{modelValue}/{(parsedStreamValue ? "invoke-with-response-stream" : "invoke")}";
+                $"{requestMessage.RequestUri!.Scheme}://{requestMessage.RequestUri.Host}/model/{modelValue}/{(parsedStreamValue ? "invoke-with-response-stream" : "invoke")}";
 
 #if NET6_0_OR_GREATER
             // The UriCreationOptions and DangerousDisablePathAndQueryCanonicalization were added in .NET 6 and allows
@@ -143,7 +166,7 @@ public sealed class AnthropicBedrockClient : AnthropicClient
             }
         }
 
-        await _bedrockCredentials.Apply(requestMessage).ConfigureAwait(false);
+        await _credentials.Apply(requestMessage).ConfigureAwait(false);
     }
 
     private static void ValidateRequest(HttpRequestMessage requestMessage)
