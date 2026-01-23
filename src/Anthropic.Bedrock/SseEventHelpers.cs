@@ -17,25 +17,7 @@ namespace Anthropic.Bedrock;
 /// </remarks>
 internal static class SseEventHelpers
 {
-    private static readonly JsonSerializerOptions? _jsonOptions = new() { WriteIndented = false };
-
-    public static async Task<bool> SyncStreamMessage(
-        Stream source,
-        Stream target,
-        CancellationToken cancellationToken
-    )
-    {
-        var (data, success) = await ReadStreamMessage(source, cancellationToken)
-            .ConfigureAwait(false);
-        if (!success)
-        {
-            return false;
-        }
-        await target
-            .WriteAsync(Encoding.UTF8.GetBytes(data!), cancellationToken)
-            .ConfigureAwait(false);
-        return true;
-    }
+    private static readonly JsonSerializerOptions? _jsonOptions = new() { WriteIndented = false };  
 
     public static async Task<(string? Data, bool readData)> ReadStreamMessage(
         Stream source,
