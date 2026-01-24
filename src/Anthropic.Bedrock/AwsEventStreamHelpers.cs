@@ -64,6 +64,7 @@ internal static class AwsEventStreamHelpers
 
         // total length is without the preamble (8bytes) + preamble crc (4bytes) + headers but do not take the message crc (4 bytes)
         var messageLength = totalLength - 12 - headerLength - 4;
+#pragma warning disable IDE0063 // Use simple 'using' statement
         using (var bodyData = MemoryPool<byte>.Shared.Rent(messageLength))
         {
             Memory<byte> messageSpan = bodyData.Memory[0..messageLength];
@@ -86,6 +87,7 @@ internal static class AwsEventStreamHelpers
                 .ConfigureAwait(false);
             return (result, true);
         }
+#pragma warning restore IDE0063 // Use simple 'using' statement
     }
 
     private static async Task<string?> Parse(
