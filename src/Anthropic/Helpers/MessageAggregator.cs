@@ -23,7 +23,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
                 .OfType<RawMessageStartEvent>()
                 .SingleOrDefault()
             ?? throw new InvalidOperationException(
-                $"Expected to find exactly one {nameof(RawMessageStartEvent)} but found either non or more then one."
+                $"Expected to find exactly one {nameof(RawMessageStartEvent)} but found either none or more then one."
             );
 
         var contentBlocks = new List<ContentBlock>();
@@ -69,7 +69,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
 
         void As<TDelta>(Func<IEnumerable<TDelta>, ContentBlock> factory)
         {
-            // those blocks are DELTA variants not the source block
+            // those blocks are delta variants not the source block
             // e.g TextBlock and TextDelta
             resultBlock = factory([.. blockContents.Select(e => e.Value).OfType<TDelta>()]);
         }
