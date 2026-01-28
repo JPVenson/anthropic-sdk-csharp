@@ -132,7 +132,9 @@ public class MessageServiceTest
 
         // act
 
-        var stream = await messagesServiceMock.Object.CreateStreaming(StreamingParam).Aggregate();
+        var stream = await messagesServiceMock
+            .Object.CreateStreaming(StreamingParam, TestContext.Current.CancellationToken)
+            .Aggregate();
 
         // assert
 
@@ -165,8 +167,10 @@ public class MessageServiceTest
 
         // assert
 
-        await Assert.ThrowsAsync<InvalidOperationException>(async () =>
-            await messagesServiceMock.Object.CreateStreaming(StreamingParam).Aggregate()
+        await Assert.ThrowsAsync<Exceptions.AnthropicInvalidDataException>(async () =>
+            await messagesServiceMock
+                .Object.CreateStreaming(StreamingParam, TestContext.Current.CancellationToken)
+                .Aggregate()
         );
     }
 
@@ -202,7 +206,9 @@ public class MessageServiceTest
 
         // act
 
-        var stream = await messagesServiceMock.Object.CreateStreaming(StreamingParam).Aggregate();
+        var stream = await messagesServiceMock
+            .Object.CreateStreaming(StreamingParam, TestContext.Current.CancellationToken)
+            .Aggregate();
 
         // assert
 
@@ -248,7 +254,9 @@ public class MessageServiceTest
 
         // act
 
-        var stream = await messagesServiceMock.Object.CreateStreaming(StreamingParam).Aggregate();
+        var stream = await messagesServiceMock
+            .Object.CreateStreaming(StreamingParam, TestContext.Current.CancellationToken)
+            .Aggregate();
 
         // assert
 
@@ -291,7 +299,7 @@ public class MessageServiceTest
                                     CitedText = "Somewhere",
                                     EncryptedIndex = "0",
                                     Title = "Over",
-                                    URL = "the://rainbow",
+                                    Url = "the://rainbow",
                                 }
                             )
                         )
@@ -323,7 +331,9 @@ public class MessageServiceTest
 
         // act
 
-        var stream = await messagesServiceMock.Object.CreateStreaming(StreamingParam).Aggregate();
+        var stream = await messagesServiceMock
+            .Object.CreateStreaming(StreamingParam, TestContext.Current.CancellationToken)
+            .Aggregate();
 
         // assert
 
