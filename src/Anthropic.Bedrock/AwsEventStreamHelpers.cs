@@ -36,7 +36,8 @@ internal static class AwsEventStreamHelpers
         {
             await source.ReadExactlyAsync(preamble, cancellationToken).ConfigureAwait(false);
         }
-        catch (EndOfStreamException) // exceptions for control flow are bad but its how this works. Only catch it here as at every other occasion it's not expected.
+        // only catch exceptions here as at every other occasion it's not expected.
+        catch (EndOfStreamException)
         {
             return (null, false);
         }
@@ -64,30 +65,26 @@ internal static class AwsEventStreamHelpers
 
         // total length is without the preamble (8bytes) + preamble crc (4bytes) + headers but do not take the message crc (4 bytes)
         var messageLength = totalLength - 12 - headerLength - 4;
-#pragma warning disable IDE0063 // Use simple 'using' statement
-        using (var bodyData = MemoryPool<byte>.Shared.Rent(messageLength))
-        {
-            Memory<byte> messageSpan = bodyData.Memory[0..messageLength];
-            await source.ReadExactlyAsync(messageSpan, cancellationToken).ConfigureAwait(false); // read the message part
+        using var bodyData = MemoryPool<byte>.Shared.Rent(messageLength);
+        Memory<byte> messageSpan = bodyData.Memory[0..messageLength];
+        await source.ReadExactlyAsync(messageSpan, cancellationToken).ConfigureAwait(false); // read the message part
 
-            Memory<byte> messageCrc = new byte[4];
-            await source.ReadExactlyAsync(messageCrc, cancellationToken).ConfigureAwait(false); // advance 4 bytes for EOM crc sum
-            if (
-                !Crc32ChecksumValidation(
-                    [.. preamble.Span, .. header.Span, .. messageSpan.Span],
-                    messageCrc.Span
-                )
+        Memory<byte> messageCrc = new byte[4];
+        await source.ReadExactlyAsync(messageCrc, cancellationToken).ConfigureAwait(false); // advance 4 bytes for EOM crc sum
+        if (
+            !Crc32ChecksumValidation(
+                [.. preamble.Span, .. header.Span, .. messageSpan.Span],
+                messageCrc.Span
             )
-            {
-                throw new InvalidDataException(
-                    "The calculated crc checksum for the message content does not match the provided value from the server."
-                );
-            }
-            var result = await Parse(new ReadOnlySequence<byte>(messageSpan), cancellationToken)
-                .ConfigureAwait(false);
-            return (result, true);
+        )
+        {
+            throw new InvalidDataException(
+                "The calculated crc checksum for the message content does not match the provided value from the server."
+            );
         }
-#pragma warning restore IDE0063 // Use simple 'using' statement
+        var result = await Parse(new ReadOnlySequence<byte>(messageSpan), cancellationToken)
+            .ConfigureAwait(false);
+        return (result, true);
     }
 
     private static async Task<string?> Parse(

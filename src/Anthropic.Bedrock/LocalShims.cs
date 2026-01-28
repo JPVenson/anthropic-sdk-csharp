@@ -3,7 +3,7 @@ using System.Buffers;
 using System.Runtime.InteropServices;
 
 /// <summary>
-/// Contains Shims for .Net 9 available methods to compile on an NetStandard2.0 target.
+/// Contains Shims for .Net 8 available methods to compile on an NetStandard2.0 target.
 /// </summary>
 internal static class StreamExtensions
 {
@@ -22,17 +22,13 @@ internal static class StreamExtensions
         this Stream stream,
         Memory<byte> buffer,
         CancellationToken cancellationToken = default
-    )
-    {
-        ValueTask<int> vt = stream.ReadAtLeastAsyncCore(
+    ) =>
+        stream.ReadAtLeastAsyncCore(
             buffer,
             buffer.Length,
             throwOnEndOfStream: true,
             cancellationToken
         );
-
-        return vt;
-    }
 
     private static async ValueTask<int> ReadAtLeastAsyncCore(
         this Stream stream,
