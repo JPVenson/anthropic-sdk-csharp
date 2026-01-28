@@ -21,7 +21,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
             messages[FilterResult.StartMessage]
                 .Select(e => e.Value!)
                 .OfType<RawMessageStartEvent>()
-                .Single()
+                .SingleOrDefault()
             ?? throw new InvalidOperationException(
                 $"Expected to find exactly one {nameof(RawMessageStartEvent)} but found either non or more then one."
             );

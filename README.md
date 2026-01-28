@@ -163,7 +163,6 @@ This can be useful when progress should be reported during the generation but th
 It is possible to either only get the full result object via the `.Aggregate()` extension on the `IAsyncEnumerable` returned by the `CreateStreaming` method or insert an external aggregator into a linq tree:
 
 ```csharp
-
 IAsyncEnumerable<RawMessageStreamEvent> responseUpdates = client.Messages.CreateStreaming(
     parameters
 );

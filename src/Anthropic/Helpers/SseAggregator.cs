@@ -20,7 +20,7 @@ public abstract class SseAggregator<TMessage, TResult>
     /// Collects and filters the provided <see cref="IAsyncEnumerable{TMessage}"/> for aggregation with the <see cref="AggregateAsync"/> method.
     /// </summary>
     /// <param name="messageStream">An <see cref="IAsyncEnumerable{TMessage}"/> containing the messages to aggregate.</param>
-    /// <returns></returns>
+    /// <returns>An <see cref="IAsyncEnumerable{TMessage}"/> of all content messages used to build the aggregation result.</returns>
     /// <exception cref="InvalidOperationException">Will be thrown if the aggregator is in an invalid state.</exception>
     /// <exception cref="AnthropicInvalidDataException">Will be thrown if the aggregator encounters an invalid state of the source message stream.</exception>
     public virtual async IAsyncEnumerable<TMessage> CollectAsync(
