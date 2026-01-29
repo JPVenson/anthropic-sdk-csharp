@@ -86,7 +86,9 @@ internal class AnthropicBedrockClientWithRawResponse : AnthropicClientWithRawRes
     }
 
     /// <inheritdoc />
-    public override IAnthropicClientWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    public override IAnthropicClientWithRawResponse WithOptions(
+        Func<ClientOptions, ClientOptions> modifier
+    )
     {
         return new AnthropicBedrockClientWithRawResponse(_credentials, modifier(this._options));
     }
