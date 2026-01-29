@@ -35,7 +35,7 @@ public static class AnthropicBedrockCredentialsHelper
         const string ENV_API_KEY = "AWS_BEARER_TOKEN_BEDROCK";
         const string ENV_REGION = "AWS_REGION";
 
-        var region = Environment.GetEnvironmentVariable(ENV_REGION); // this is a bit redundant as FallbackRegionFactory checks for the same value too, but its aligned with the behavior of the java sdk
+        var region = Environment.GetEnvironmentVariable(ENV_REGION);
         if (region is null)
         {
             var defaultRegion = FallbackRegionFactory.GetRegionEndpoint(false);
