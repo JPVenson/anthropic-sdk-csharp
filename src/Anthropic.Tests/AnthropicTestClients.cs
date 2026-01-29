@@ -112,7 +112,7 @@ sealed class AnthropicTestDataAttribute : Attribute
 [Flags]
 public enum TestSupportTypes
 {
-    All = Anthropic | Foundry | Bedrock,
+    All = Anthropic | Foundry,
     Anthropic = 1 << 1,
     Foundry = 1 << 2,
     Bedrock = 1 << 3,
