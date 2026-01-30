@@ -1,7 +1,5 @@
-using System.Linq;
 using System.Threading.Tasks;
 using Anthropic.Models.Messages;
-using Anthropic.Tests;
 
 namespace Anthropic.Tests.Services;
 
@@ -11,6 +9,7 @@ public class MessageServiceTest
     [AnthropicTestClients]
     [AnthropicTestData(TestSupportTypes.Anthropic, "Claude3_7SonnetLatest")]
     [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-4-5")]
+    [AnthropicTestData(TestSupportTypes.Vertex, "claude-3-7-sonnet@20250219")]
     public async Task Create_Works(IAnthropicClient client, string modelName)
     {
         var message = await client.Messages.Create(

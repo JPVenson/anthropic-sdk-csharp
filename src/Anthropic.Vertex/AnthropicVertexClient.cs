@@ -27,12 +27,14 @@ public class AnthropicVertexClient : AnthropicClient
     }
 
     private AnthropicVertexClient(
-        IAnthropicVertexCredentials bedrockCredentials,
+        IAnthropicVertexCredentials vertexCredentials,
         ClientOptions clientOptions
     )
         : base(clientOptions)
     {
-        _vertexCredentials = bedrockCredentials;
+        _vertexCredentials = vertexCredentials;
+        BaseUrl =
+            $"https://{(_vertexCredentials.Region is "global" or null ? "" : _vertexCredentials.Region + "-")}aiplatform.googleapis.com";
         _withRawResponse = new(() =>
             new AnthropicVertexClientWithRawResponse(_vertexCredentials, _options)
         );

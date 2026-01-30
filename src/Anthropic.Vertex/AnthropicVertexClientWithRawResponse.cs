@@ -25,6 +25,11 @@ internal class AnthropicVertexClientWithRawResponse : AnthropicClientWithRawResp
         _vertexCredentials = vertexCredentials;
     }
 
+    public override IAnthropicClientWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new AnthropicVertexClientWithRawResponse(_vertexCredentials, modifier(_options));
+    }
+
     protected override async ValueTask BeforeSend<T>(
         HttpRequest<T> request,
         HttpRequestMessage requestMessage,
@@ -61,7 +66,7 @@ internal class AnthropicVertexClientWithRawResponse : AnthropicClientWithRawResp
         );
 
         var requestBuilder = new StringBuilder(
-            $"{requestMessage.RequestUri!.Scheme}://{requestMessage.RequestUri.Host}/v1/projects/{_vertexCredentials.Project}/location/{_vertexCredentials.Region}/publishers/anthropic/models/"
+            $"{requestMessage.RequestUri!.Scheme}://{requestMessage.RequestUri.Host}/v1/projects/{_vertexCredentials.Project}/locations/{_vertexCredentials.Region}/publishers/anthropic/models/"
         );
         if (isCountEndpoint)
         {
@@ -109,11 +114,12 @@ internal class AnthropicVertexClientWithRawResponse : AnthropicClientWithRawResp
         )
         {
             throw new AnthropicInvalidDataException(
-                $"The requested endpoint '{requestMessage.RequestUri.Segments[3].Trim('/')}' is not yet supported."
+                $"The requested endpoint '{requestMessage.RequestUri.Segments.Last().Trim('/')}' is not yet supported."
             );
         }
         if (
-            requestMessage.RequestUri.Segments[2].Trim('/') is "messages"
+            requestMessage.RequestUri.Segments.Length >= 4
+            && requestMessage.RequestUri.Segments[2].Trim('/') is "messages"
             && requestMessage.RequestUri.Segments[3].Trim('/') is "count_tokens"
         )
         {

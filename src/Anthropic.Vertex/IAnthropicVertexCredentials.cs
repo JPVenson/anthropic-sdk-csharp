@@ -8,7 +8,7 @@ public interface IAnthropicVertexCredentials
     /// <summary>
     /// Gets the Region on the Project.
     /// </summary>
-    string? Region { get; }
+    string Region { get; }
 
     /// <summary>
     /// Gets the Project name.

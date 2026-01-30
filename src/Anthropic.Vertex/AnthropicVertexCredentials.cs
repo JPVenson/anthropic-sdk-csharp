@@ -8,40 +8,33 @@ namespace Anthropic.Vertex;
 public class AnthropicVertexCredentials : IAnthropicVertexCredentials
 {
     private readonly GoogleCredential _googleCredentials;
-    private readonly string _audienceUrl;
-    private OidcToken? _token;
-
     /// <summary>
     /// Creates a new instance of the <see cref="AnthropicVertexCredentials"/> using the environment provided google authentication methods.
     /// </summary>
     /// <param name="region">The region string for the project or <c>null</c> for global.</param>
     /// <param name="project">The project string.</param>
-    /// <param name="audienceUrl">The OIDC audience url.</param>
-    public AnthropicVertexCredentials(string? region, string project, string audienceUrl)
-        : this(region, project, audienceUrl, GoogleCredential.GetApplicationDefault()) { }
+    public AnthropicVertexCredentials(string? region, string project)
+        : this(region, project, GoogleCredential.GetApplicationDefault()) { }
 
     /// <summary>
     /// Creates a new instance of the <see cref="AnthropicVertexCredentials"/>.
     /// </summary>
     /// <param name="region">The region string for the project or <c>null</c> for global.</param>
     /// <param name="project">The project string.</param>
-    /// <param name="audienceUrl">The OIDC audience url.</param>
     /// <param name="googleCredential">The authentication method.</param>
     public AnthropicVertexCredentials(
         string? region,
         string project,
-        string audienceUrl,
         GoogleCredential googleCredential
     )
     {
-        Region = region;
+        Region = region ?? "global";
         Project = project;
-        _audienceUrl = audienceUrl;
         _googleCredentials = googleCredential;
     }
 
     /// <inheritdoc/>
-    public string? Region { get; }
+    public string Region { get; }
 
     /// <inheritdoc/>
     public string Project { get; }
@@ -49,11 +42,9 @@ public class AnthropicVertexCredentials : IAnthropicVertexCredentials
     /// <inheritdoc/>
     public async ValueTask ApplyAsync(HttpRequestMessage requestMessage)
     {
-        _token ??= await _googleCredentials
-            .GetOidcTokenAsync(OidcTokenOptions.FromTargetAudience(_audienceUrl))
+        var token = await _googleCredentials.UnderlyingCredential.GetAccessTokenForRequestAsync("https://accounts.google.com/o/oauth2/auth")
             .ConfigureAwait(false);
-        var bearerToken = await _token.GetAccessTokenAsync();
         requestMessage.Headers.Authorization =
-            new System.Net.Http.Headers.AuthenticationHeaderValue("bearer " + bearerToken);
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
     }
 }
