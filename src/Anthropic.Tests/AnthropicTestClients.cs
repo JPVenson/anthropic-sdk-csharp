@@ -74,7 +74,7 @@ public class AnthropicTestClientsAttribute : DataAttribute
                 new TheoryDataRow(
                     [
                         new AnthropicVertexClient(
-                            new AnthropicVertexCredentials(Resource, "VertexProject", "VertexAudienceUrl")
+                            new AnthropicVertexCredentials(Resource, "VertexProject")
                         )
                         {
                             BaseUrl = DataServiceUrl,
@@ -111,5 +111,5 @@ public enum TestSupportTypes
     All = Anthropic | Foundry,
     Anthropic = 1 << 1,
     Foundry = 1 << 2,
-    Vertex = 7,
+    Vertex = 1 << 4,
 }
