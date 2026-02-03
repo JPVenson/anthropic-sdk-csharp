@@ -2,9 +2,8 @@
 using Anthropic.Vertex;
 using Google.Apis.Auth.OAuth2;
 
-
 // The google vertex client needs a Project ID, use the ID from the google cloud dashboard.
-// The region parameter is optional. 
+// The region parameter is optional.
 
 // By default the Vertex Credential provider tries to load system wide credentials generated via the "gcloud" tool.
 // For application wide credentials we recommend using service accounts instead and providing your own GoogleCredentials. Example:

@@ -25,7 +25,9 @@ internal class AnthropicVertexClientWithRawResponse : AnthropicClientWithRawResp
         _vertexCredentials = vertexCredentials;
     }
 
-    public override IAnthropicClientWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    public override IAnthropicClientWithRawResponse WithOptions(
+        Func<ClientOptions, ClientOptions> modifier
+    )
     {
         return new AnthropicVertexClientWithRawResponse(_vertexCredentials, modifier(_options));
     }
@@ -84,7 +86,7 @@ internal class AnthropicVertexClientWithRawResponse : AnthropicClientWithRawResp
         await _vertexCredentials.ApplyAsync(requestMessage).ConfigureAwait(false);
     }
 
-    private void ValidateRequest(HttpRequestMessage requestMessage, out bool isCountEndpoint)
+    private static void ValidateRequest(HttpRequestMessage requestMessage, out bool isCountEndpoint)
     {
         if (requestMessage.RequestUri is null)
         {

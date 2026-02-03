@@ -8,6 +8,7 @@ namespace Anthropic.Vertex;
 public class AnthropicVertexCredentials : IAnthropicVertexCredentials
 {
     private readonly GoogleCredential _googleCredentials;
+
     /// <summary>
     /// Creates a new instance of the <see cref="AnthropicVertexCredentials"/> using the environment provided google authentication methods.
     /// </summary>
@@ -42,7 +43,10 @@ public class AnthropicVertexCredentials : IAnthropicVertexCredentials
     /// <inheritdoc/>
     public async ValueTask ApplyAsync(HttpRequestMessage requestMessage)
     {
-        var token = await _googleCredentials.UnderlyingCredential.GetAccessTokenForRequestAsync("https://accounts.google.com/o/oauth2/auth")
+        var token = await _googleCredentials
+            .UnderlyingCredential.GetAccessTokenForRequestAsync(
+                "https://accounts.google.com/o/oauth2/auth"
+            )
             .ConfigureAwait(false);
         requestMessage.Headers.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
