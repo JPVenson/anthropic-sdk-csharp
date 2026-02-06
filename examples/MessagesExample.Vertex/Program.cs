@@ -16,6 +16,16 @@ var client = new AnthropicVertexClient(new AnthropicVertexCredentials(null, "You
 """).CreateScoped("https://www.googleapis.com/auth/cloud-platform")));
 */
 
+// or you can load the credentials from your system after you set it with the necessary environment variables by calling
+// var client = new AnthropicVertexClient(DefaultAnthropicVertexCredentials.FromEnvAsync());
+
+// <code>
+// ANTHROPIC_VERTEX_PROJECT_ID=your_project_id
+// CLOUD_ML_REGION=region_name
+// VERTEX_ACCESS_TOKEN=vertex_access_token
+// </code>
+// are the main variables you can set but there are more options. Consult the methods documentation for more info.
+
 var client = new AnthropicVertexClient(new AnthropicVertexCredentials(null, "YourProjectId"));
 
 MessageCreateParams parameters = new()
@@ -25,7 +35,7 @@ MessageCreateParams parameters = new()
     [
         new() { Content = "Tell me a story about building the best SDK!", Role = Role.User },
     ],
-    Model = "claude-sonnet-4-5",
+    Model = "claude-3-7-sonnet@20250219",
 };
 
 var response = await client.Messages.Create(parameters);
